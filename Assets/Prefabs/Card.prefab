@@ -165,6 +165,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eb6386899c236940bdbef772bfd9da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cardInfoSO: {fileID: 11400000, guid: ebaaebdce7949b64980960f3cf4fe2c8, type: 2}
+  cardSlotRect: {fileID: 0}
+  myRect: {fileID: 0}
 --- !u!1 &5684988462951640658
 GameObject:
   m_ObjectHideFlags: 0

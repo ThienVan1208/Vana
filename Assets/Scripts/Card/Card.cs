@@ -50,6 +50,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _dragState = new DragState(_stateMachine, this);
         _moveState = new MoveToTargetState(_stateMachine, this);
         _hoverState = new HoverState(_stateMachine, this);
+        _clickState = new ClickState(_stateMachine, this);
 
         _stateMachine.SetDefaultState(_idleState);
         _stateMachine.InitFSM();

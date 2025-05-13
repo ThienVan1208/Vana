@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class HandHolder : CardHolder
 {
-    private List<Card> _chosenCards = new List<Card>();
+    [SerializeField] private ChosenCardEventSO _chosenCardEventSO;
+    [SerializeField]private List<Card> _chosenCards = new List<Card>();
     private Card _srcCardPointer;
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
+    
+    // Used thru button.
+    public void PlayCard(){
+        _chosenCardEventSO.RaiseEvent(_chosenCards);
+    }
     public void SetSrcCardPointer(Card card){
         if(!_isDrag) return;
         _srcCardPointer = card;
@@ -71,16 +77,19 @@ public class HandHolder : CardHolder
     }
 
     public void ChooseCard(Card card){
-        if(_chosenCards.Count > 4){
+        if(!CanChooseCard()){
             Debug.Log("The chosen card number is out of bound.");
             return;
         }
         _chosenCards.Add(card);
     }
+    public bool CanChooseCard(){
+        return _chosenCards.Count < 4;
+    }
     public void RejectCard(Card card){
         for(int i = 0; i < _chosenCards.Count; i++){
             if(_chosenCards[i] == card){
-                for(int j = i; j < _chosenCards.Count; j++){
+                for(int j = i; j < _chosenCards.Count - 1; j++){
                     _chosenCards[j] = _chosenCards[j + 1];
                 }
                 break;
