@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 public enum CardSuit
 {
     Hearts,
@@ -64,6 +65,12 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _stateMachine.AddTransit(_hoverState, _idleState);
         _stateMachine.AddTransit(_clickState, _idleState);
     }
+    private void OnValidate()
+    {
+        RectTransform shadowRect = gameObject.transform.Find("Shadow") as RectTransform;
+        shadowRect.GetComponent<Image>().raycastTarget = false;
+
+    }
     public void SetCardSlot(RectTransform cardSlot)
     {
         cardSlotRect = cardSlot;
@@ -110,10 +117,12 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         _stateMachine.ChangeState(_hoverState);
     }
-    public bool IsClick(){
+    public bool IsClick()
+    {
         return _isClick;
     }
-    public void SetClick(bool var){
+    public void SetClick(bool var)
+    {
         _isClick = var;
     }
 

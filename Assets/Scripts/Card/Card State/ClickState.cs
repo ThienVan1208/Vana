@@ -43,11 +43,11 @@ public class ClickState : StateBase
         _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad).OnComplete(() => _stateMachine.RequestChangeState());
     }
-    private void GetDown()
+    private void GetDown(bool isRejected = false)
     {
         _isUp = !_isUp;
-        
-        (_myCard.cardHolder as HandHolder).RejectCard(_myCard);
+
+        if(isRejected) (_myCard.cardHolder as HandHolder).RejectCard(_myCard);
 
         _myCard.backImg.DOAnchorPosY(_myCard.backImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
@@ -58,5 +58,6 @@ public class ClickState : StateBase
     {
         base.OnExit();
         isComplete = true;
+        
     }
 }
