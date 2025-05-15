@@ -89,12 +89,8 @@ public class HandHolder : CardHolder
     public void RejectCard(Card card){
         for(int i = 0; i < _chosenCards.Count; i++){
             if(_chosenCards[i] == card){
-                for(int j = i; j < _chosenCards.Count - 1; j++){
-                    _chosenCards[j] = _chosenCards[j + 1];
-                }
-                break;
+                _chosenCards.RemoveAt(i);
             }
         }
-        _chosenCards[_chosenCards.Count - 1] = null;
     }
 }

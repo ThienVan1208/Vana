@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ClickState : StateBase
 {
-    private bool _isUp = false;
+    private bool _isUp = true;
     private float _dis2Up = 20f;
     private float _time2Up = 0.2f;
     public ClickState(FSM statemachine, Card card) : base(statemachine, card)
@@ -13,15 +13,8 @@ public class ClickState : StateBase
     public override void OnEnter()
     {
         base.OnEnter();
-        if (_myCard.cardHolder is HandHolder
-        && !(_myCard.cardHolder as HandHolder).CanChooseCard())
-        {
-            Debug.Log("The chosen card number is out of bound.");
-            return;
-        }
-
         isComplete = false;
-        _isUp = !_isUp;
+        
         if (_isUp)
         {
             GetUp();
@@ -34,16 +27,31 @@ public class ClickState : StateBase
 
     private void GetUp()
     {
+        if (_myCard.cardHolder is HandHolder
+                && !(_myCard.cardHolder as HandHolder).CanChooseCard())
+        {
+            Debug.Log("Can not choose more card.");
+            OnExit();
+            return;
+        }
+        _isUp = !_isUp;
+
         (_myCard.cardHolder as HandHolder).ChooseCard(_myCard);
 
-        _myCard.myRect.DOAnchorPosY(_myCard.myRect.localPosition.y + _dis2Up, _time2Up)
+        _myCard.backImg.DOAnchorPosY(_myCard.backImg.localPosition.y + _dis2Up, _time2Up)
+        .SetEase(Ease.OutQuad);
+        _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad).OnComplete(() => _stateMachine.RequestChangeState());
     }
     private void GetDown()
     {
+        _isUp = !_isUp;
+        
         (_myCard.cardHolder as HandHolder).RejectCard(_myCard);
 
-        _myCard.myRect.DOAnchorPosY(_myCard.myRect.localPosition.y - _dis2Up, _time2Up)
+        _myCard.backImg.DOAnchorPosY(_myCard.backImg.localPosition.y - _dis2Up, _time2Up)
+        .SetEase(Ease.OutQuad);
+        _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad).OnComplete(() => _stateMachine.RequestChangeState());
     }
     public override void OnExit()

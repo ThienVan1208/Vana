@@ -32,12 +32,15 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     [HideInInspector]
     public RectTransform cardSlotRect, myRect;
 
+    public RectTransform frontImg, backImg;
     private FSM _stateMachine;
     private IdleState _idleState;
     private DragState _dragState;
     private HoverState _hoverState;
     private MoveToTargetState _moveState;
     private ClickState _clickState;
+
+    private bool _isClick = false;
     public CardHolder cardHolder { get; private set; }
     private void Awake()
     {
@@ -98,7 +101,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _stateMachine.ChangeState(_clickState, isForce: true);
+        _stateMachine.ChangeState(_clickState);
     }
 
     public void OnDrag(PointerEventData eventData) { }
@@ -107,4 +110,11 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         _stateMachine.ChangeState(_hoverState);
     }
+    public bool IsClick(){
+        return _isClick;
+    }
+    public void SetClick(bool var){
+        _isClick = var;
+    }
+
 }
