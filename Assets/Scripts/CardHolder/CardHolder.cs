@@ -12,7 +12,7 @@ public class CardHolder : MonoBehaviour
 
     protected virtual void Awake()
     {
-        InitHolder();
+        // InitHolder();
     }
     protected virtual void InitHolder()
     {

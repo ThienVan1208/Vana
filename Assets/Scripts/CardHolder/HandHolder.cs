@@ -3,7 +3,8 @@ using TMPro;
 using UnityEngine;
 
 public class HandHolder : CardHolder
-{
+{   
+    // Used to choose cards to play, then raising event to inform GameManager.
     [SerializeField] private ChosenCardEventSO _chosenCardEventSO;
     [SerializeField]private List<Card> _chosenCards = new List<Card>();
     private Card _srcCardPointer;
