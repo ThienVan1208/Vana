@@ -10,8 +10,8 @@ public class PlayerBase : MonoBehaviour, IPlayable
     }
     protected virtual void PlayCards(){}
     protected virtual void ChooseCard(){}
-    public virtual void GetCards(int numCard) { }
-    public virtual void RemoveCards(int numCard){}
+    public virtual void AddCards(Card card) { }
+    public virtual void RemoveCards(Card card){}
     public virtual void BeginTurn()
     {
         if (GameManager.FirstTurn)

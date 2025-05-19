@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveableState : StateBase
+public class MoveableState : InteractableState
 {
     protected Vector3 _rotateDeg = Vector3.zero;
     protected Vector3 _velocity = Vector3.zero;

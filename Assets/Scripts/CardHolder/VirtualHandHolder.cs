@@ -1,16 +1,7 @@
 using UnityEngine;
 
-public class TableHolder : CardHolder
+public class VirtualHandHolder : CardHolder
 {
-    protected override void InitHolder()
-    {
-        base.InitHolder();
-
-        foreach (var slot in _cardSlots)
-        {
-            slot.gameObject.SetActive(false);
-        }
-    }
     public override void AddCard(Card card)
     {
         card.CanInteract(false);

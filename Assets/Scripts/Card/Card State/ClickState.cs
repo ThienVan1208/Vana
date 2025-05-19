@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class ClickState : StateBase
+public class ClickState : InteractableState
 {
     private bool _isUp = true;
     private float _dis2Up = 20f;
@@ -43,7 +43,7 @@ public class ClickState : StateBase
         _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad).OnComplete(() => _stateMachine.RequestChangeState());
     }
-    private void GetDown(bool isRejected = false)
+    private void GetDown(bool isRejected = true)
     {
         _isUp = !_isUp;
 

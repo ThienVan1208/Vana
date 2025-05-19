@@ -15,6 +15,7 @@ public class DragState : MoveableState
     public override void OnEnter()
     {
         base.OnEnter();
+        
         _isDrag = true;
         _cardHolder.SetDrag(_isDrag);
         _cardHolder.SetSrcCardPointer(_myCard);
@@ -67,12 +68,13 @@ public class DragState : MoveableState
     public void EndDrag()
     {
         _isDrag = false;
+        if (!_myCard.IsInteractable()) return;
         _cardHolder.SetDrag(false);
         
     }
     public void SetCardHolder(CardHolder cardHolder)
     {
-        _cardHolder = (HandHolder)cardHolder;
+        if(cardHolder is HandHolder) _cardHolder = (HandHolder)cardHolder;
     }
     public override void OnExit()
     {

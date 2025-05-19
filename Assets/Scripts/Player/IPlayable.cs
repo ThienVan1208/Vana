@@ -4,6 +4,6 @@ public interface IPlayable
 {
     public void BeginTurn();
     public void EndTurn();
-    public void GetCards(int numCard);
-    public void RemoveCards(int numCard);
+    public void AddCards(Card card);
+    public void RemoveCards(Card card);
 }

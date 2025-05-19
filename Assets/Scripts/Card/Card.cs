@@ -1,3 +1,5 @@
+using Mono.Cecil.Cil;
+using UnityEditor.Rendering.Universal.ShaderGUI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -40,8 +42,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     private HoverState _hoverState;
     private MoveToTargetState _moveState;
     private ClickState _clickState;
-
-    private bool _isClick = false;
+    private bool _canInteract = true;
     public CardHolder cardHolder { get; private set; }
     private void Awake()
     {
@@ -65,12 +66,14 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _stateMachine.AddTransit(_hoverState, _idleState);
         _stateMachine.AddTransit(_clickState, _idleState);
     }
-    private void OnValidate()
-    {
-        RectTransform shadowRect = gameObject.transform.Find("Shadow") as RectTransform;
-        shadowRect.GetComponent<Image>().raycastTarget = false;
+    // private void OnValidate()
+    // {
+    //     RectTransform shadowRect = gameObject.transform.Find("Shadow") as RectTransform;
+    //     shadowRect.GetComponent<Image>().raycastTarget = false;
 
-    }
+    // }
+
+    // cardSlot is the parent of card.
     public void SetCardSlot(RectTransform cardSlot)
     {
         cardSlotRect = cardSlot;
@@ -78,6 +81,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public void SetCardHolder(CardHolder holder)
     {
         cardHolder = holder;
+        if (!_canInteract) return;
         _dragState.SetCardHolder(cardHolder);
         _hoverState.SetCardHolder(cardHolder);
     }
@@ -96,34 +100,42 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!_canInteract) return;
 
         _stateMachine.ChangeState(_dragState, isForce: true);
     }
-
+    public void OnDrag(PointerEventData eventData) { }
     public void OnEndDrag(PointerEventData eventData)
     {
         _dragState.EndDrag();
-
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!_canInteract) return;
         _stateMachine.ChangeState(_clickState);
     }
 
-    public void OnDrag(PointerEventData eventData) { }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!_canInteract) return;
         _stateMachine.ChangeState(_hoverState);
     }
-    public bool IsClick()
-    {
-        return _isClick;
-    }
-    public void SetClick(bool var)
-    {
-        _isClick = var;
-    }
 
+    public void FaceCardDown()
+    {
+        frontImg.gameObject.SetActive(false);
+        backImg.gameObject.SetActive(true);
+    }
+    public void FaceCardUp()
+    {
+        frontImg.gameObject.SetActive(true);
+        backImg.gameObject.SetActive(false);
+    }
+    public void CanInteract(bool val)
+    {
+        _canInteract = val;
+    }
+    public bool IsInteractable(){ return _canInteract; }
 }

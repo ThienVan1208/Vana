@@ -2,14 +2,14 @@ using UnityEngine;
 using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine.UI;
-public class HoverState : StateBase
+public class HoverState : InteractableState
 {
     private HandHolder _cardHolder;
     public HoverState(FSM statemachine, Card card) : base(statemachine, card)
     {
     }
     public void SetCardHolder(CardHolder cardHolder){
-        _cardHolder = (HandHolder)cardHolder;
+        if(cardHolder is HandHolder) _cardHolder = (HandHolder)cardHolder;
     }
     public override void OnEnter()
     {

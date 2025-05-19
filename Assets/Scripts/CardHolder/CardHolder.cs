@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CardHolder : MonoBehaviour
 {
-    public int MAX_CARD_SLOT { get; protected set; }
-
     // This contains cardSlot obj.
     [SerializeField] protected List<RectTransform> _cardSlots = new List<RectTransform>();
 
@@ -12,23 +10,13 @@ public class CardHolder : MonoBehaviour
 
     protected virtual void Awake()
     {
-        // InitHolder();
+        InitHolder();
     }
     protected virtual void InitHolder()
     {
         foreach (var slot in _cardSlots)
         {
-            if (!slot.gameObject.activeSelf) continue;
-
-            if (slot.GetChild(0).TryGetComponent<Card>(out var card) == true)
-            {
-                _cardsDic[slot] = card;
-                card.SetCardHolder(this);
-            }
-            else
-            {
-                _cardsDic[slot] = null;
-            }
+            _cardsDic[slot] = null;
         }
     }
     public virtual List<RectTransform> GetCardSlots()
@@ -44,7 +32,7 @@ public class CardHolder : MonoBehaviour
         }
         else
         {
-            Debug.Log("get card is null");
+            Debug.LogWarning("Get card is null");
             return null;
         }
     }
@@ -57,7 +45,8 @@ public class CardHolder : MonoBehaviour
         }
         return -1;
     }
-    protected virtual void AddCard(Card card) { }
+    
+    public virtual void AddCard(Card card) { }
     protected virtual void AddCard(Queue<Card> cardList) { }
     protected virtual void RemoveCard(Card card) { }
     protected virtual void RemoveCard(Queue<Card> cardList) { }
