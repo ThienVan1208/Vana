@@ -1,31 +1,8 @@
-using Mono.Cecil.Cil;
-using UnityEditor.Rendering.Universal.ShaderGUI;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-public enum CardSuit
-{
-    Hearts,
-    Diamonds,
-    Clubs,
-    Spades
-};
-public enum CardRank
-{
-    Ace,
-    Two,
-    Three,
-    Four,
-    Five,
-    Six,
-    Seven,
-    Eight,
-    Nine,
-    Ten,
-    Jack,
-    Queen,
-    King
-}
+
 
 public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                     , IPointerClickHandler, IDragHandler, IPointerEnterHandler
@@ -85,7 +62,14 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _dragState.SetCardHolder(cardHolder);
         _hoverState.SetCardHolder(cardHolder);
     }
-
+    public CardSuit GetCardSuit()
+    {
+        return _cardInfoSO.cardSuit;
+    }
+    public CardRank GetCardRank()
+    {
+        return _cardInfoSO.cardRank;
+    }
     private void Update()
     {
         _stateMachine.Update();
@@ -94,6 +78,10 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     // Set @_cardSlot to target and then move it to target.
     public void GetMove(RectTransform target)
     {
+        // if (_clickState.IsClick())
+        // {
+        //     _stateMachine.ChangeState(_clickState);
+        // }
         SetCardSlot(target);
         _stateMachine.ChangeState(_moveState, isForce: true);
     }
@@ -128,14 +116,58 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         frontImg.gameObject.SetActive(false);
         backImg.gameObject.SetActive(true);
     }
-    public void FaceCardUp()
+    // public void FaceCardUp()
+    // {
+    //     frontImg.gameObject.SetActive(true);
+    //     backImg.gameObject.SetActive(false);
+    // }
+    public async UniTask FaceCardUp(bool hasTransition = false)
     {
-        frontImg.gameObject.SetActive(true);
-        backImg.gameObject.SetActive(false);
+        if (hasTransition)
+        {
+            Vector3 rotateDir = new Vector3(0f, 90f, 0f);
+            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, 1f)
+            .OnComplete(() =>
+            {
+                frontImg.gameObject.SetActive(true);
+                backImg.gameObject.SetActive(false);
+                myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, 1f);
+            });
+        }
+        else
+        {
+            frontImg.gameObject.SetActive(true);
+            backImg.gameObject.SetActive(false);
+        }
+        await UniTask.WaitForEndOfFrame();
     }
     public void CanInteract(bool val)
     {
         _canInteract = val;
     }
-    public bool IsInteractable(){ return _canInteract; }
+    public bool IsInteractable() { return _canInteract; }
 }
+public enum CardSuit
+{
+    Hearts,
+    Diamonds,
+    Clubs,
+    Spades
+};
+public enum CardRank
+{
+    Ace,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+    Nine,
+    Ten,
+    Jack,
+    Queen,
+    King
+}
+

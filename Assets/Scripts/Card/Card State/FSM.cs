@@ -51,7 +51,6 @@ public class FSM
 
     public void RequestChangeState(StateBase to = null)
     {
-
         // If @to != null, find @to in Value of @_transition[@_curState].
         if (to != null)
         {

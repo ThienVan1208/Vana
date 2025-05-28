@@ -14,7 +14,7 @@ public class ClickState : InteractableState
     {
         base.OnEnter();
         isComplete = false;
-        
+
         if (_isUp)
         {
             GetUp();
@@ -25,19 +25,22 @@ public class ClickState : InteractableState
         }
     }
 
-    private void GetUp()
+    private void GetUp(bool isChosen = true)
     {
-        if (_myCard.cardHolder is HandHolder
-                && !(_myCard.cardHolder as HandHolder).CanChooseCard())
+        if (isChosen)
         {
-            Debug.Log("Can not choose more card.");
-            OnExit();
-            return;
+            if (_myCard.cardHolder is HandHolder
+                && !(_myCard.cardHolder as HandHolder).CanChooseCard())
+            {
+                Debug.Log("Can not choose more card.");
+                OnExit();
+                return;
+            }
+            (_myCard.cardHolder as HandHolder).ChooseCard(_myCard);
         }
+
         _isUp = !_isUp;
-
-        (_myCard.cardHolder as HandHolder).ChooseCard(_myCard);
-
+        
         _myCard.backImg.DOAnchorPosY(_myCard.backImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
         _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
@@ -47,7 +50,7 @@ public class ClickState : InteractableState
     {
         _isUp = !_isUp;
 
-        if(isRejected) (_myCard.cardHolder as HandHolder).RejectCard(_myCard);
+        if (isRejected) (_myCard.cardHolder as HandHolder).RejectCard(_myCard);
 
         _myCard.backImg.DOAnchorPosY(_myCard.backImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
@@ -58,6 +61,10 @@ public class ClickState : InteractableState
     {
         base.OnExit();
         isComplete = true;
-        
+
+    }
+    public bool IsClick()
+    {
+        return _isUp;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HandHolder : CardHolder
 {
-    // Used to choose cards to play, then raising event to inform GameManager.
+    // Used to choose cards to play, then raising event to inform to RuleGameHandler class.
     [SerializeField] private ChosenCardEventSO _chosenCardEventSO;
     [SerializeField] private List<Card> _chosenCards = new List<Card>();
     private Card _srcCardPointer;
@@ -20,7 +20,14 @@ public class HandHolder : CardHolder
             Debug.Log("Must choose at least 2 cards");
             return;
         }
+        foreach (var card in _chosenCards)
+        {
+            _cardsDic[card.cardSlotRect] = null;
+        }
         _chosenCardEventSO.RaiseEvent(_chosenCards);
+
+        // Clear chosen card list for the next choosing turn.
+        _chosenCards.Clear();
     }
     public void SetSrcCardPointer(Card card)
     {
@@ -41,10 +48,6 @@ public class HandHolder : CardHolder
     public void SetDrag(bool isDrag)
     {
         _isDrag = isDrag;
-    }
-    protected override void InitHolder()
-    {
-        base.InitHolder();
     }
 
     public void UpdateCardVsSlot()
@@ -116,6 +119,7 @@ public class HandHolder : CardHolder
     }
     public override void AddCard(Card card)
     {
+        base.AddCard(card);
         card.CanInteract(true);
         foreach (RectTransform slot in _cardSlots)
         {
@@ -123,6 +127,7 @@ public class HandHolder : CardHolder
             {
                 _cardsDic[slot] = card;
                 card.GetMove(slot);
+                _ = card.FaceCardUp();
                 card.myRect.SetParent(slot, false);
                 return;
             }
