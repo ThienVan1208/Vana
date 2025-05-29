@@ -6,7 +6,8 @@ public enum TurnState
 }
 public class PlayerBase : MonoBehaviour, IPlayable
 {
-    [SerializeField] protected VoidEventSO getPlayStatEventSO, getChooseStatEventSO, revealCardEventSO, passTurnEventSO;
+    // Ref in RuleGameHandler class.
+    [SerializeField] protected VoidEventSO revealCardEventSO, passTurnEventSO;
 
     [SerializeField] protected Canvas mainCanvas;
     protected CardHolder cardHolder;
@@ -25,7 +26,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
     public virtual void RemoveCards(Card card) { }
     public virtual void BeginTurn()
     {
-        Debug.Log(gameObject.name + " Turn!!!");
+        // Debug.Log(gameObject.name + " Turn!!!");
     }
     public virtual void EndTurn() { }
 

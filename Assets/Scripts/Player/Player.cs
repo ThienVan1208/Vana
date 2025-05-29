@@ -37,7 +37,7 @@ public class Player : PlayerBase
         (_playButtonPrefab.transform as RectTransform).anchorMax = anchorPos;
         (_playButtonPrefab.transform as RectTransform).anchoredPosition = buttonPos;
 
-        _playButtonPrefab.GetComponent<Button>().onClick.AddListener((cardHolder as HandHolder).PlayCard);
+        _playButtonPrefab.GetComponent<Button>().onClick.AddListener(PlayCards);
 
         _playButtonPrefab.SetActive(false);
         _playButtonPrefab.transform.localScale = Vector3.one;
@@ -72,6 +72,11 @@ public class Player : PlayerBase
         base.Start();
         _playButtonPrefab.SetActive(false);
     }
+    protected override void PlayCards()
+    {
+        DisplayPlayCardUI(false);
+        (cardHolder as HandHolder).PlayCard();
+    }
     public override void AddCards(Card card)
     {
         card.SetCardHolder(cardHolder);
@@ -94,28 +99,27 @@ public class Player : PlayerBase
         if (val == true) curTurnState = TurnState.PlayCardState;
     }
 
-    protected override void ChooseActionInTurn()
-    {
-        base.ChooseActionInTurn();
-        getChooseStatEventSO.RaiseEvent();
-    }
+    
     protected override void RevealCards()
     {
         base.RevealCards();
+        DisplayChooseUI(false);
         revealCardEventSO.RaiseEvent();
     }
     protected override void PassTurn()
     {
         base.PassTurn();
+        DisplayChooseUI(false);
+        curTurnState = TurnState.ChooseActionState;
         passTurnEventSO.RaiseEvent();
     }
 
     public override void BeginTurn()
     {
         base.BeginTurn();
-        if (RuleGameHandler.FirstTurn)
+        if (RuleGameHandler.BeginTurn)
         {
-            RuleGameHandler.FirstTurn = false;
+            RuleGameHandler.BeginTurn = false;
             DisplayChooseUI(false);
             DisplayPlayCardUI();
         }
@@ -140,7 +144,7 @@ public class Player : PlayerBase
     public override void EndTurn()
     {
         base.EndTurn();
-        DisplayChooseUI(false);
-        DisplayPlayCardUI(false);
+        
+        
     }
 }

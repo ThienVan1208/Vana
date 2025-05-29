@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using System.Threading.Tasks;
 public class RuleGameHandler : MonoBehaviour
 {
-    public static bool FirstTurn = true;
+    public static bool BeginTurn = true;
     [SerializeField] private TableHolder _tableHolder;
 
     // Used in class PlayerBase.
@@ -49,7 +49,6 @@ public class RuleGameHandler : MonoBehaviour
     */
     private void PlayCards(List<Card> chosenCards)
     {
-        Debug.Log("play cards");
         _chosenCards = new List<Card>(chosenCards);
         _ = HelpPlayCards();
     }
@@ -57,7 +56,7 @@ public class RuleGameHandler : MonoBehaviour
     {
         // Get flip cards effects.
         await GetFlipCardWhenPlay();
-        
+
         _nextTurnEventSO.RaiseEvent();
     }
     // Used to move choosen card list to table and face them down excluding the first card.
@@ -86,7 +85,6 @@ public class RuleGameHandler : MonoBehaviour
             await UniTask.Delay(1000);
             if (_chosenCards[0].GetCardRank() != _chosenCards[i].GetCardRank())
             {
-                Debug.Log("Reveal failed.");
                 _ = FailRevealCard();
                 return;
             }
@@ -129,14 +127,23 @@ public class RuleGameHandler : MonoBehaviour
     }
     private void PassTurn()
     {
+        DisconnectCardsFromTable(_chosenCards);
         _ = HelpPassTurn();
     }
     private async UniTask HelpPassTurn()
     {
         // Add choosen card list to usedCardQueue.
         _usedCardHolder.AddUsedCards(_chosenCards);
+        BeginTurn = true;
 
-        _nextTurnEventSO.RaiseEvent();
         await UniTask.Delay(1000);
+        _nextTurnEventSO.RaiseEvent();
     }
+    private void Update() {
+        if (BeginTurn == true)
+        {
+            Debug.Log("begin turn is true");
+        }
+    }
+    
 }

@@ -69,7 +69,6 @@ public class GameManager : MonoBehaviour
     }
     private void NextTurn()
     {
-        Debug.Log("Next turn");
         _playableInfoSO.prevPlayerIdx = _playableInfoSO.curPlayerIdx;
         _playableInfoSO.curPlayerIdx = (_playableInfoSO.curPlayerIdx + 1) % _playableList.Count;
 
@@ -78,7 +77,6 @@ public class GameManager : MonoBehaviour
     }
     private void ContinueTurn()
     {
-        Debug.Log("Continue turn");
         _playableList[_playableInfoSO.curPlayerIdx].BeginTurn();
     }
 

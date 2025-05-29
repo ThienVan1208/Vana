@@ -43,6 +43,7 @@ public class VirtualPlayer : PlayerBase
     protected override void PassTurn()
     {
         base.PassTurn();
+        curTurnState = TurnState.ChooseActionState;
         passTurnEventSO.RaiseEvent();
     }
 
@@ -52,13 +53,13 @@ public class VirtualPlayer : PlayerBase
     }
     private async UniTask HelpBeginTurn()
     {
-        await UniTask.Delay(3000);
-        if (RuleGameHandler.FirstTurn)
+        await UniTask.Delay(2000);
+        if (RuleGameHandler.BeginTurn)
         {
-            RuleGameHandler.FirstTurn = false;
+            RuleGameHandler.BeginTurn = false;
 
             base.BeginTurn();
-            ChooseCards2Play();
+            PlayCards();
             curTurnState = TurnState.ChooseActionState;
 
         }
@@ -66,7 +67,7 @@ public class VirtualPlayer : PlayerBase
         {
             if (curTurnState == TurnState.ChooseActionState)
             {
-                int ranAction = Random.Range(0, 3);
+                int ranAction = Random.Range(0, 2);
                 if (ranAction == 0)
                 {
                     PassTurn();
@@ -79,13 +80,13 @@ public class VirtualPlayer : PlayerBase
             }
             else
             {
-                ChooseCards2Play();
+                PlayCards();
                 curTurnState = TurnState.ChooseActionState;
             }
         }
         await UniTask.WaitForEndOfFrame();
     }
-    private void ChooseCards2Play()
+    protected override void PlayCards()
     {
         List<Card> cards = new List<Card>();
         int ranNum = Random.Range(2, 5);

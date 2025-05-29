@@ -78,10 +78,17 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     // Set @_cardSlot to target and then move it to target.
     public void GetMove(RectTransform target)
     {
-        // if (_clickState.IsClick())
-        // {
-        //     _stateMachine.ChangeState(_clickState);
-        // }
+        // Check card is up.
+        if (!_clickState.IsClick())
+        {
+            _clickState.SetChosenFlag(false);
+
+            // Get down.
+            _stateMachine.ChangeState(_clickState);
+
+            _clickState.SetChosenFlag(true);
+        }
+
         SetCardSlot(target);
         _stateMachine.ChangeState(_moveState, isForce: true);
     }
@@ -116,11 +123,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         frontImg.gameObject.SetActive(false);
         backImg.gameObject.SetActive(true);
     }
-    // public void FaceCardUp()
-    // {
-    //     frontImg.gameObject.SetActive(true);
-    //     backImg.gameObject.SetActive(false);
-    // }
+    
     public async UniTask FaceCardUp(bool hasTransition = false)
     {
         if (hasTransition)
@@ -141,7 +144,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         }
         await UniTask.WaitForEndOfFrame();
     }
-    public void CanInteract(bool val)
+    public void CanInteract(bool val = true)
     {
         _canInteract = val;
     }

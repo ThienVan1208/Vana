@@ -6,6 +6,7 @@ public class ClickState : InteractableState
     private bool _isUp = true;
     private float _dis2Up = 20f;
     private float _time2Up = 0.2f;
+    private bool _chosenFlag = true;
     public ClickState(FSM statemachine, Card card) : base(statemachine, card)
     {
     }
@@ -25,9 +26,9 @@ public class ClickState : InteractableState
         }
     }
 
-    private void GetUp(bool isChosen = true)
+    private void GetUp()
     {
-        if (isChosen)
+        if (_chosenFlag)
         {
             if (_myCard.cardHolder is HandHolder
                 && !(_myCard.cardHolder as HandHolder).CanChooseCard())
@@ -36,6 +37,8 @@ public class ClickState : InteractableState
                 OnExit();
                 return;
             }
+
+            // Add card to chosen card list.
             (_myCard.cardHolder as HandHolder).ChooseCard(_myCard);
         }
 
@@ -46,16 +49,20 @@ public class ClickState : InteractableState
         _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad).OnComplete(() => _stateMachine.RequestChangeState());
     }
-    private void GetDown(bool isRejected = true)
+    private void GetDown()
     {
         _isUp = !_isUp;
 
-        if (isRejected) (_myCard.cardHolder as HandHolder).RejectCard(_myCard);
+        if (_chosenFlag) (_myCard.cardHolder as HandHolder).RejectCard(_myCard);
 
         _myCard.backImg.DOAnchorPosY(_myCard.backImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
         _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad).OnComplete(() => _stateMachine.RequestChangeState());
+    }
+    public void SetChosenFlag(bool val)
+    {
+        _chosenFlag = val;
     }
     public override void OnExit()
     {

@@ -33,7 +33,7 @@ public class MoveableState : InteractableState
     }
     protected void GetMoveEffect(Vector2 target)
     {
-        _myCard.myRect.position = Vector3.SmoothDamp(_myCard.myRect.position, target, ref _velocity, 0.05f);
+        _myCard.myRect.position = Vector3.SmoothDamp(_myCard.myRect.position, target, ref _velocity, 0.1f);
         //_myRect.position = Vector2.Lerp(_myRect.position, target, Time.deltaTime * 20);
     }
     protected void GetRotateEffect(Vector2 target)
