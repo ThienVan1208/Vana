@@ -62,6 +62,10 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _dragState.SetCardHolder(cardHolder);
         _hoverState.SetCardHolder(cardHolder);
     }
+    public void SetParent(RectTransform parent)
+    {
+        myRect.SetParent(parent, false);
+    }
     public CardSuit GetCardSuit()
     {
         return _cardInfoSO.cardSuit;
@@ -78,6 +82,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     // Set @_cardSlot to target and then move it to target.
     public void GetMove(RectTransform target)
     {
+        
         // Check card is up.
         if (!_clickState.IsClick())
         {

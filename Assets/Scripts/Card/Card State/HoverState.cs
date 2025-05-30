@@ -1,7 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
-using JetBrains.Annotations;
-using UnityEngine.UI;
+
 public class HoverState : InteractableState
 {
     private HandHolder _cardHolder;
@@ -20,13 +19,8 @@ public class HoverState : InteractableState
             isComplete = true;
             _stateMachine.RequestChangeState();
         });
-
+        if (_cardHolder == null) Debug.Log("card holder is null");
         if(_cardHolder.IsDrag()) _cardHolder.SetDstCardPointer(_myCard);
-        
-    }
-    public override void OnUpdate()
-    {
-        base.OnUpdate();
         
     }
 }

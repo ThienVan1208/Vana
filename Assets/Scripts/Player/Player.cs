@@ -43,7 +43,7 @@ public class Player : PlayerBase
         _playButtonPrefab.transform.localScale = Vector3.one;
 
         // Create choose action button.
-        Vector2 revealButPos = new Vector2(-251f, 155f), passButPos = new Vector2(-36f, 155f);
+        Vector2 revealButPos = new Vector2(-251f, 15f), passButPos = new Vector2(-36f, 15f);
         _revealButtonPrefab = Instantiate(_revealButtonPrefab, revealButPos, Quaternion.identity);
         _passButtonPrefab = Instantiate(_passButtonPrefab, passButPos, Quaternion.identity);
 
@@ -74,8 +74,10 @@ public class Player : PlayerBase
     }
     protected override void PlayCards()
     {
+
+        if(!(cardHolder as HandHolder).HelpPlayingCard()) return;
+        
         DisplayPlayCardUI(false);
-        (cardHolder as HandHolder).PlayCard();
     }
     public override void AddCards(Card card)
     {
@@ -99,7 +101,7 @@ public class Player : PlayerBase
         if (val == true) curTurnState = TurnState.PlayCardState;
     }
 
-    
+
     protected override void RevealCards()
     {
         base.RevealCards();
@@ -135,6 +137,7 @@ public class Player : PlayerBase
             // Choose action.
             else
             {
+                checkRevealEventSO.EventChannel += CheckReveal;
                 DisplayChooseUI();
                 DisplayPlayCardUI(false);
             }
@@ -144,7 +147,23 @@ public class Player : PlayerBase
     public override void EndTurn()
     {
         base.EndTurn();
-        
-        
+        checkRevealEventSO.EventChannel -= CheckReveal;
+    }
+    protected override void CheckReveal(bool check)
+    {
+        base.CheckReveal(check);
+        if (check) SuccessRevealCard();
+        else FailRevealCard();
+
+    }
+    protected override void SuccessRevealCard()
+    {
+        base.SuccessRevealCard();
+        curTurnState = TurnState.PlayCardState;
+    }
+    protected override void FailRevealCard()
+    {
+        base.FailRevealCard();
+        curTurnState = TurnState.ChooseActionState;
     }
 }

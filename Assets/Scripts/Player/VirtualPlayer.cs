@@ -5,10 +5,6 @@ using UnityEngine;
 public class VirtualPlayer : PlayerBase
 {
     [SerializeField] private GameObject _handHolderPrefab;
-    
-    // Used to assign chosen card list in RuleGameHandle.
-    [SerializeField] protected ChosenCardEventSO chosenCardEventSO;
-
     private Vector2 _initCardHolderPos = new Vector2(-146f, -50f);
     protected override void InitCardHolder()
     {
@@ -38,6 +34,7 @@ public class VirtualPlayer : PlayerBase
     protected override void RevealCards()
     {
         base.RevealCards();
+        checkRevealEventSO.EventChannel += CheckReveal;
         revealCardEventSO.RaiseEvent();
     }
     protected override void PassTurn()
@@ -53,7 +50,7 @@ public class VirtualPlayer : PlayerBase
     }
     private async UniTask HelpBeginTurn()
     {
-        await UniTask.Delay(2000);
+        await UniTask.Delay(1000);
         if (RuleGameHandler.BeginTurn)
         {
             RuleGameHandler.BeginTurn = false;
@@ -67,7 +64,7 @@ public class VirtualPlayer : PlayerBase
         {
             if (curTurnState == TurnState.ChooseActionState)
             {
-                int ranAction = Random.Range(0, 2);
+                int ranAction = Random.Range(0, 3);
                 if (ranAction == 0)
                 {
                     PassTurn();
@@ -86,14 +83,31 @@ public class VirtualPlayer : PlayerBase
         }
         await UniTask.WaitForEndOfFrame();
     }
+
+    public override void EndTurn()
+    {
+        base.EndTurn();
+        checkRevealEventSO.EventChannel -= CheckReveal;
+    }
+    protected override void CheckReveal(bool check)
+    {
+        base.CheckReveal(check);
+        if (check) SuccessRevealCard();
+        else FailRevealCard();
+
+    }
+    protected override void SuccessRevealCard()
+    {
+        base.SuccessRevealCard();
+        curTurnState = TurnState.PlayCardState;
+    }
+    protected override void FailRevealCard()
+    {
+        base.FailRevealCard();
+        curTurnState = TurnState.ChooseActionState;
+    }
     protected override void PlayCards()
     {
-        List<Card> cards = new List<Card>();
-        int ranNum = Random.Range(2, 5);
-        for (int i = 0; i < ranNum; i++)
-        {
-            cards.Add(cardHolder.GetCard(disconnect: true));
-        }
-        chosenCardEventSO.RaiseEvent(cards);
+        (cardHolder as VirtualHandHolder).HelpPlayingCard();
     }
 }

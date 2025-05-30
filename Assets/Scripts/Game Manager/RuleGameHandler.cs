@@ -6,6 +6,10 @@ using Unity.VisualScripting;
 using System.Threading.Tasks;
 public class RuleGameHandler : MonoBehaviour
 {
+    public bool begin_turn;
+    private void Update() {
+        begin_turn = BeginTurn;
+    }
     public static bool BeginTurn = true;
     [SerializeField] private TableHolder _tableHolder;
 
@@ -17,6 +21,12 @@ public class RuleGameHandler : MonoBehaviour
     [SerializeField] private ChosenCardEventSO _chosenCardEventSO;
     [SerializeField] private UsedCardHolder _usedCardHolder;
     [SerializeField] private PlayableInfoSO _playableInfoSO;
+
+    /*
+    - If playable failed / successed in revealing -> raises this event with argument false / true. 
+    - Ref in playerBase class.
+    */
+    [SerializeField] private BoolEventSO _checkRevealEventSO;
 
     /*
     - Is referenced in GameManager class. 
@@ -81,18 +91,21 @@ public class RuleGameHandler : MonoBehaviour
         for (int i = 1; i < _chosenCards.Count; i++)
         {
             await _chosenCards[i].FaceCardUp(hasTransition: true);
-            _campShakeEventSO.RaiseEvent(0.25f, 1f);
+            _campShakeEventSO.RaiseEvent(2f, 1f);
             await UniTask.Delay(1000);
             if (_chosenCards[0].GetCardRank() != _chosenCards[i].GetCardRank())
             {
-                _ = FailRevealCard();
+                await UniTask.Delay(1000);
+                await SuccessRevealCard();
                 return;
             }
         }
-        _ = SuccessRevealCard();
+        await UniTask.Delay(1000);
+        await FailRevealCard();
     }
     private async UniTask SuccessRevealCard()
     {
+        Debug.Log("reveal success");
         DisconnectCardsFromTable(_chosenCards);
 
         // Add choosen card list to usedCardQueue.
@@ -102,10 +115,12 @@ public class RuleGameHandler : MonoBehaviour
                                 , _usedCardHolder.GetUsedCardList());
 
         await UniTask.Delay(1000);
+        _checkRevealEventSO.RaiseEvent(true);
         _continuedCurTurnEventSO.RaiseEvent();
     }
     private async UniTask FailRevealCard()
     {
+        Debug.Log("reveal failed");
         DisconnectCardsFromTable(_chosenCards);
 
         // Add choosen card list to usedCardQueue.
@@ -116,6 +131,8 @@ public class RuleGameHandler : MonoBehaviour
                                 , _usedCardHolder.GetUsedCardList());
 
         await UniTask.Delay(1000);
+        BeginTurn = true;
+        _checkRevealEventSO.RaiseEvent(false);
         _nextTurnEventSO.RaiseEvent();
     }
     private void DisconnectCardsFromTable(List<Card> cards)
@@ -127,6 +144,7 @@ public class RuleGameHandler : MonoBehaviour
     }
     private void PassTurn()
     {
+        Debug.Log("pass turn");
         DisconnectCardsFromTable(_chosenCards);
         _ = HelpPassTurn();
     }
@@ -134,16 +152,11 @@ public class RuleGameHandler : MonoBehaviour
     {
         // Add choosen card list to usedCardQueue.
         _usedCardHolder.AddUsedCards(_chosenCards);
+
         BeginTurn = true;
 
         await UniTask.Delay(1000);
         _nextTurnEventSO.RaiseEvent();
-    }
-    private void Update() {
-        if (BeginTurn == true)
-        {
-            Debug.Log("begin turn is true");
-        }
     }
     
 }

@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class VirtualHandHolder : CardHolder
+public class VirtualHandHolder : PlayableCardHolder
 {
     public override void AddCard(Card card)
     {
@@ -9,11 +10,31 @@ public class VirtualHandHolder : CardHolder
         {
             if (_cardsDic[slot] == null)
             {
+                curCardNum++;
+                slot.gameObject.SetActive(true);
                 _cardsDic[slot] = card;
                 card.GetMove(slot);
-                card.myRect.SetParent(slot, false);
                 return;
             }
         }
+    }
+
+    public override bool HelpPlayingCard()
+    {
+        List<Card> cards = new List<Card>();
+        int ranNum = Mathf.Min(Random.Range(gameConfigSO.minCard2Play, gameConfigSO.maxCard2Play + 1), curCardNum);
+        
+        for (int i = 0; i < ranNum; i++)
+        {
+            Card newCard = GetCard(disconnect: true);
+            cards.Add(newCard);
+            curCardNum--;
+            if (curCardNum > gameConfigSO.initCardNum)
+            {
+                GetCardSlot(newCard)?.gameObject.SetActive(false);
+            }
+        }
+        chosenCardEventSO.RaiseEvent(cards);
+        return true;
     }
 }

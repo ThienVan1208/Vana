@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a676ff7ba613642bed1d82d8bd7ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  begin_turn: 0
   _tableHolder: {fileID: 1639724033}
   _revealCardEventSO: {fileID: 11400000, guid: 9a3a57c76278a1b46abc79f342d2aa9e, type: 2}
   _passTurnEventSO: {fileID: 11400000, guid: 8167e13cefa0327429f09a36b3b068c4, type: 2}
@@ -156,6 +157,7 @@ MonoBehaviour:
   _chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
   _usedCardHolder: {fileID: 1671045524}
   _playableInfoSO: {fileID: 11400000, guid: f78e75a492e6ea449865e2e5ef6106b7, type: 2}
+  _checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
   _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
   _campShakeEventSO: {fileID: 11400000, guid: 9a80ccfd075909540b86af7fcc3e4cda, type: 2}
 --- !u!4 &60038285
@@ -441,7 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78edcf4e8e3aef847a99d9a7a4027159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardPrefab: {fileID: 2991494085544462576, guid: 8be704732cd91f04cb9684e9f211237c, type: 3}
+  _allCardsContainerSO: {fileID: 11400000, guid: 256a77ac7f97457428b08d10598ee7ae, type: 2}
   _cardSpawnerPos: {fileID: 1975424021}
 --- !u!4 &740087953
 Transform:
@@ -487,11 +489,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddd170d211246d40b4e81b0a8791ad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  getPlayStatEventSO: {fileID: 11400000, guid: 7c128b8b473ea5543b20b6160c1c9043, type: 2}
-  getChooseStatEventSO: {fileID: 11400000, guid: abd383a731a40ec408dea74bb7d2781e, type: 2}
   revealCardEventSO: {fileID: 11400000, guid: 9a3a57c76278a1b46abc79f342d2aa9e, type: 2}
   passTurnEventSO: {fileID: 11400000, guid: 8167e13cefa0327429f09a36b3b068c4, type: 2}
-  chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
+  checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
   mainCanvas: {fileID: 1245340139}
   _handHolderPrefab: {fileID: 4083175592908992002, guid: 0d17b878497b6c8439ab0e5b40d63f16, type: 3}
   _playButtonPrefab: {fileID: 4998945517929767177, guid: cf8d6832aa34cf54b8e3d3472c6a39bf, type: 3}
@@ -541,11 +541,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc41a899aebf7d54492591612b69d9df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  getPlayStatEventSO: {fileID: 11400000, guid: 7c128b8b473ea5543b20b6160c1c9043, type: 2}
-  getChooseStatEventSO: {fileID: 11400000, guid: abd383a731a40ec408dea74bb7d2781e, type: 2}
   revealCardEventSO: {fileID: 11400000, guid: 9a3a57c76278a1b46abc79f342d2aa9e, type: 2}
   passTurnEventSO: {fileID: 11400000, guid: 8167e13cefa0327429f09a36b3b068c4, type: 2}
-  chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
+  checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
   mainCanvas: {fileID: 1245340139}
   _handHolderPrefab: {fileID: 1663651151614908859, guid: 4a319bf33f60d7f4a98db8621f5c0ac0, type: 3}
 --- !u!4 &1014271832
@@ -867,6 +865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48da3f8924e2fa0478a83695cc0cf7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   _cardSlots:
   - {fileID: 4393854221020118338}
   - {fileID: 2298197578602496672}
@@ -1765,6 +1764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb787762a88cab4d92f65d055dda42f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameConfigSO: {fileID: 0}
   _cardSlots:
   - {fileID: 4296242685878834699}
   - {fileID: 8894879786943779298}
@@ -1776,7 +1776,7 @@ MonoBehaviour:
   - {fileID: 2477891877091980645}
   - {fileID: 3380202905298986378}
   - {fileID: 3105684334621976042}
-  _chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
+  chosenCardEventSO: {fileID: 0}
   _chosenCards: []
 --- !u!1 &2121412972396607039
 GameObject:
@@ -2874,6 +2874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb787762a88cab4d92f65d055dda42f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameConfigSO: {fileID: 0}
   _cardSlots:
   - {fileID: 4865332948664024677}
   - {fileID: 3470469912252596158}
@@ -2885,7 +2886,7 @@ MonoBehaviour:
   - {fileID: 3621411254459472677}
   - {fileID: 8393802454079516156}
   - {fileID: 6800650315497852807}
-  _chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
+  chosenCardEventSO: {fileID: 0}
   _chosenCards: []
 --- !u!1 &5375862004305253380
 GameObject:

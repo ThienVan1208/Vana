@@ -59,13 +59,13 @@ public class GameManager : MonoBehaviour
     {
         _nextTurnEventSO.EventChannel += NextTurn;
         _continuedCurTurnEventSO.EventChannel += ContinueTurn;
-        _addCard2PlayerEventSO.EventChannel += AddCards2CurPlayer;
+        _addCard2PlayerEventSO.EventChannel += AddCards4CurPlayer;
     }
     private void OnDisable()
     {
         _nextTurnEventSO.EventChannel -= NextTurn;
         _continuedCurTurnEventSO.EventChannel -= ContinueTurn;
-        _addCard2PlayerEventSO.EventChannel -= AddCards2CurPlayer;
+        _addCard2PlayerEventSO.EventChannel -= AddCards4CurPlayer;
     }
     private void NextTurn()
     {
@@ -81,19 +81,20 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void AddCards2CurPlayer(int playerIndex, List<Card> cards)
+    private void AddCards4CurPlayer(int playerIndex, List<Card> cards)
     {
-        StartCoroutine(HelpAddCard(playerIndex, cards, 0.2f));
+        _ = HelpAddCards4CurPlayer(playerIndex, cards, 0.2f);
     }
-    private IEnumerator HelpAddCard(int playerIndex, List<Card> cards, float time)
+    private async UniTask HelpAddCards4CurPlayer(int playerIndex, List<Card> cards, float time)
     {
         foreach (var card in cards)
         {
-            yield return new WaitForSeconds(time);
+            await UniTask.Delay((int)(time * 1000));
             _playableList[playerIndex].AddCards(card);
-            card.CanInteract(true);
+            // card.CanInteract(true);
         }
     }
+
 
 
 }

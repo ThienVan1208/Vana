@@ -2,32 +2,46 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class HandHolder : CardHolder
+public class HandHolder : PlayableCardHolder
 {
-    // Used to choose cards to play, then raising event to inform to RuleGameHandler class.
-    [SerializeField] private ChosenCardEventSO _chosenCardEventSO;
     [SerializeField] private List<Card> _chosenCards = new List<Card>();
     private Card _srcCardPointer;
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
-
+    
+    
     // Used thru button.
-    public void PlayCard()
+    public override bool HelpPlayingCard()
     {
-        if (_chosenCards.Count < 2)
+        if (_chosenCards.Count < gameConfigSO.minCard2Play)
         {
-            Debug.Log("Must choose at least 2 cards");
-            return;
+            Debug.Log("Must choose at least" + gameConfigSO.minCard2Play + "cards");
+            return false;
         }
+
+        chosenCardEventSO.RaiseEvent(_chosenCards);
+
         foreach (var card in _chosenCards)
         {
+            // Disconnect from current cardHolder.
             _cardsDic[card.cardSlotRect] = null;
+            curCardNum--;
+
+            /* 
+            - The distance between 2 cards is the distance that 
+                the UI panel contains gameConfigSO.initCardNum elements.
+            - So if the current card number is over gameConfigSO.initCardNum -> active it false.
+            */
+            if (curCardNum > gameConfigSO.initCardNum)
+            {
+                GetCardSlot(card)?.gameObject.SetActive(false);
+            }
         }
-        _chosenCardEventSO.RaiseEvent(_chosenCards);
 
         // Clear chosen card list for the next choosing turn.
         _chosenCards.Clear();
+        return true;
     }
     public void SetSrcCardPointer(Card card)
     {
@@ -56,9 +70,7 @@ public class HandHolder : CardHolder
         {
             RectTransform slot = cardSlotPair.Key;
             Card card = cardSlotPair.Value;
-            //card.GetMove(slot);
             (card.transform as RectTransform).position = card.cardSlotRect.position;
-            //print("slot: " + slot.name + "card: " + card.name);
         }
     }
     public void SwapCard()
@@ -105,7 +117,7 @@ public class HandHolder : CardHolder
     }
     public bool CanChooseCard()
     {
-        return _chosenCards.Count < 4;
+        return _chosenCards.Count < gameConfigSO.maxCard2Play;
     }
     public void RejectCard(Card card)
     {
@@ -125,10 +137,11 @@ public class HandHolder : CardHolder
         {
             if (_cardsDic[slot] == null)
             {
+                slot.gameObject.SetActive(true);
                 _cardsDic[slot] = card;
                 card.GetMove(slot);
                 _ = card.FaceCardUp();
-                card.myRect.SetParent(slot, false);
+                curCardNum++;
                 return;
             }
         }

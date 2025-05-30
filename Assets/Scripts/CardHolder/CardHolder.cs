@@ -2,11 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CardHolder : MonoBehaviour
 {
+    [SerializeField] protected GameConfigSO gameConfigSO;
+
     // This contains cardSlot obj.
     [SerializeField] protected List<RectTransform> _cardSlots = new List<RectTransform>();
 
     // The key is cardSlot, value is card.
     protected Dictionary<RectTransform, Card> _cardsDic = new Dictionary<RectTransform, Card>();
+
+    protected int curCardNum = 0;
 
     protected virtual void Awake()
     {
@@ -18,6 +22,10 @@ public class CardHolder : MonoBehaviour
         {
             _cardsDic[slot] = null;
         }
+    }
+    protected int GetCardNum()
+    {
+        return curCardNum;
     }
     public virtual List<RectTransform> GetCardSlots()
     {

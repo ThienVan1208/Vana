@@ -23,8 +23,10 @@ public class TableHolder : CardHolder
             {
                 slot.gameObject.SetActive(true);
                 _cardsDic[slot] = card;
-                card.myRect.SetParent(slot, false);
+                
                 card.GetMove(slot);
+
+                // card.myRect.SetParent(slot, false);
                 return;
             }
         }
