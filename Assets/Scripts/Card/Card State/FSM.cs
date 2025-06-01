@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class FSM
 {
+    // Used to stop all states.
+    private bool _isStop = false;
     private StateBase _curState;
     private StateBase _defaultState;
     /* 
@@ -18,7 +20,8 @@ public class FSM
     private List<StateBase> _curTransitionList = new List<StateBase>();
     public void Update()
     {
-        _curState?.OnUpdate();
+        if (_isStop || _curState == null) return;
+        _curState.OnUpdate();
     }
     public void InitFSM()
     {
@@ -26,7 +29,7 @@ public class FSM
     }
     public void ChangeState(StateBase state, bool isForce = false, bool isExit = true, bool isEnter = true)
     {
-        if (!isForce && !_curState.isComplete) return;
+        if (_isStop || !isForce && !_curState.isComplete) return;
 
         if (isExit) _curState.OnExit();
         _curState = state;
@@ -82,12 +85,25 @@ public class FSM
             {
                 AddTransit(_curState, _defaultState);
                 ChangeState(_defaultState);
-                
+
                 return;
             }
             // Change to the first state in transition list of @_curState.
             ChangeState(_curTransitionList[0], isForce: true);
-            
+
         }
+    }
+
+    public void StopAllState()
+    {
+        Debug.Log("stop");
+        _curState.OnExit();
+        _isStop = true;
+    }
+    public void ContinuePrevState()
+    {
+        Debug.Log("continue");
+        _isStop = false;    
+        ChangeState(_curState, isForce: true);
     }
 }

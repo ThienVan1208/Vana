@@ -21,6 +21,9 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     private ClickState _clickState;
     private bool _canInteract = true;
     public CardHolder cardHolder { get; private set; }
+
+    // 2 * _time2HaflRotate is the total time for card to rotate (used to flip card).
+    private float _time2HaflRotate = 0.5f;
     private void Awake()
     {
         cardSlotRect = transform.parent as RectTransform;
@@ -82,7 +85,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     // Set @_cardSlot to target and then move it to target.
     public void GetMove(RectTransform target)
     {
-        
+
         // Check card is up.
         if (!_clickState.IsClick())
         {
@@ -123,31 +126,58 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _stateMachine.ChangeState(_hoverState);
     }
 
-    public void FaceCardDown()
+    public async UniTask FaceCardDown(bool hasTransition = false)
     {
-        frontImg.gameObject.SetActive(false);
-        backImg.gameObject.SetActive(true);
-    }
-    
-    public async UniTask FaceCardUp(bool hasTransition = false)
-    {
+
         if (hasTransition)
         {
+            _stateMachine.StopAllState();
             Vector3 rotateDir = new Vector3(0f, 90f, 0f);
-            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, 1f)
+            myRect.transform.localEulerAngles = Vector3.zero;
+            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
             .OnComplete(() =>
             {
-                frontImg.gameObject.SetActive(true);
-                backImg.gameObject.SetActive(false);
-                myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, 1f);
+                frontImg.gameObject.SetActive(false);
+                backImg.gameObject.SetActive(true);
+                myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
+                .OnComplete(() => _stateMachine.ContinuePrevState());
             });
+            await UniTask.Delay((int)(2 * _time2HaflRotate));
+        }
+        else
+        {
+            frontImg.gameObject.SetActive(false);
+            backImg.gameObject.SetActive(true);
+        }
+    }
+
+    public async UniTask FaceCardUp(bool hasTransition = false)
+    {
+
+        if (hasTransition)
+        {
+            _stateMachine.StopAllState();
+            Vector3 rotateDir = new Vector3(0f, 90f, 0f);
+            myRect.transform.localEulerAngles = Vector3.zero;
+            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
+            .OnComplete(() =>
+            {
+                // await UniTask.Delay(500);
+                backImg.gameObject.SetActive(false);
+                frontImg.gameObject.SetActive(true);
+
+                // await UniTask.Delay(500);
+
+                myRect.DORotate(myRect.transform.localEulerAngles - rotateDir, _time2HaflRotate)
+                .OnComplete(() => _stateMachine.ContinuePrevState());
+            });
+            await UniTask.Delay((int)(2 * _time2HaflRotate));
         }
         else
         {
             frontImg.gameObject.SetActive(true);
             backImg.gameObject.SetActive(false);
         }
-        await UniTask.WaitForEndOfFrame();
     }
     public void CanInteract(bool val = true)
     {
@@ -178,4 +208,3 @@ public enum CardRank
     Queen,
     King
 }
-

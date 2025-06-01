@@ -5,6 +5,8 @@ public class VirtualHandHolder : PlayableCardHolder
 {
     public override void AddCard(Card card)
     {
+        DisconnectCardSlot(card);
+        base.AddCard(card);
         card.CanInteract(false);
         foreach (RectTransform slot in _cardSlots)
         {

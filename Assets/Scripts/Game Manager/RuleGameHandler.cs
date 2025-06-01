@@ -77,7 +77,7 @@ public class RuleGameHandler : MonoBehaviour
         for (int i = 1; i < _chosenCards.Count; i++)
         {
             await UniTask.Delay(300);
-            _chosenCards[i].FaceCardDown();
+            _ = _chosenCards[i].FaceCardDown();
             _tableHolder.AddCard(_chosenCards[i]);
         }
     }
@@ -109,12 +109,13 @@ public class RuleGameHandler : MonoBehaviour
         DisconnectCardsFromTable(_chosenCards);
 
         // Add choosen card list to usedCardQueue.
-        _usedCardHolder.AddUsedCards(_chosenCards);
+        await _usedCardHolder.AddUsedCards(_chosenCards);
 
         _addCard2PlayerEventSO.RaiseEvent(_playableInfoSO.prevPlayerIdx
                                 , _usedCardHolder.GetUsedCardList());
 
         await UniTask.Delay(1000);
+        _tableHolder.RefreshTable();
         _checkRevealEventSO.RaiseEvent(true);
         _continuedCurTurnEventSO.RaiseEvent();
     }
@@ -124,13 +125,14 @@ public class RuleGameHandler : MonoBehaviour
         DisconnectCardsFromTable(_chosenCards);
 
         // Add choosen card list to usedCardQueue.
-        _usedCardHolder.AddUsedCards(_chosenCards);
+        await _usedCardHolder.AddUsedCards(_chosenCards);
 
 
         _addCard2PlayerEventSO.RaiseEvent(_playableInfoSO.curPlayerIdx
                                 , _usedCardHolder.GetUsedCardList());
 
         await UniTask.Delay(1000);
+        _tableHolder.RefreshTable();
         BeginTurn = true;
         _checkRevealEventSO.RaiseEvent(false);
         _nextTurnEventSO.RaiseEvent();
@@ -145,17 +147,20 @@ public class RuleGameHandler : MonoBehaviour
     private void PassTurn()
     {
         Debug.Log("pass turn");
-        DisconnectCardsFromTable(_chosenCards);
+        
         _ = HelpPassTurn();
     }
     private async UniTask HelpPassTurn()
     {
+        DisconnectCardsFromTable(_chosenCards);
+
         // Add choosen card list to usedCardQueue.
-        _usedCardHolder.AddUsedCards(_chosenCards);
+        await _usedCardHolder.AddUsedCards(_chosenCards);
 
         BeginTurn = true;
 
-        await UniTask.Delay(1000);
+        _tableHolder.RefreshTable();
+
         _nextTurnEventSO.RaiseEvent();
     }
     

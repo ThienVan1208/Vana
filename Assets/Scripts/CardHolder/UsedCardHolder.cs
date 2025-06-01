@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UsedCardHolder : MonoBehaviour
@@ -6,10 +7,11 @@ public class UsedCardHolder : MonoBehaviour
     private Queue<Card> _usedCardQueue = new Queue<Card>();
     [SerializeField] private RectTransform _usedCardContainer;
 
-    public void AddUsedCards(List<Card> usedCards)
+    public async UniTask AddUsedCards(List<Card> usedCards)
     {
-        for (int i = 0; i < usedCards.Count; i++) {
-            usedCards[i].FaceCardDown();
+        for (int i = 0; i < usedCards.Count; i++)
+        {
+            await usedCards[i].FaceCardDown();
             usedCards[i].GetMove(_usedCardContainer);
             _usedCardQueue.Enqueue(usedCards[i]);
             usedCards[i].CanInteract(false);

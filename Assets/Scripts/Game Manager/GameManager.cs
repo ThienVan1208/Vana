@@ -9,12 +9,15 @@ public class GameManager : MonoBehaviour
     private List<IPlayable> _playableList = new List<IPlayable>();
     public PlayerBase player, virPlayer;
     [SerializeField] private VoidEventSO _nextTurnEventSO, _continuedCurTurnEventSO;
+
+    // Ref in RuleGameHandler class. 
     [SerializeField] private AddCard2PlayerEventSO _addCard2PlayerEventSO;
     [SerializeField] private PlayableInfoSO _playableInfoSO;
     private void Awake()
     {
-        _playableList.Add(virPlayer);
         _playableList.Add(player);
+        _playableList.Add(virPlayer);
+        
         _playableInfoSO.curPlayerIdx = 0;
         _playableInfoSO.prevPlayerIdx = 0;
     }

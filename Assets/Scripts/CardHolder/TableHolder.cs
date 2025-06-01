@@ -15,6 +15,7 @@ public class TableHolder : CardHolder
     }
     public override void AddCard(Card card)
     {
+        DisconnectCardSlot(card);
         base.AddCard(card);
         card.CanInteract(false);
         foreach (RectTransform slot in _cardSlots)
@@ -23,21 +24,19 @@ public class TableHolder : CardHolder
             {
                 slot.gameObject.SetActive(true);
                 _cardsDic[slot] = card;
-                
+
                 card.GetMove(slot);
 
-                // card.myRect.SetParent(slot, false);
                 return;
             }
         }
     }
-    public override void DisconnectCardSlot(Card card)
+
+    public void RefreshTable()
     {
-        RectTransform slot = GetCardSlot(card);
-        if (slot != null)
+        foreach (RectTransform slot in _cardSlots)
         {
             slot.gameObject.SetActive(false);
-            _cardsDic[slot] = null;
         }
     }
     

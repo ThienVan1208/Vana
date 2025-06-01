@@ -10,6 +10,24 @@ public class HandHolder : PlayableCardHolder
     private bool _isDrag = false;
     private bool _isSwap = false;
     
+    public override void AddCard(Card card)
+    {
+        DisconnectCardSlot(card);
+        base.AddCard(card);
+        card.CanInteract(true);
+        foreach (RectTransform slot in _cardSlots)
+        {
+            if (_cardsDic[slot] == null)
+            {
+                slot.gameObject.SetActive(true);
+                _cardsDic[slot] = card;
+                card.GetMove(slot);
+                _ = card.FaceCardUp();
+                curCardNum++;
+                return;
+            }
+        }
+    }
     
     // Used thru button.
     public override bool HelpPlayingCard()
@@ -20,12 +38,11 @@ public class HandHolder : PlayableCardHolder
             return false;
         }
 
-        chosenCardEventSO.RaiseEvent(_chosenCards);
-
         foreach (var card in _chosenCards)
         {
             // Disconnect from current cardHolder.
-            _cardsDic[card.cardSlotRect] = null;
+
+            _cardsDic[card.transform.parent as RectTransform] = null;
             curCardNum--;
 
             /* 
@@ -38,6 +55,8 @@ public class HandHolder : PlayableCardHolder
                 GetCardSlot(card)?.gameObject.SetActive(false);
             }
         }
+
+        chosenCardEventSO.RaiseEvent(_chosenCards);
 
         // Clear chosen card list for the next choosing turn.
         _chosenCards.Clear();
@@ -129,21 +148,5 @@ public class HandHolder : PlayableCardHolder
             }
         }
     }
-    public override void AddCard(Card card)
-    {
-        base.AddCard(card);
-        card.CanInteract(true);
-        foreach (RectTransform slot in _cardSlots)
-        {
-            if (_cardsDic[slot] == null)
-            {
-                slot.gameObject.SetActive(true);
-                _cardsDic[slot] = card;
-                card.GetMove(slot);
-                _ = card.FaceCardUp();
-                curCardNum++;
-                return;
-            }
-        }
-    }
+    
 }

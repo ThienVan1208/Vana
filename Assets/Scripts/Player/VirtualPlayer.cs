@@ -27,7 +27,7 @@ public class VirtualPlayer : PlayerBase
     {
 
         card.SetCardHolder(cardHolder);
-        card.FaceCardDown();
+        _ = card.FaceCardDown();
         cardHolder.AddCard(card);
         card.CanInteract(false);
     }
@@ -64,6 +64,7 @@ public class VirtualPlayer : PlayerBase
         {
             if (curTurnState == TurnState.ChooseActionState)
             {
+                curTurnState = TurnState.PlayCardState;
                 int ranAction = Random.Range(0, 3);
                 if (ranAction == 0)
                 {
@@ -73,7 +74,7 @@ public class VirtualPlayer : PlayerBase
                 {
                     RevealCards();
                 }
-                curTurnState = TurnState.PlayCardState;
+                
             }
             else
             {
