@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardInfoSO: {fileID: 11400000, guid: 18a7266107b53ad49883bbf8fc6e939f, type: 2}
+  gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   cardSlotRect: {fileID: 0}
   myRect: {fileID: 0}
   frontImg: {fileID: 8682591484015987589}

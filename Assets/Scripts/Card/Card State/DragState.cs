@@ -33,7 +33,7 @@ public class DragState : MoveableState
         {
             // Canvas is in overlay mode -> camera = null.
             if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_myCard.myRect
-            , Input.mousePosition, null, out var worldPos))
+            , Input.mousePosition, Camera.main, out var worldPos))
             {
                 // Move.
                 GetMoveEffect(worldPos);

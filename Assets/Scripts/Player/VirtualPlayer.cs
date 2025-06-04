@@ -5,7 +5,7 @@ using UnityEngine;
 public class VirtualPlayer : PlayerBase
 {
     [SerializeField] private GameObject _handHolderPrefab;
-    private Vector2 _initCardHolderPos = new Vector2(-146f, -50f);
+    private Vector3 _initCardHolderPos = new Vector3(283, -50f, 0f);
     protected override void InitCardHolder()
     {
         base.InitCardHolder();
@@ -15,13 +15,12 @@ public class VirtualPlayer : PlayerBase
                         , _initCardHolderPos
                         , Quaternion.identity).GetComponent<VirtualHandHolder>();
 
-        cardHolder.gameObject.transform.SetParent(mainCanvas.gameObject.transform as RectTransform);
-
-        Vector2 anchorPos = new Vector2(0.5f, 1f);
+        cardHolder.gameObject.transform.SetParent(mainCanvas.gameObject.transform as RectTransform, false);
+        Vector2 anchorPos = new Vector2(0f, 1f);
         (cardHolder.gameObject.transform as RectTransform).anchorMin = anchorPos;
         (cardHolder.gameObject.transform as RectTransform).anchorMax = anchorPos;
         (cardHolder.gameObject.transform as RectTransform).anchoredPosition = _initCardHolderPos;
-
+        cardHolder.gameObject.transform.localScale = Vector3.one * gameConfigSO.cardHolderSize;
     }
     public override void AddCards(Card card)
     {

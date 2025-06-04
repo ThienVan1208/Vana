@@ -11,6 +11,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
 
     [SerializeField] protected BoolEventSO checkRevealEventSO;
     [SerializeField] protected Canvas mainCanvas;
+    [SerializeField] protected GameConfigSO gameConfigSO;
     protected CardHolder cardHolder;
     protected TurnState curTurnState;
     protected virtual void Awake()

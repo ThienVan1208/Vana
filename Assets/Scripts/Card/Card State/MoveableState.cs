@@ -5,8 +5,9 @@ public class MoveableState : InteractableState
 {
     protected Vector3 _rotateDeg = Vector3.zero;
     protected Vector3 _velocity = Vector3.zero;
-
     protected Image _cardImg;
+
+
     public MoveableState(FSM statemachine, Card card) : base(statemachine, card)
     {
         _cardImg = card.GetComponent<Image>();
@@ -39,8 +40,9 @@ public class MoveableState : InteractableState
     protected void GetRotateEffect(Vector2 target)
     {
         float dis = Vector2.Distance(_myCard.myRect.position, target);
-        float deg = 60f;
-        float lerpRange = dis / 100f;
+        float deg = _myCard.gameConfigSO.cardRotateAngle;
+
+        float lerpRange = dis / _myCard.gameConfigSO.cardRotateSpeed;
         if (target.x < _myCard.myRect.position.x) _rotateDeg.z = Mathf.Lerp(0, deg, lerpRange);
         else _rotateDeg.z = Mathf.Lerp(0, -deg, lerpRange);
         _myCard.myRect.eulerAngles = _rotateDeg;

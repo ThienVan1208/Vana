@@ -14,21 +14,22 @@ public class Player : PlayerBase
         base.InitCardHolder();
 
         // Create cardHolder.
-        Vector2 initCardHolderPos = new Vector2(-146, 85);
+        Vector3 initCardHolderPos = new Vector3(283, 85, 0f);
         cardHolder = Instantiate(_handHolderPrefab
                         , initCardHolderPos
                         , Quaternion.identity).GetComponent<HandHolder>();
 
-        cardHolder.gameObject.transform.SetParent(mainCanvas.gameObject.transform as RectTransform);
+        cardHolder.gameObject.transform.SetParent(mainCanvas.gameObject.transform as RectTransform, false);
 
-        Vector2 anchorPos = new Vector2(0.5f, 0f);
+        Vector2 anchorPos = new Vector2(0f, 0f);
         (cardHolder.gameObject.transform as RectTransform).anchorMin = anchorPos;
         (cardHolder.gameObject.transform as RectTransform).anchorMax = anchorPos;
         (cardHolder.gameObject.transform as RectTransform).anchoredPosition = initCardHolderPos;
-        cardHolder.gameObject.transform.localScale = Vector3.one;
+        cardHolder.gameObject.transform.localScale = Vector3.one * gameConfigSO.cardHolderSize;
+        
 
         // Create play-card button.
-        Vector2 buttonPos = new Vector2(-146f, 15f);
+        Vector2 buttonPos = new Vector2(286, 15f);
 
         _playButtonPrefab = Instantiate(_playButtonPrefab, buttonPos, Quaternion.identity);
         _playButtonPrefab.transform.SetParent(mainCanvas.gameObject.transform, false);
@@ -43,7 +44,7 @@ public class Player : PlayerBase
         _playButtonPrefab.transform.localScale = Vector3.one;
 
         // Create choose action button.
-        Vector2 revealButPos = new Vector2(-251f, 15f), passButPos = new Vector2(-36f, 15f);
+        Vector2 revealButPos = new Vector2(181f, 15f), passButPos = new Vector2(396f, 15f);
         _revealButtonPrefab = Instantiate(_revealButtonPrefab, revealButPos, Quaternion.identity);
         _passButtonPrefab = Instantiate(_passButtonPrefab, passButPos, Quaternion.identity);
 

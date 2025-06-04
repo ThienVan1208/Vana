@@ -96,13 +96,11 @@ public class FSM
 
     public void StopAllState()
     {
-        Debug.Log("stop");
         _curState.OnExit();
         _isStop = true;
     }
     public void ContinuePrevState()
     {
-        Debug.Log("continue");
         _isStop = false;    
         ChangeState(_curState, isForce: true);
     }

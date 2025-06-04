@@ -15,14 +15,13 @@ public class TableHolder : CardHolder
     }
     public override void AddCard(Card card)
     {
-        DisconnectCardSlot(card);
         base.AddCard(card);
         card.CanInteract(false);
         foreach (RectTransform slot in _cardSlots)
         {
             if (_cardsDic[slot] == null)
             {
-                slot.gameObject.SetActive(true);
+                // slot.gameObject.SetActive(true);
                 _cardsDic[slot] = card;
 
                 card.GetMove(slot);
@@ -31,7 +30,13 @@ public class TableHolder : CardHolder
             }
         }
     }
-
+    public void ActiveSlotBeforeAddCard(int numSlot)
+    {
+        for (int i = 0; i < numSlot; i++)
+        {
+            _cardSlots[i].gameObject.SetActive(true);
+        }
+    }
     public void RefreshTable()
     {
         foreach (RectTransform slot in _cardSlots)

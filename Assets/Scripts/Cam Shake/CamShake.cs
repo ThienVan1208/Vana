@@ -12,7 +12,7 @@ public class CamShake : MonoBehaviour
     }
     private void GetCamShake(float strength, float duration)
     {
-        transform.DOShakePosition(duration, strength);
+        // transform.DOShakePosition(duration, strength);
         transform.DOShakeRotation(duration, strength);
     }
 }

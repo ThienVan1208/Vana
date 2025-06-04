@@ -2,12 +2,13 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEditor;
 
 public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                     , IPointerClickHandler, IDragHandler, IPointerEnterHandler
 {
     [SerializeField] private CardInfoSO _cardInfoSO;
+    [SerializeField] public GameConfigSO gameConfigSO;
 
     [HideInInspector]
     public RectTransform cardSlotRect, myRect;
@@ -26,8 +27,10 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     private float _time2HaflRotate = 0.5f;
     private void Awake()
     {
+
         cardSlotRect = transform.parent as RectTransform;
         myRect = transform as RectTransform;
+
 
         // Init StateBase & StateMachine.
         _stateMachine = new FSM();
@@ -46,12 +49,42 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _stateMachine.AddTransit(_hoverState, _idleState);
         _stateMachine.AddTransit(_clickState, _idleState);
     }
-    // private void OnValidate()
-    // {
-    //     RectTransform shadowRect = gameObject.transform.Find("Shadow") as RectTransform;
-    //     shadowRect.GetComponent<Image>().raycastTarget = false;
-
+    // private void Start() 
+    //     myRect.localScale = Vector3.one * _gameConfigSO.cardSize;
     // }
+    //     private void OnValidate()
+    //     {
+    //         // Only run if _gameConfigSO is not already assigned
+    //         if (gameConfigSO == null)
+    //         {
+    //             // Find the ScriptableObject in the asset database
+    //             string[] guids = AssetDatabase.FindAssets($"t:{typeof(GameConfigSO).Name}");
+    //             if (guids.Length > 0)
+    //             {
+    //                 string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+    //                 gameConfigSO = AssetDatabase.LoadAssetAtPath<GameConfigSO>(path);
+    //                 if (gameConfigSO != null)
+    //                 {
+    //                     Debug.Log($"Assigned ScriptableObject: {gameConfigSO.name}");
+    // #if UNITY_EDITOR
+    //                     // Mark the object as dirty to ensure the change is saved
+    //                     EditorUtility.SetDirty(this);
+    // #endif
+    //                 }
+    //                 else
+    //                 {
+    //                     Debug.LogWarning($"No GameConfigSO found in the project.");
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 Debug.LogWarning($"No GameConfigSO found in the project.");
+    //             }
+    //         }
+    //     }
+    /*
+    in unity, when the canvas render mode is world, so the recttransform of all UI elements in that canvas is equal to transform?
+    */
 
     // cardSlot is the parent of card.
     public void SetCardSlot(RectTransform cardSlot)
@@ -169,7 +202,11 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 // await UniTask.Delay(500);
 
                 myRect.DORotate(myRect.transform.localEulerAngles - rotateDir, _time2HaflRotate)
-                .OnComplete(() => _stateMachine.ContinuePrevState());
+                .OnComplete(() =>
+                {
+                    _stateMachine.ContinuePrevState();
+                    _stateMachine.ChangeState(_hoverState, isForce: true);
+                });
             });
             await UniTask.Delay((int)(2 * _time2HaflRotate));
         }
