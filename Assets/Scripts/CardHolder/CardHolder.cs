@@ -76,8 +76,6 @@ public class CardHolder : MonoBehaviour
                 return null;
             }
         }
-
-
     }
 
     public virtual int GetIndexOfCardSlot(RectTransform cardSlot)
@@ -105,7 +103,6 @@ public class CardHolder : MonoBehaviour
 
         // Set new cardHolder.
         card.SetCardHolder(this);
-        // Debug.Log("Connect to " + card.cardHolder.gameObject.name);
     }
 
     // Used to disconnect card from previous cardholder.
@@ -113,9 +110,7 @@ public class CardHolder : MonoBehaviour
     {
         if (card.cardHolder == null || card.cardSlotRect == null) return;
 
-        // Debug.Log("Disconnect from " + card.cardHolder.gameObject.name);
         card.cardHolder.SetCardDic(card.cardSlotRect);
-
     }
     protected virtual void SetCardDic(RectTransform slot, Card card = null)
     {

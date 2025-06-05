@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class TableHolder : CardHolder
@@ -56,5 +54,4 @@ public class TableHolder : CardHolder
             key.gameObject.SetActive(false);
         }
     }
-
 }
