@@ -1,11 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public class CardHolder : MonoBehaviour
 {
     [SerializeField] protected GameConfigSO gameConfigSO;
-
-    // This contains cardSlot obj.
-    [SerializeField] protected List<RectTransform> _cardSlots = new List<RectTransform>();
 
     // The key is cardSlot, value is card.
     protected Dictionary<RectTransform, Card> _cardsDic = new Dictionary<RectTransform, Card>();
@@ -18,29 +16,21 @@ public class CardHolder : MonoBehaviour
     }
     protected virtual void InitHolder()
     {
-        foreach (var slot in _cardSlots)
+        foreach (Transform child in transform)
         {
-            _cardsDic[slot] = null;
+            _cardsDic[child as RectTransform] = null;
         }
     }
+
+    #region Get card
     protected int GetCardNum()
     {
         return curCardNum;
     }
-    public virtual List<RectTransform> GetCardSlots()
+
+    public virtual RectTransform GetCardSlot(int index = 0)
     {
-        return _cardSlots;
-    }
-    public virtual RectTransform GetCardSlot(Card card)
-    {
-        foreach (var slot in _cardSlots)
-        {
-            if (slot == card.cardSlotRect)
-            {
-                return slot;
-            }
-        }
-        return null;
+        return _cardsDic.ElementAt(index).Key;
     }
     public virtual Card GetCard(RectTransform cardSlot, bool disconnect = false)
     {
@@ -60,23 +50,25 @@ public class CardHolder : MonoBehaviour
     {
         if (index == -1)
         {
-            foreach (KeyValuePair<RectTransform, Card> keyVal in _cardsDic)
+            foreach (var key in _cardsDic.Keys.ToList())
             {
-                if (_cardsDic[keyVal.Key] != null)
+                if (_cardsDic[key] != null)
                 {
-                    if (disconnect) _cardsDic[keyVal.Key] = null;
-                    return keyVal.Value;
+                    Card retCard = _cardsDic[key];
+                    if (disconnect) _cardsDic[key] = null;
+                    return retCard;
                 }
             }
-            Debug.Log("Get card is null");
             return null;
         }
         else
         {
-            if (_cardsDic.TryGetValue(_cardSlots[index], out Card card) == true)
+            if (_cardsDic.Count > index)
             {
-                if (disconnect) _cardsDic[_cardSlots[index]] = null;
-                return card;
+                KeyValuePair<RectTransform, Card> keyVal = _cardsDic.ElementAt(index);
+                Card retCard = keyVal.Value; 
+                if (disconnect) _cardsDic[keyVal.Key] = null;
+                return retCard;
             }
             else
             {
@@ -84,17 +76,28 @@ public class CardHolder : MonoBehaviour
                 return null;
             }
         }
+
+
     }
 
     public virtual int GetIndexOfCardSlot(RectTransform cardSlot)
     {
-        for (int i = 0; i < _cardSlots.Count; i++)
+        int index = 0;
+        foreach (KeyValuePair<RectTransform, Card> keyVal in _cardsDic)
         {
-            if (cardSlot.position.x == _cardSlots[i].position.x) return i;
+            if (keyVal.Key == cardSlot)
+            {
+                return index;
+            }
+
+            index++;
         }
+
         return -1;
     }
+    #endregion
 
+    #region Add card
     public virtual void AddCard(Card card)
     {
         // Remove from previous cardHolder.
@@ -104,7 +107,7 @@ public class CardHolder : MonoBehaviour
         card.SetCardHolder(this);
         // Debug.Log("Connect to " + card.cardHolder.gameObject.name);
     }
-    
+
     // Used to disconnect card from previous cardholder.
     public virtual void DisconnectCardSlot(Card card)
     {
@@ -118,6 +121,6 @@ public class CardHolder : MonoBehaviour
     {
         _cardsDic[slot] = card;
     }
-
+    #endregion
 
 }

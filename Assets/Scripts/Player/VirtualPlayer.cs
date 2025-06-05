@@ -65,7 +65,7 @@ public class VirtualPlayer : PlayerBase
             {
                 curTurnState = TurnState.PlayCardState;
                 int ranAction = Random.Range(0, 3);
-                if (ranAction == 0)
+                if (ranAction == 10)
                 {
                     PassTurn();
                 }

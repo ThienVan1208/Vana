@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -8,41 +9,52 @@ public class TableHolder : CardHolder
     {
         base.InitHolder();
 
-        foreach (var slot in _cardSlots)
+        foreach (var keyVal in _cardsDic)
         {
-            slot.gameObject.SetActive(false);
+            keyVal.Key.gameObject.SetActive(false);
         }
     }
     public override void AddCard(Card card)
     {
         base.AddCard(card);
         card.CanInteract(false);
-        foreach (RectTransform slot in _cardSlots)
+
+        foreach (var keyVal in _cardsDic)
         {
-            if (_cardsDic[slot] == null)
+            if (_cardsDic[keyVal.Key] == null)
             {
-                // slot.gameObject.SetActive(true);
-                _cardsDic[slot] = card;
-
-                card.GetMove(slot);
-
+                _cardsDic[keyVal.Key] = card;
+                card.GetMove(keyVal.Key);
                 return;
+            }
+            else
+            {
+                Debug.LogWarning("can not add to table");
             }
         }
     }
+
+    
+    // Used to active slot before using AddCard method.
     public void ActiveSlotBeforeAddCard(int numSlot)
     {
-        for (int i = 0; i < numSlot; i++)
+        foreach (var keyVal in _cardsDic)
         {
-            _cardSlots[i].gameObject.SetActive(true);
+            keyVal.Key.gameObject.SetActive(true);
+            numSlot--;
+            if (numSlot <= 0) return;
         }
     }
+
+    // Used to reset _cardsDic and card slot when moving them to used card holder.
     public void RefreshTable()
     {
-        foreach (RectTransform slot in _cardSlots)
+        var keys = _cardsDic.Keys.ToList(); // Create a copy of the keys.
+        foreach (var key in keys)
         {
-            slot.gameObject.SetActive(false);
+            _cardsDic[key] = null; // Safe to modify.
+            key.gameObject.SetActive(false);
         }
     }
-    
+
 }

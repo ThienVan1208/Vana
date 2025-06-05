@@ -86,6 +86,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     in unity, when the canvas render mode is world, so the recttransform of all UI elements in that canvas is equal to transform?
     */
 
+    #region Card slot
     // cardSlot is the parent of card.
     public void SetCardSlot(RectTransform cardSlot)
     {
@@ -102,14 +103,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         myRect.SetParent(parent, false);
     }
-    public CardSuit GetCardSuit()
-    {
-        return _cardInfoSO.cardSuit;
-    }
-    public CardRank GetCardRank()
-    {
-        return _cardInfoSO.cardRank;
-    }
+    #endregion
+
     private void Update()
     {
         _stateMachine.Update();
@@ -134,6 +129,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _stateMachine.ChangeState(_moveState, isForce: true);
     }
 
+    #region Drag state
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!_canInteract) return;
@@ -145,20 +141,25 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         _dragState.EndDrag();
     }
+    #endregion
 
+    #region Click state
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!_canInteract) return;
         _stateMachine.ChangeState(_clickState);
     }
+    #endregion
 
-
+    #region Hover state
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!_canInteract) return;
         _stateMachine.ChangeState(_hoverState);
     }
+    #endregion
 
+    #region Flip card
     public async UniTask FaceCardDown(bool hasTransition = false)
     {
 
@@ -216,11 +217,23 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             backImg.gameObject.SetActive(false);
         }
     }
+    #endregion
+
+    #region Utils
+    public CardSuit GetCardSuit()
+    {
+        return _cardInfoSO.cardSuit;
+    }
+    public CardRank GetCardRank()
+    {
+        return _cardInfoSO.cardRank;
+    }
     public void CanInteract(bool val = true)
     {
         _canInteract = val;
     }
     public bool IsInteractable() { return _canInteract; }
+    #endregion
 }
 public enum CardSuit
 {

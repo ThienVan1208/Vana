@@ -9,6 +9,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
     // Ref in RuleGameHandler class.
     [SerializeField] protected VoidEventSO revealCardEventSO, passTurnEventSO;
 
+    // Ref in RuleGameHandler.
     [SerializeField] protected BoolEventSO checkRevealEventSO;
     [SerializeField] protected Canvas mainCanvas;
     [SerializeField] protected GameConfigSO gameConfigSO;
@@ -33,6 +34,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
     public virtual void EndTurn() { }
 
 
+    // Support methods.
     protected virtual void PlayCards() { }
     protected virtual void InitCardHolder() { }
     protected virtual void RevealCards() { }

@@ -12,16 +12,16 @@ public class HandHolder : PlayableCardHolder
     
     public override void AddCard(Card card)
     {
-        DisconnectCardSlot(card);
+        // DisconnectCardSlot(card);
         base.AddCard(card);
         card.CanInteract(true);
-        foreach (RectTransform slot in _cardSlots)
+        foreach (var keyVal in _cardsDic)
         {
-            if (_cardsDic[slot] == null)
+            if (_cardsDic[keyVal.Key] == null)
             {
-                slot.gameObject.SetActive(true);
-                _cardsDic[slot] = card;
-                card.GetMove(slot);
+                keyVal.Key.gameObject.SetActive(true);
+                _cardsDic[keyVal.Key] = card;
+                card.GetMove(keyVal.Key);
                 _ = card.FaceCardUp();
                 curCardNum++;
                 return;
@@ -52,7 +52,7 @@ public class HandHolder : PlayableCardHolder
             */
             if (curCardNum > gameConfigSO.initCardNum)
             {
-                GetCardSlot(card)?.gameObject.SetActive(false);
+                card.cardSlotRect?.gameObject.SetActive(false);
             }
         }
 
@@ -99,14 +99,19 @@ public class HandHolder : PlayableCardHolder
         _isSwap = true;
         int srcIndex = GetIndexOfCardSlot(_srcCardPointer.cardSlotRect);
         int dstIndex = GetIndexOfCardSlot(_dstCardPointer.cardSlotRect);
+        if (srcIndex < 0 || dstIndex < 0)
+        {
+            Debug.LogWarning("Get index of slot is null");
+            return;
+        }
         //GetCard(_srcCardPointer.cardSlotRect).SetCardSlot(_dstCardPointer.cardSlotRect);
         _srcCardPointer.SetCardSlot(_dstCardPointer.cardSlotRect);
         if (srcIndex < dstIndex)
         {
             for (int i = srcIndex + 1; i <= dstIndex; i++)
             {
-                Card card = GetCard(_cardSlots[i]);
-                card.GetMove(_cardSlots[i - 1]);
+                Card card = GetCard(i);
+                card.GetMove(GetCardSlot(i - 1));
                 _cardsDic[card.cardSlotRect] = card;
             }
         }
@@ -114,8 +119,8 @@ public class HandHolder : PlayableCardHolder
         {
             for (int i = srcIndex - 1; i >= dstIndex; i--)
             {
-                Card card = GetCard(_cardSlots[i]);
-                card.GetMove(_cardSlots[i + 1]);
+                Card card = GetCard(i);
+                card.GetMove(GetCardSlot(i + 1));
                 _cardsDic[card.cardSlotRect] = card;
             }
         }

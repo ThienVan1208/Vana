@@ -1,16 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
-using System.Threading.Tasks;
 public class RuleGameHandler : MonoBehaviour
 {
-    // public bool begin_turn;
-    // private void Update()
-    // {
-    //     begin_turn = BeginTurn;
-    // }
     public static bool BeginTurn = true;
     [SerializeField] private TableHolder _tableHolder;
 
@@ -54,6 +46,7 @@ public class RuleGameHandler : MonoBehaviour
         _chosenCardEventSO.EventChannel -= PlayCards;
     }
 
+    #region Play card
     /*
     - This func means when playable one plays cards and ends turn
         , after that it comes to the opponent's turn (choosing reveal cards or pass). 
@@ -70,6 +63,7 @@ public class RuleGameHandler : MonoBehaviour
 
         _nextTurnEventSO.RaiseEvent();
     }
+
     // Used to move choosen card list to table and face them down excluding the first card.
     private async UniTask GetFlipCardWhenPlay()
     {
@@ -83,7 +77,9 @@ public class RuleGameHandler : MonoBehaviour
             _tableHolder.AddCard(_chosenCards[i]);
         }
     }
+    #endregion
 
+    #region Reveal card
     private void RevealCard()
     {
         _ = HelpRevealingCard();
@@ -108,8 +104,6 @@ public class RuleGameHandler : MonoBehaviour
     }
     private async UniTask SuccessRevealCard()
     {
-        // DisconnectCardsFromTable(_chosenCards);
-
         // Add choosen card list to usedCardQueue.
         await _usedCardHolder.AddUsedCards(_chosenCards);
 
@@ -117,14 +111,13 @@ public class RuleGameHandler : MonoBehaviour
                                 , _usedCardHolder.GetUsedCardList());
 
         await UniTask.Delay(1000);
+
         _tableHolder.RefreshTable();
         _checkRevealEventSO.RaiseEvent(true);
         _continuedCurTurnEventSO.RaiseEvent();
     }
     private async UniTask FailRevealCard()
     {
-        // DisconnectCardsFromTable(_chosenCards);
-
         // Add choosen card list to usedCardQueue.
         await _usedCardHolder.AddUsedCards(_chosenCards);
 
@@ -133,11 +126,13 @@ public class RuleGameHandler : MonoBehaviour
                                 , _usedCardHolder.GetUsedCardList());
 
         await UniTask.Delay(1000);
+
         _tableHolder.RefreshTable();
         BeginTurn = true;
         _checkRevealEventSO.RaiseEvent(false);
         _nextTurnEventSO.RaiseEvent();
     }
+    #endregion
     private void DisconnectCardsFromTable(List<Card> cards)
     {
         foreach (Card card in cards)
@@ -145,6 +140,7 @@ public class RuleGameHandler : MonoBehaviour
             _tableHolder.DisconnectCardSlot(card);
         }
     }
+    #region Pass turn
     private void PassTurn()
     {
         Debug.Log("pass turn");
@@ -153,7 +149,7 @@ public class RuleGameHandler : MonoBehaviour
     }
     private async UniTask HelpPassTurn()
     {
-        DisconnectCardsFromTable(_chosenCards);
+        // DisconnectCardsFromTable(_chosenCards);
 
         // Add choosen card list to usedCardQueue.
         await _usedCardHolder.AddUsedCards(_chosenCards);
@@ -164,5 +160,5 @@ public class RuleGameHandler : MonoBehaviour
 
         _nextTurnEventSO.RaiseEvent();
     }
-
+    #endregion
 }

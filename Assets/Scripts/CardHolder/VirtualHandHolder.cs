@@ -5,17 +5,17 @@ public class VirtualHandHolder : PlayableCardHolder
 {
     public override void AddCard(Card card)
     {
-        DisconnectCardSlot(card);
+        // DisconnectCardSlot(card);
         base.AddCard(card);
         card.CanInteract(false);
-        foreach (RectTransform slot in _cardSlots)
+        foreach (var keyVal in _cardsDic)
         {
-            if (_cardsDic[slot] == null)
+            if (_cardsDic[keyVal.Key] == null)
             {
                 curCardNum++;
-                slot.gameObject.SetActive(true);
-                _cardsDic[slot] = card;
-                card.GetMove(slot);
+                keyVal.Key.gameObject.SetActive(true);
+                _cardsDic[keyVal.Key] = card;
+                card.GetMove(keyVal.Key);
                 return;
             }
         }
@@ -29,11 +29,17 @@ public class VirtualHandHolder : PlayableCardHolder
         for (int i = 0; i < ranNum; i++)
         {
             Card newCard = GetCard(disconnect: true);
+            if (newCard == null)
+            {
+                i--;
+                Debug.LogWarning("Card " + i + " is null");
+                continue;
+            }
             cards.Add(newCard);
             curCardNum--;
             if (curCardNum > gameConfigSO.initCardNum)
             {
-                GetCardSlot(newCard)?.gameObject.SetActive(false);
+                newCard.cardSlotRect?.gameObject.SetActive(false);
             }
         }
         chosenCardEventSO.RaiseEvent(cards);

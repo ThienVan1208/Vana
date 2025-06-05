@@ -27,7 +27,5 @@ public class UsedCardHolder : MonoBehaviour
         }
         return retList;
     }
-    // private void Update() {
-    //     Debug.Log("w: " + Screen.width + " - h " + Screen.height + " ratio " + (float)Screen.width / Screen.height);
-    // }
+
 }
