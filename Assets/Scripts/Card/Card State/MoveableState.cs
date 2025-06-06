@@ -30,7 +30,7 @@ public class MoveableState : InteractableState
         // myCard.myRect.position = myCard.cardSlotRect.position;
 
         _cardImg.raycastTarget = true;
-        // myCard.myRect.SetParent(myCard.cardSlotRect);
+        myCard.myRect.SetParent(myCard.cardSlotRect);
         isComplete = true;
     }
     protected void GetMoveEffect(Vector2 target)

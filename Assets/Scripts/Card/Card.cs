@@ -20,6 +20,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     private HoverState _hoverState;
     private MoveToTargetState _moveState;
     private ClickState _clickState;
+    private FlipState _flipState;
     private bool _canInteract = true;
     public CardHolder cardHolder { get; private set; }
 
@@ -39,6 +40,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _moveState = new MoveToTargetState(this);
         _hoverState = new HoverState(this);
         _clickState = new ClickState(this);
+        _flipState = new FlipState(this);
 
         stateMachine.SetDefaultState(_idleState);
         stateMachine.InitFSM();
@@ -48,6 +50,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         stateMachine.AddTransit(_moveState, _idleState);
         stateMachine.AddTransit(_hoverState, _idleState);
         stateMachine.AddTransit(_clickState, _idleState);
+        stateMachine.AddTransit(_flipState, _idleState);
     }
     // private void Start() 
     //     myRect.localScale = Vector3.one * _gameConfigSO.cardSize;
@@ -208,7 +211,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 .OnComplete(() =>
                 {
                     stateMachine.ContinuePrevState();
-                    stateMachine.ChangeState(_hoverState);
+                    stateMachine.ChangeState(_flipState);
                 });
             });
             await UniTask.Delay((int)(2 * _time2HaflRotate));

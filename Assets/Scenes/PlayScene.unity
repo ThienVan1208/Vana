@@ -159,6 +159,7 @@ MonoBehaviour:
   _checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
   _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
   _camShakeEventSO: {fileID: 11400000, guid: 9a80ccfd075909540b86af7fcc3e4cda, type: 2}
+  _relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
 --- !u!4 &60038285
 Transform:
   m_ObjectHideFlags: 0
@@ -719,6 +720,7 @@ MonoBehaviour:
   checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
   mainCanvas: {fileID: 419142505}
   gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
+  relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
   _handHolderPrefab: {fileID: 4083175592908992002, guid: 0d17b878497b6c8439ab0e5b40d63f16, type: 3}
   _playButtonPrefab: {fileID: 4998945517929767177, guid: cf8d6832aa34cf54b8e3d3472c6a39bf, type: 3}
   _revealButtonPrefab: {fileID: 8942940341439447720, guid: a39c940a3a3a37f419aeec80d0e4a15f, type: 3}
@@ -772,6 +774,7 @@ MonoBehaviour:
   checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
   mainCanvas: {fileID: 419142505}
   gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
+  relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
   _handHolderPrefab: {fileID: 1663651151614908859, guid: 4a319bf33f60d7f4a98db8621f5c0ac0, type: 3}
 --- !u!4 &1014271832
 Transform:
