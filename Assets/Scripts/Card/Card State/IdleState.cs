@@ -7,13 +7,13 @@ public class IdleState : StateBase
     private Vector2 rotate = Vector2.zero;
     private float _strenght = 10f;
     private float _speed = 1.5f;
-    public IdleState(FSM fsm, Card card) : base(fsm, card)
+    public IdleState(Card card) : base( card)
     {
     }
     public override void OnEnter(){
         base.OnEnter();
         isComplete = true;
-        
+        if(myCard.cardSlotRect != null) myCard.myRect.position = myCard.cardSlotRect.position;
         _ranDir = Random.Range(-3f, 4f);
     }
 
@@ -31,8 +31,6 @@ public class IdleState : StateBase
 
         rotate.x = Mathf.Sin((Time.realtimeSinceStartup + _ranDir) * _speed) * _strenght;
         rotate.y = Mathf.Cos((Time.realtimeSinceStartup + _ranDir) * _speed) * _strenght;
-        _myCard.myRect.localEulerAngles = rotate;
-        // Sequence seq = DOTween.Sequence();
-        // seq.Append(_myRect.DORotate())   
+        myCard.myRect.localEulerAngles = rotate;
     }
 }

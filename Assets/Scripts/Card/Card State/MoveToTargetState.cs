@@ -2,20 +2,19 @@ using UnityEngine;
 
 public class MoveToTargetState : MoveableState
 {
-    public MoveToTargetState(FSM statemachine, Card card) : base(statemachine, card)
+    public MoveToTargetState(Card card) : base( card)
     {
     }
     public override void OnUpdate()
     {
         base.OnUpdate();
 
-        GetMoveEffect(_myCard.cardSlotRect.position);
-        GetRotateEffect(_myCard.cardSlotRect.position);
-        if (Vector2.Distance(_myCard.cardSlotRect.position, _myCard.myRect.position) < 0.01f)
+        GetMoveEffect(myCard.cardSlotRect.position);
+        GetRotateEffect(myCard.cardSlotRect.position);
+        if (Vector2.Distance(myCard.cardSlotRect.position, myCard.myRect.position) < 0.001f)
         {
-            _stateMachine.RequestChangeState();
-            //isComplete = true;
-            _wait4Transit = true;
+            myCard.stateMachine.RequestChangeState();
+            wait4Transit = true;
         }
     }
     

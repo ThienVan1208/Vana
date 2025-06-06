@@ -21,9 +21,9 @@ public class HandHolder : PlayableCardHolder
             {
                 keyVal.Key.gameObject.SetActive(true);
                 _cardsDic[keyVal.Key] = card;
+                curCardNum++;
                 card.GetMove(keyVal.Key);
                 _ = card.FaceCardUp();
-                curCardNum++;
                 return;
             }
         }
@@ -50,10 +50,10 @@ public class HandHolder : PlayableCardHolder
                 the UI panel contains gameConfigSO.initCardNum elements.
             - So if the current card number is over gameConfigSO.initCardNum -> active it false.
             */
-            if (curCardNum > gameConfigSO.initCardNum)
-            {
-                card.cardSlotRect?.gameObject.SetActive(false);
-            }
+            // if (curCardNum > gameConfigSO.initCardNum)
+            // {
+            //     card.cardSlotRect?.gameObject.SetActive(false);
+            // }
         }
 
         chosenCardEventSO.RaiseEvent(_chosenCards);
@@ -83,15 +83,6 @@ public class HandHolder : PlayableCardHolder
         _isDrag = isDrag;
     }
 
-    public void UpdateCardVsSlot()
-    {
-        foreach (var cardSlotPair in _cardsDic)
-        {
-            RectTransform slot = cardSlotPair.Key;
-            Card card = cardSlotPair.Value;
-            (card.transform as RectTransform).position = card.cardSlotRect.position;
-        }
-    }
     public void SwapCard()
     {
         if (_isSwap) return;
@@ -104,6 +95,7 @@ public class HandHolder : PlayableCardHolder
             Debug.LogWarning("Get index of slot is null");
             return;
         }
+        
         //GetCard(_srcCardPointer.cardSlotRect).SetCardSlot(_dstCardPointer.cardSlotRect);
         _srcCardPointer.SetCardSlot(_dstCardPointer.cardSlotRect);
         if (srcIndex < dstIndex)
@@ -111,8 +103,18 @@ public class HandHolder : PlayableCardHolder
             for (int i = srcIndex + 1; i <= dstIndex; i++)
             {
                 Card card = GetCard(i);
-                card.GetMove(GetCardSlot(i - 1));
-                _cardsDic[card.cardSlotRect] = card;
+                var newSlot = GetCardSlot(i - 1);
+                if (card == null)
+                {
+                    Debug.LogWarning("card is null");
+                    return;
+                }
+                if (newSlot == null)
+                {
+                    Debug.LogWarning("new slot is null");
+                }
+                card.GetMove(newSlot);
+                _cardsDic[newSlot] = card;
             }
         }
         else
@@ -127,6 +129,7 @@ public class HandHolder : PlayableCardHolder
 
         _cardsDic[_srcCardPointer.cardSlotRect] = _srcCardPointer;
 
+        // RelocateCards();
         _isSwap = false;
     }
 
@@ -153,5 +156,13 @@ public class HandHolder : PlayableCardHolder
             }
         }
     }
-    
+    private void Update() {
+        foreach (var keyVal in _cardsDic)
+        {
+            if (keyVal.Key.transform.childCount >= 2)
+            {
+                Debug.LogWarning("ERROR IN CARD SWAP");
+            }
+        }
+    }
 }

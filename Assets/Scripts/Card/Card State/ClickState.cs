@@ -7,7 +7,7 @@ public class ClickState : InteractableState
     private float _dis2Up = 20f;
     private float _time2Up = 0.2f;
     private bool _chosenFlag = true;
-    public ClickState(FSM statemachine, Card card) : base(statemachine, card)
+    public ClickState(Card card) : base( card)
     {
     }
 
@@ -30,8 +30,8 @@ public class ClickState : InteractableState
     {
         if (_chosenFlag)
         {
-            if (_myCard.cardHolder is HandHolder
-                && !(_myCard.cardHolder as HandHolder).CanChooseCard())
+            if (myCard.cardHolder is HandHolder
+                && !(myCard.cardHolder as HandHolder).CanChooseCard())
             {
                 Debug.Log("Can not choose more card.");
                 OnExit();
@@ -39,26 +39,26 @@ public class ClickState : InteractableState
             }
 
             // Add card to chosen card list.
-            (_myCard.cardHolder as HandHolder).ChooseCard(_myCard);
+            (myCard.cardHolder as HandHolder).ChooseCard(myCard);
         }
 
         _isUp = !_isUp;
         
-        _myCard.backImg.DOAnchorPosY(_myCard.backImg.localPosition.y + _dis2Up, _time2Up)
+        myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
-        _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
-        .SetEase(Ease.OutQuad).OnComplete(() => _stateMachine.RequestChangeState());
+        myCard.frontImg.DOAnchorPosY(myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
+        .SetEase(Ease.OutQuad).OnComplete(() => myCard.stateMachine.RequestChangeState());
     }
     private void GetDown()
     {
         _isUp = !_isUp;
 
-        if (_chosenFlag) (_myCard.cardHolder as HandHolder).RejectCard(_myCard);
+        if (_chosenFlag) (myCard.cardHolder as HandHolder).RejectCard(myCard);
 
-        _myCard.backImg.DOAnchorPosY(_myCard.backImg.localPosition.y - _dis2Up, _time2Up)
+        myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
-        _myCard.frontImg.DOAnchorPosY(_myCard.frontImg.localPosition.y - _dis2Up, _time2Up)
-        .SetEase(Ease.OutQuad).OnComplete(() => _stateMachine.RequestChangeState());
+        myCard.frontImg.DOAnchorPosY(myCard.frontImg.localPosition.y - _dis2Up, _time2Up)
+        .SetEase(Ease.OutQuad).OnComplete(() => myCard.stateMachine.RequestChangeState());
     }
     public void SetChosenFlag(bool val)
     {

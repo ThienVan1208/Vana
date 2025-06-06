@@ -22,13 +22,15 @@ public class RuleGameHandler : MonoBehaviour
     [SerializeField] private BoolEventSO _checkRevealEventSO;
 
     /*
-    - Is referenced in GameManager class. 
+    - Ref in GameManager class. 
     - Used to add used card list to playeable.
     - If the current playable reveals successfully -> add cards to the previous playable.
         else adding cards to current playable.
     */
     [SerializeField] private AddCard2PlayerEventSO _addCard2PlayerEventSO;
     [SerializeField] private CamShakeEventSO _camShakeEventSO;
+
+    [SerializeField] private VoidEventSO _relocatePlayerCardEventSO;
     private List<Card> _chosenCards = new List<Card>();
 
     private void OnEnable()
@@ -61,6 +63,7 @@ public class RuleGameHandler : MonoBehaviour
         // Get flip cards effects.
         await GetFlipCardWhenPlay();
 
+        _relocatePlayerCardEventSO.RaiseEvent();
         _nextTurnEventSO.RaiseEvent();
     }
 
@@ -133,13 +136,7 @@ public class RuleGameHandler : MonoBehaviour
         _nextTurnEventSO.RaiseEvent();
     }
     #endregion
-    private void DisconnectCardsFromTable(List<Card> cards)
-    {
-        foreach (Card card in cards)
-        {
-            _tableHolder.DisconnectCardSlot(card);
-        }
-    }
+    
     #region Pass turn
     private void PassTurn()
     {

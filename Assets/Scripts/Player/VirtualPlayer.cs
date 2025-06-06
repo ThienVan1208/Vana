@@ -49,6 +49,7 @@ public class VirtualPlayer : PlayerBase
     }
     private async UniTask HelpBeginTurn()
     {
+        relocatePlayerCardEventSO.EventChannel += (cardHolder as VirtualHandHolder).RelocateCards;
         await UniTask.Delay(1000);
         if (RuleGameHandler.BeginTurn)
         {
@@ -87,6 +88,7 @@ public class VirtualPlayer : PlayerBase
     public override void EndTurn()
     {
         base.EndTurn();
+        relocatePlayerCardEventSO.EventChannel -= (cardHolder as VirtualHandHolder).RelocateCards;
         checkRevealEventSO.EventChannel -= CheckReveal;
     }
     protected override void CheckReveal(bool check)

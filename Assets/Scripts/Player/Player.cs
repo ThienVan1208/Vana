@@ -75,9 +75,8 @@ public class Player : PlayerBase
     }
     protected override void PlayCards()
     {
+        if (!(cardHolder as HandHolder).HelpPlayingCard()) return;
 
-        if(!(cardHolder as HandHolder).HelpPlayingCard()) return;
-        
         DisplayPlayCardUI(false);
     }
     public override void AddCards(Card card)
@@ -120,6 +119,7 @@ public class Player : PlayerBase
     public override void BeginTurn()
     {
         base.BeginTurn();
+        relocatePlayerCardEventSO.EventChannel += (cardHolder as HandHolder).RelocateCards;
         if (RuleGameHandler.BeginTurn)
         {
             RuleGameHandler.BeginTurn = false;
@@ -148,6 +148,7 @@ public class Player : PlayerBase
     public override void EndTurn()
     {
         base.EndTurn();
+        relocatePlayerCardEventSO.EventChannel -= (cardHolder as HandHolder).RelocateCards;
         checkRevealEventSO.EventChannel -= CheckReveal;
     }
     protected override void CheckReveal(bool check)

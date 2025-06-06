@@ -37,10 +37,10 @@ public class VirtualHandHolder : PlayableCardHolder
             }
             cards.Add(newCard);
             curCardNum--;
-            if (curCardNum > gameConfigSO.initCardNum)
-            {
-                newCard.cardSlotRect?.gameObject.SetActive(false);
-            }
+            // if (curCardNum > gameConfigSO.initCardNum)
+            // {
+            //     newCard.cardSlotRect?.gameObject.SetActive(false);
+            // }
         }
         chosenCardEventSO.RaiseEvent(cards);
         return true;

@@ -7,18 +7,19 @@ public class DragState : MoveableState
 {
 
     private bool _isDrag = false;
-    private HandHolder _cardHolder;
-    public DragState(FSM fsm, Card card) : base(fsm, card)
+    public DragState(Card card) : base(card)
     {
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
-        
+
         _isDrag = true;
-        _cardHolder.SetDrag(_isDrag);
-        _cardHolder.SetSrcCardPointer(_myCard);
+        if (myCard.cardHolder == null || !(myCard.cardHolder is HandHolder)) return;
+
+        (myCard.cardHolder as HandHolder).SetDrag(_isDrag);
+        (myCard.cardHolder as HandHolder).SetSrcCardPointer(myCard);
     }
     public override void OnUpdate()
     {
@@ -32,7 +33,7 @@ public class DragState : MoveableState
         if (_isDrag)
         {
             // Canvas is in overlay mode -> camera = null.
-            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_myCard.myRect
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(myCard.myRect
             , Input.mousePosition, Camera.main, out var worldPos))
             {
                 // Move.
@@ -47,19 +48,17 @@ public class DragState : MoveableState
         // End dragging -> move back to @_cardSlot position.
         else
         {
-    
-            GetMoveEffect(_myCard.cardSlotRect.position);
-            GetRotateEffect(_myCard.cardSlotRect.position);
-            if (Vector2.Distance(_myCard.cardSlotRect.position, _myCard.myRect.position) < 0.001f)
+
+            GetMoveEffect(myCard.cardSlotRect.position);
+            GetRotateEffect(myCard.cardSlotRect.position);
+            if (Vector2.Distance(myCard.cardSlotRect.position, myCard.myRect.position) < 0.001f)
             {
-                _stateMachine.RequestChangeState();
-                //isComplete = true;
-                _wait4Transit = true;
-            
+                myCard.stateMachine.RequestChangeState();
+                wait4Transit = true;
+
             }
         }
     }
-    
 
     public void StartDrag()
     {
@@ -68,17 +67,8 @@ public class DragState : MoveableState
     public void EndDrag()
     {
         _isDrag = false;
-        if (!_myCard.IsInteractable()) return;
-        _cardHolder.SetDrag(false);
-        
-    }
-    public void SetCardHolder(CardHolder cardHolder)
-    {
-        if(cardHolder is HandHolder) _cardHolder = (HandHolder)cardHolder;
-    }
-    public override void OnExit()
-    {
-        base.OnExit();
-        //_cardHolder.UpdateCardVsSlot();
+        if (!myCard.IsInteractable()) return;
+        (myCard.cardHolder as HandHolder).SetDrag(false);
+
     }
 }

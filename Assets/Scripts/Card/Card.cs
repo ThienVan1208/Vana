@@ -14,7 +14,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public RectTransform cardSlotRect, myRect;
 
     public RectTransform frontImg, backImg;
-    private FSM _stateMachine;
+    public FSM stateMachine{ get; private set; }
     private IdleState _idleState;
     private DragState _dragState;
     private HoverState _hoverState;
@@ -33,21 +33,21 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
 
         // Init StateBase & StateMachine.
-        _stateMachine = new FSM();
-        _idleState = new IdleState(_stateMachine, this);
-        _dragState = new DragState(_stateMachine, this);
-        _moveState = new MoveToTargetState(_stateMachine, this);
-        _hoverState = new HoverState(_stateMachine, this);
-        _clickState = new ClickState(_stateMachine, this);
+        stateMachine = new FSM();
+        _idleState = new IdleState(this);
+        _dragState = new DragState(this);
+        _moveState = new MoveToTargetState(this);
+        _hoverState = new HoverState(this);
+        _clickState = new ClickState(this);
 
-        _stateMachine.SetDefaultState(_idleState);
-        _stateMachine.InitFSM();
+        stateMachine.SetDefaultState(_idleState);
+        stateMachine.InitFSM();
 
         // Add transition for states.
-        _stateMachine.AddTransit(_dragState, _idleState);
-        _stateMachine.AddTransit(_moveState, _idleState);
-        _stateMachine.AddTransit(_hoverState, _idleState);
-        _stateMachine.AddTransit(_clickState, _idleState);
+        stateMachine.AddTransit(_dragState, _idleState);
+        stateMachine.AddTransit(_moveState, _idleState);
+        stateMachine.AddTransit(_hoverState, _idleState);
+        stateMachine.AddTransit(_clickState, _idleState);
     }
     // private void Start() 
     //     myRect.localScale = Vector3.one * _gameConfigSO.cardSize;
@@ -96,8 +96,6 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         cardHolder = holder;
         if (!_canInteract) return;
-        _dragState.SetCardHolder(cardHolder);
-        _hoverState.SetCardHolder(cardHolder);
     }
     public void SetParent(RectTransform parent)
     {
@@ -107,9 +105,10 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     private void Update()
     {
-        _stateMachine.Update();
+        stateMachine.Update();
     }
 
+    #region Move state
     // Set @_cardSlot to target and then move it to target.
     public void GetMove(RectTransform target)
     {
@@ -117,24 +116,27 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         // Check card is up.
         if (!_clickState.IsClick())
         {
+            // Disconnect with handHolder api.
             _clickState.SetChosenFlag(false);
 
             // Get down.
-            _stateMachine.ChangeState(_clickState);
+            stateMachine.ChangeState(_clickState);
 
+            // Connect again.
             _clickState.SetChosenFlag(true);
         }
 
         SetCardSlot(target);
-        _stateMachine.ChangeState(_moveState, isForce: true);
+        stateMachine.ChangeState(_moveState, isForce: true);
     }
+    #endregion
 
     #region Drag state
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!_canInteract) return;
 
-        _stateMachine.ChangeState(_dragState, isForce: true);
+        stateMachine.ChangeState(_dragState);
     }
     public void OnDrag(PointerEventData eventData) { }
     public void OnEndDrag(PointerEventData eventData)
@@ -147,7 +149,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!_canInteract) return;
-        _stateMachine.ChangeState(_clickState);
+        stateMachine.ChangeState(_clickState);
     }
     #endregion
 
@@ -155,7 +157,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!_canInteract) return;
-        _stateMachine.ChangeState(_hoverState);
+        stateMachine.ChangeState(_hoverState);
     }
     #endregion
 
@@ -165,7 +167,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         if (hasTransition)
         {
-            _stateMachine.StopAllState();
+            stateMachine.StopAllState();
             Vector3 rotateDir = new Vector3(0f, 90f, 0f);
             myRect.transform.localEulerAngles = Vector3.zero;
             myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
@@ -174,7 +176,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 frontImg.gameObject.SetActive(false);
                 backImg.gameObject.SetActive(true);
                 myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
-                .OnComplete(() => _stateMachine.ContinuePrevState());
+                .OnComplete(() => stateMachine.ContinuePrevState());
             });
             await UniTask.Delay((int)(2 * _time2HaflRotate));
         }
@@ -190,7 +192,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         if (hasTransition)
         {
-            _stateMachine.StopAllState();
+            stateMachine.StopAllState();
             Vector3 rotateDir = new Vector3(0f, 90f, 0f);
             myRect.transform.localEulerAngles = Vector3.zero;
             myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
@@ -205,8 +207,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 myRect.DORotate(myRect.transform.localEulerAngles - rotateDir, _time2HaflRotate)
                 .OnComplete(() =>
                 {
-                    _stateMachine.ContinuePrevState();
-                    _stateMachine.ChangeState(_hoverState, isForce: true);
+                    stateMachine.ContinuePrevState();
+                    stateMachine.ChangeState(_hoverState);
                 });
             });
             await UniTask.Delay((int)(2 * _time2HaflRotate));

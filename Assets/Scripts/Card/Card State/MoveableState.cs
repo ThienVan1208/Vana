@@ -8,7 +8,7 @@ public class MoveableState : InteractableState
     protected Image _cardImg;
 
 
-    public MoveableState(FSM statemachine, Card card) : base(statemachine, card)
+    public MoveableState(Card card) : base( card)
     {
         _cardImg = card.GetComponent<Image>();
     }
@@ -18,34 +18,35 @@ public class MoveableState : InteractableState
         isComplete = false;
 
         _cardImg.raycastTarget = false;
-        _myCard.myRect.SetParent(_myCard.cardSlotRect.root);
-        _myCard.myRect.SetAsLastSibling();
+        myCard.myRect.SetParent(myCard.cardSlotRect.root);
+        myCard.myRect.SetAsLastSibling();
     }
     public override void OnExit()
     {
         base.OnExit();
-        isComplete = true;
 
-        _wait4Transit = false;
-        _myCard.myRect.position = _myCard.cardSlotRect.position;
-        
+
+        wait4Transit = false;
+        // myCard.myRect.position = myCard.cardSlotRect.position;
+
         _cardImg.raycastTarget = true;
-        _myCard.myRect.SetParent(_myCard.cardSlotRect);
+        // myCard.myRect.SetParent(myCard.cardSlotRect);
+        isComplete = true;
     }
     protected void GetMoveEffect(Vector2 target)
     {
-        _myCard.myRect.position = Vector3.SmoothDamp(_myCard.myRect.position, target, ref _velocity, 0.1f);
+        myCard.myRect.position = Vector3.SmoothDamp(myCard.myRect.position, target, ref _velocity, 0.1f);
         //_myRect.position = Vector2.Lerp(_myRect.position, target, Time.deltaTime * 20);
     }
     protected void GetRotateEffect(Vector2 target)
     {
-        float dis = Vector2.Distance(_myCard.myRect.position, target);
-        float deg = _myCard.gameConfigSO.cardRotateAngle;
+        float dis = Vector2.Distance(myCard.myRect.position, target);
+        float deg = myCard.gameConfigSO.cardRotateAngle;
 
-        float lerpRange = dis / _myCard.gameConfigSO.cardRotateSpeed;
-        if (target.x < _myCard.myRect.position.x) _rotateDeg.z = Mathf.Lerp(0, deg, lerpRange);
+        float lerpRange = dis / myCard.gameConfigSO.cardRotateSpeed;
+        if (target.x < myCard.myRect.position.x) _rotateDeg.z = Mathf.Lerp(0, deg, lerpRange);
         else _rotateDeg.z = Mathf.Lerp(0, -deg, lerpRange);
-        _myCard.myRect.eulerAngles = _rotateDeg;
+        myCard.myRect.eulerAngles = _rotateDeg;
     }
     
 }
