@@ -25,7 +25,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public CardHolder cardHolder { get; private set; }
 
     // 2 * _time2HaflRotate is the total time for card to rotate (used to flip card).
-    private float _time2HaflRotate = 0.5f;
+    private float _time2HaflRotate = 0.3f;
     private void Awake()
     {
 
@@ -173,12 +173,12 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             stateMachine.StopAllState();
             Vector3 rotateDir = new Vector3(0f, 90f, 0f);
             myRect.transform.localEulerAngles = Vector3.zero;
-            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
+            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
             .OnComplete(() =>
             {
                 frontImg.gameObject.SetActive(false);
                 backImg.gameObject.SetActive(true);
-                myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
+                myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
                 .OnComplete(() => stateMachine.ContinuePrevState());
             });
             await UniTask.Delay((int)(2 * _time2HaflRotate));
@@ -198,7 +198,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             stateMachine.StopAllState();
             Vector3 rotateDir = new Vector3(0f, 90f, 0f);
             myRect.transform.localEulerAngles = Vector3.zero;
-            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate)
+            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
             .OnComplete(() =>
             {
                 // await UniTask.Delay(500);
@@ -207,7 +207,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
                 // await UniTask.Delay(500);
 
-                myRect.DORotate(myRect.transform.localEulerAngles - rotateDir, _time2HaflRotate)
+                myRect.DORotate(myRect.transform.localEulerAngles - rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
                 .OnComplete(() =>
                 {
                     stateMachine.ContinuePrevState();

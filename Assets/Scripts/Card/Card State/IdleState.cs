@@ -6,7 +6,7 @@ public class IdleState : StateBase
 {
     private float _ranDir;
     private Vector2 rotate = Vector2.zero;
-    private float _strenght = 10f;
+    private float _strenght = 15f;
     private float _speed = 1.5f;
     private Vector3 _moveDir;
     public IdleState(Card card) : base(card)
