@@ -7,7 +7,8 @@ public class ClickState : InteractableState
     private float _dis2Up = 20f;
     private float _time2Up = 0.2f;
     private bool _chosenFlag = true;
-    public ClickState(Card card) : base( card)
+    private ParticleSystem _psEffect;
+    public ClickState(Card card) : base(card)
     {
     }
 
@@ -43,7 +44,9 @@ public class ClickState : InteractableState
         }
 
         _isUp = !_isUp;
-        
+
+        _psEffect = ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(myCard.transform);
+
         myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
         myCard.frontImg.DOAnchorPosY(myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
@@ -54,6 +57,8 @@ public class ClickState : InteractableState
         _isUp = !_isUp;
 
         if (_chosenFlag) (myCard.cardHolder as HandHolder).RejectCard(myCard);
+
+        ObjectPoolManager.Instance?.ReturnToPool<CardPSEffect, ParticleSystem>(_psEffect);
 
         myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);

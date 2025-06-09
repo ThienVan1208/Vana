@@ -94,14 +94,18 @@ public class RuleGameHandler : MonoBehaviour
             await _chosenCards[i].FaceCardUp(hasTransition: true);
             await UniTask.Delay(1000);
             _camShakeEventSO.RaiseEvent(0.2f, 0.8f);
-            if (_chosenCards[0].GetCardSuit() != _chosenCards[i].GetCardSuit()
-            && _chosenCards[0].GetCardRank() != _chosenCards[i].GetCardRank())
+
+            bool ruleCondition = _chosenCards[0].GetCardSuit() != _chosenCards[i].GetCardSuit()
+                        && _chosenCards[0].GetCardRank() != _chosenCards[i].GetCardRank();
+
+            if (ruleCondition)
             {
                 await UniTask.Delay(1000);
                 await SuccessRevealCard();
                 return;
             }
         }
+
         await UniTask.Delay(1000);
         await FailRevealCard();
     }
