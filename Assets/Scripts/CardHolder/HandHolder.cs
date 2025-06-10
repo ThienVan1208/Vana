@@ -9,7 +9,7 @@ public class HandHolder : PlayableCardHolder
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
-    
+    private ParticleSystem _psEffect;
     public override void AddCard(Card card)
     {
         // DisconnectCardSlot(card);
@@ -28,7 +28,7 @@ public class HandHolder : PlayableCardHolder
             }
         }
     }
-    
+
     // Used thru button.
     public override bool HelpPlayingCard()
     {
@@ -57,6 +57,8 @@ public class HandHolder : PlayableCardHolder
         }
 
         chosenCardEventSO.RaiseEvent(_chosenCards);
+
+        ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
         // Clear chosen card list for the next choosing turn.
         _chosenCards.Clear();
@@ -95,7 +97,7 @@ public class HandHolder : PlayableCardHolder
             Debug.LogWarning("Get index of slot is null");
             return;
         }
-        
+
         //GetCard(_srcCardPointer.cardSlotRect).SetCardSlot(_dstCardPointer.cardSlotRect);
         _srcCardPointer.SetCardSlot(_dstCardPointer.cardSlotRect);
         if (srcIndex < dstIndex)
@@ -129,7 +131,6 @@ public class HandHolder : PlayableCardHolder
 
         _cardsDic[_srcCardPointer.cardSlotRect] = _srcCardPointer;
 
-        // RelocateCards();
         _isSwap = false;
     }
 
@@ -141,6 +142,7 @@ public class HandHolder : PlayableCardHolder
             return;
         }
         _chosenCards.Add(card);
+        if (_chosenCards.Count == 1) ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[0].frontImg.transform);
     }
     public bool CanChooseCard()
     {
@@ -152,17 +154,27 @@ public class HandHolder : PlayableCardHolder
         {
             if (_chosenCards[i] == card)
             {
+                if (i == 0)
+                {
+                    ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
+                    if (_chosenCards.Count > 1)
+                    {
+                        ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[1].frontImg.transform);
+
+                    }
+                }
                 _chosenCards.RemoveAt(i);
+                return;
             }
         }
     }
-    private void Update() {
-        foreach (var keyVal in _cardsDic)
-        {
-            if (keyVal.Key.transform.childCount >= 2)
-            {
-                Debug.LogWarning("ERROR IN CARD SWAP");
-            }
-        }
-    }
+    // private void Update() {
+    //     foreach (var keyVal in _cardsDic)
+    //     {
+    //         if (keyVal.Key.transform.childCount >= 2)
+    //         {
+    //             Debug.LogWarning("ERROR IN CARD SWAP");
+    //         }
+    //     }
+    // }
 }

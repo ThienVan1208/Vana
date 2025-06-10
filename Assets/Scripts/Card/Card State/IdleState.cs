@@ -40,7 +40,7 @@ public class IdleState : StateBase
     }
     private void GetMoveEffect()
     {
-        _moveDir.y = Mathf.Sin(Time.realtimeSinceStartup + _ranDir) / 50f;
+        _moveDir.y = Mathf.Sin(Time.realtimeSinceStartup + _ranDir) / 150f;
         // Debug.Log(_moveDir.y);
         myCard.myRect.localPosition += _moveDir;
     }

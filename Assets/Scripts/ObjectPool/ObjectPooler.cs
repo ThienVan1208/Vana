@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-public class ObjectPooler<T> 
+public class ObjectPooler<T> where T : Component
 {
     private Queue<T> _pool;
     private Transform _poolHolder;
@@ -35,7 +35,7 @@ public class ObjectPooler<T>
         else
         {
             T elem = _pool.Dequeue();
-            if (isActive && elem is GameObject) (elem as GameObject).SetActive(true);
+            if (isActive) elem.gameObject.SetActive(true);
             return elem;
         }
     }
@@ -44,6 +44,6 @@ public class ObjectPooler<T>
     {
         _pool.Enqueue(elem); // Add to UnusedPool
         
-        if(isInactive && elem is GameObject) (elem as GameObject).SetActive(false);
+        if(isInactive) elem.gameObject.SetActive(false);
     }
 }

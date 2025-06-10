@@ -6,6 +6,7 @@ using UnityEngine;
 public class CardPSEffect : MonoBehaviour
 {
     private ObjectPooler<ParticleSystem> _psPool;
+    private ParticleSystem _curPSEffect;
     private int initNum = 3;
     [SerializeField] private GameObject _glowEffectPrefabs;
 
@@ -14,21 +15,20 @@ public class CardPSEffect : MonoBehaviour
         _psPool = new ObjectPooler<ParticleSystem>(_glowEffectPrefabs, transform, initNum);
         ObjectPoolManager.Instance?.RegisterPool(this, _psPool);
     }
-    // public void GetGlowEffect(Transform pos)
-    // {
-    //     var effect = _psPool.GetElem();
-    //     effect.transform.position = pos.position;
-    //     effect.gameObject.SetActive(true);
-    //     effect.transform.SetParent(pos);
-    // }
+
     public ParticleSystem GetGlowEffect(Transform pos)
     {
-        var effect = _psPool.GetElem();
-        
-        effect.gameObject.SetActive(true);
-        effect.transform.SetParent(pos, false);
-        effect.transform.position = new Vector3(-2.5f, 0f, 0f);
-        effect.transform.localScale = new Vector3(3.5f, 2.8f, 3.5f);
-        return effect;
+        _curPSEffect = _psPool.GetElem();
+
+        _curPSEffect.gameObject.SetActive(true);
+        _curPSEffect.transform.SetParent(pos, false);
+        _curPSEffect.transform.localPosition = new Vector3(-2.5f, 0f, 0f);
+        _curPSEffect.transform.localScale = new Vector3(3.5f, 2.8f, 3.5f);
+        return _curPSEffect;
+    }
+    public void StopGlowEffect(bool isInactive = false)
+    {
+        _curPSEffect.Stop();
+        if (isInactive) _curPSEffect.gameObject.SetActive(false);
     }
 }

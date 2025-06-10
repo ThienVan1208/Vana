@@ -31,7 +31,9 @@ public class ObjectPoolManager : MonoBehaviour
     }
 
     // Used to assign @_poolingObjects[T][N] = pooler.
-    public void RegisterPool<T, N>(T poolObj, ObjectPooler<N> pooler, bool isOverride = false) where T : class
+    public void RegisterPool<T, N>(T poolObj, ObjectPooler<N> pooler, bool isOverride = false)
+    where T : class
+    where N : Component
     {
         // If @_poolingObjects has already have T type (of @poolObj).
         if (_poolingObjects.TryGetValue(typeof(T), out var poolerMap))
@@ -59,13 +61,15 @@ public class ObjectPoolManager : MonoBehaviour
         }
     }
 
-    public void ReturnToPool<T, N>(N obj) where T : class
+    public void ReturnToPool<T, N>(N obj, bool isInactive = false)
+    where T : class
+    where N : Component
     {
         if (_poolingObjects.TryGetValue(typeof(T), out var poolerMap))
         {
             if (poolerMap.TryGetValue(typeof(N), out var objectPooler))
             {
-                (objectPooler as ObjectPooler<N>).ReturnPool(obj);
+                (objectPooler as ObjectPooler<N>).ReturnPool(obj, isInactive: isInactive);
             }
             else
             {
@@ -77,7 +81,11 @@ public class ObjectPoolManager : MonoBehaviour
             Debug.LogWarning("The poolingObject has not have type " + typeof(T) + "yet.");
         }
     }
-    public N GetElem<T, N>() where T : class
+
+    // Used to get an element of pool "N" from script "T".
+    public N GetElem<T, N>()
+    where T : class
+    where N : Component
     {
         if (_poolingObjects.TryGetValue(typeof(T), out var poolerMap))
         {
@@ -89,6 +97,7 @@ public class ObjectPoolManager : MonoBehaviour
         return default;
     }
 
+    // Used to get the script having pools.
     public T GetPoolingObject<T>() where T : class
     {
         if (_poolObjContainer.TryGetValue(typeof(T), out var poolObj))
