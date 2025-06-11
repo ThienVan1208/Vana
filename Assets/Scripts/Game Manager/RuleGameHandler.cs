@@ -31,6 +31,7 @@ public class RuleGameHandler : MonoBehaviour
     [SerializeField] private CamShakeEventSO _camShakeEventSO;
 
     [SerializeField] private VoidEventSO _relocatePlayerCardEventSO;
+
     private List<Card> _chosenCards = new List<Card>();
 
     private void OnEnable()
@@ -39,6 +40,8 @@ public class RuleGameHandler : MonoBehaviour
         _passTurnEventSO.EventChannel += PassTurn;
 
         _chosenCardEventSO.EventChannel += PlayCards;
+
+        // _checkEndGameEventSO += CheckEndGame;
     }
     private void OnDisable()
     {
@@ -64,7 +67,12 @@ public class RuleGameHandler : MonoBehaviour
         await GetFlipCardWhenPlay();
 
         _relocatePlayerCardEventSO.RaiseEvent();
-        _nextTurnEventSO.RaiseEvent();
+
+        if (!CheckEndGameCond())
+        {
+            _nextTurnEventSO.RaiseEvent();
+        }
+
     }
 
     // Used to move choosen card list to table and face them down excluding the first card.
@@ -95,10 +103,10 @@ public class RuleGameHandler : MonoBehaviour
             await UniTask.Delay(1000);
             _camShakeEventSO.RaiseEvent(0.2f, 0.8f);
 
-            bool ruleCondition = _chosenCards[0].GetCardSuit() != _chosenCards[i].GetCardSuit()
+            bool revealCondition = _chosenCards[0].GetCardSuit() != _chosenCards[i].GetCardSuit()
                         && _chosenCards[0].GetCardRank() != _chosenCards[i].GetCardRank();
 
-            if (ruleCondition)
+            if (revealCondition)
             {
                 await UniTask.Delay(1000);
                 await SuccessRevealCard();
@@ -140,7 +148,7 @@ public class RuleGameHandler : MonoBehaviour
         _nextTurnEventSO.RaiseEvent();
     }
     #endregion
-    
+
     #region Pass turn
     private void PassTurn()
     {
@@ -160,6 +168,36 @@ public class RuleGameHandler : MonoBehaviour
         _tableHolder.RefreshTable();
 
         _nextTurnEventSO.RaiseEvent();
+    }
+    #endregion
+
+    #region End game condition
+    private bool CheckEndGameCond()
+    {
+        for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
+        {
+            if (_playableInfoSO.GetPlayerByIndex(i).GetCardNum() == 0)
+            {
+                _ = EndGame(i);
+                return true;
+            }
+        }
+        return false;
+    }
+    private async UniTask EndGame(int playerIndex)
+    {
+        for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
+        {
+            await UniTask.Delay(200);
+            if (playerIndex == i)
+            {
+                _playableInfoSO.GetPlayerByIndex(i).WinGame();
+            }
+            else
+            {
+                _playableInfoSO.GetPlayerByIndex(i).LoseGame();
+            }
+        }
     }
     #endregion
 }

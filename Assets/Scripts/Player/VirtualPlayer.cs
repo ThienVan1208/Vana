@@ -45,6 +45,8 @@ public class VirtualPlayer : PlayerBase
 
     public override void BeginTurn()
     {
+        if (GameManager.endGame) return;
+
         _ = HelpBeginTurn();
     }
     private async UniTask HelpBeginTurn()
@@ -111,5 +113,6 @@ public class VirtualPlayer : PlayerBase
     protected override void PlayCards()
     {
         (cardHolder as VirtualHandHolder).HelpPlayingCard();
+        // if ((cardHolder as VirtualHandHolder).GetCardNum() == 0) EndGameEvent.RaiseAction(this);
     }
 }

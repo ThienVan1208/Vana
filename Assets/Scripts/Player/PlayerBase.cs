@@ -25,17 +25,25 @@ public class PlayerBase : MonoBehaviour, IPlayable
         curTurnState = TurnState.ChooseActionState;
     }
 
-    // IPlayable Declaration.
+    #region Interface Declaration
     public virtual void AddCards(Card card) { }
     public virtual void RemoveCards(Card card) { }
     public virtual void BeginTurn()
     {
         Debug.Log(gameObject.name + " turn");    
     }
-    public virtual void EndTurn() { }
+    public virtual void EndTurn() {}
+    public virtual void WinGame(){}
+    public virtual void LoseGame(){}
+
+    public virtual int GetCardNum()
+    {
+        return cardHolder.curCardNum;
+    }
+    #endregion
 
 
-    // Support methods.
+    #region Support methods
     protected virtual void PlayCards() { }
     protected virtual void InitCardHolder() { }
     protected virtual void RevealCards() { }
@@ -43,4 +51,5 @@ public class PlayerBase : MonoBehaviour, IPlayable
     protected virtual void CheckReveal(bool check){}
     protected virtual void SuccessRevealCard() { }
     protected virtual void FailRevealCard() {}
+    #endregion
 }

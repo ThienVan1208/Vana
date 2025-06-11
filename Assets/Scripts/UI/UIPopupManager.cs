@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -8,6 +9,14 @@ public enum PopupUIType
     WinGame,
     LoseGame,
     Setting,
+}
+public class PopupUIEvent
+{
+    public static Action<PopupUIType, bool> displayPopupAction;
+    public static void RaiseAction(PopupUIType type, bool active = true)
+    {
+        displayPopupAction?.Invoke(type, active);
+    } 
 }
 public class UIPopupManager : MonoBehaviour
 {
@@ -28,12 +37,16 @@ public class UIPopupManager : MonoBehaviour
     private void Awake()
     {
         _subcribedPopupUIEventSO.EventChannel += SubcribePopupUI;
+        PopupUIEvent.displayPopupAction += DisplayPopup;
+        
         _panel = GetComponent<Image>();
         ShowPanel(false);
+
     }
     private void OnDestroy()
     {
         _subcribedPopupUIEventSO.EventChannel -= SubcribePopupUI;
+        PopupUIEvent.displayPopupAction += DisplayPopup;
     }
     
     private void SubcribePopupUI(PopupUIType type, PopupUIBase popupUI)

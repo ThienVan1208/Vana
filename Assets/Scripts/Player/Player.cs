@@ -26,7 +26,7 @@ public class Player : PlayerBase
         (cardHolder.gameObject.transform as RectTransform).anchorMax = anchorPos;
         (cardHolder.gameObject.transform as RectTransform).anchoredPosition = initCardHolderPos;
         cardHolder.gameObject.transform.localScale = Vector3.one * gameConfigSO.cardHolderSize;
-        
+
 
         // Create play-card button.
         Vector2 buttonPos = new Vector2(286, 15f);
@@ -76,7 +76,7 @@ public class Player : PlayerBase
     protected override void PlayCards()
     {
         if (!(cardHolder as HandHolder).HelpPlayingCard()) return;
-
+        // if ((cardHolder as HandHolder).GetCardNum() == 0) EndGameEvent.RaiseAction(this);
         DisplayPlayCardUI(false);
     }
     public override void AddCards(Card card)
@@ -168,4 +168,16 @@ public class Player : PlayerBase
         base.FailRevealCard();
         curTurnState = TurnState.ChooseActionState;
     }
+
+    public override void WinGame()
+    {
+        base.WinGame();
+        PopupUIEvent.RaiseAction(PopupUIType.WinGame);
+    }
+    public override void LoseGame()
+    {
+        base.LoseGame();
+        PopupUIEvent.RaiseAction(PopupUIType.LoseGame);
+    }
+    
 }

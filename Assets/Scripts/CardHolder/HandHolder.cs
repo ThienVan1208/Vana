@@ -9,7 +9,6 @@ public class HandHolder : PlayableCardHolder
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
-    private ParticleSystem _psEffect;
     public override void AddCard(Card card)
     {
         // DisconnectCardSlot(card);
@@ -57,11 +56,12 @@ public class HandHolder : PlayableCardHolder
         }
 
         chosenCardEventSO.RaiseEvent(_chosenCards);
-
+        
         ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
         // Clear chosen card list for the next choosing turn.
         _chosenCards.Clear();
+        
         return true;
     }
     public void SetSrcCardPointer(Card card)

@@ -43,6 +43,7 @@ public class VirtualHandHolder : PlayableCardHolder
             // }
         }
         chosenCardEventSO.RaiseEvent(cards);
+
         return true;
     }
 }

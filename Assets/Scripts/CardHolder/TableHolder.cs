@@ -23,16 +23,13 @@ public class TableHolder : CardHolder
             {
                 _cardsDic[keyVal.Key] = card;
                 card.GetMove(keyVal.Key);
+                curCardNum++;
                 return;
-            }
-            else
-            {
-                Debug.LogWarning("can not add to table");
             }
         }
     }
 
-    
+
     // Used to active slot before using AddCard method.
     public void ActiveSlotBeforeAddCard(int numSlot)
     {
@@ -47,11 +44,17 @@ public class TableHolder : CardHolder
     // Used to reset _cardsDic and card slot when moving them to used card holder.
     public void RefreshTable()
     {
+        curCardNum = 0;
         var keys = _cardsDic.Keys.ToList(); // Create a copy of the keys.
         foreach (var key in keys)
         {
             _cardsDic[key] = null; // Safe to modify.
             key.gameObject.SetActive(false);
         }
+    }
+    protected override void SetCardDic(RectTransform slot, Card card = null)
+    {
+        base.SetCardDic(slot, card);
+        curCardNum--;
     }
 }

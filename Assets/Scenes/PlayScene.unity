@@ -160,6 +160,7 @@ MonoBehaviour:
   _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
   _camShakeEventSO: {fileID: 11400000, guid: 9a80ccfd075909540b86af7fcc3e4cda, type: 2}
   _relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
+  _checkEndGameEventSO: {fileID: 0}
 --- !u!4 &60038285
 Transform:
   m_ObjectHideFlags: 0
@@ -2080,12 +2081,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardSpawner: {fileID: 740087952}
-  player: {fileID: 920495730}
-  virPlayer: {fileID: 1014271831}
   _nextTurnEventSO: {fileID: 11400000, guid: e20489872b3191541b0c2e8f6c47b25d, type: 2}
   _continuedCurTurnEventSO: {fileID: 11400000, guid: 29002434942bac3489f69c5160c6c3dd, type: 2}
   _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
   _playableInfoSO: {fileID: 11400000, guid: f78e75a492e6ea449865e2e5ef6106b7, type: 2}
+  _gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
+  player: {fileID: 920495730}
+  virPlayer: {fileID: 1014271831}
 --- !u!1 &1785715909
 GameObject:
   m_ObjectHideFlags: 0

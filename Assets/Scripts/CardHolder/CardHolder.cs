@@ -8,7 +8,7 @@ public class CardHolder : MonoBehaviour
     // The key is cardSlot, value is card.
     protected Dictionary<RectTransform, Card> _cardsDic = new Dictionary<RectTransform, Card>();
 
-    protected int curCardNum = 0;
+    public int curCardNum { get;  protected set; }
 
     protected virtual void Awake()
     {
@@ -16,6 +16,7 @@ public class CardHolder : MonoBehaviour
     }
     protected virtual void InitHolder()
     {
+        curCardNum = 0;
         foreach (Transform child in transform)
         {
             _cardsDic[child as RectTransform] = null;
@@ -23,10 +24,10 @@ public class CardHolder : MonoBehaviour
     }
 
     #region Get card
-    protected int GetCardNum()
-    {
-        return curCardNum;
-    }
+    // public int GetCardNum()
+    // {
+    //     return curCardNum;
+    // }
 
     public virtual RectTransform GetCardSlot(int index = 0)
     {
@@ -110,7 +111,7 @@ public class CardHolder : MonoBehaviour
     {
         if (card.cardHolder == null || card.cardSlotRect == null) return;
 
-        card.cardHolder.SetCardDic(card.cardSlotRect);
+        card.cardHolder.SetCardDic(card.cardSlotRect, null);
     }
     protected virtual void SetCardDic(RectTransform slot, Card card = null)
     {
