@@ -10,7 +10,7 @@ public class CardPSEffect : MonoBehaviour
     private int initNum = 3;
     [SerializeField] private GameObject _glowEffectPrefabs;
 
-    private void Awake()
+    private void Start()
     {
         _psPool = new ObjectPooler<ParticleSystem>(_glowEffectPrefabs, transform, initNum);
         ObjectPoolManager.Instance?.RegisterPool(this, _psPool);

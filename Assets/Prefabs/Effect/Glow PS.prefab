@@ -4862,7 +4862,6 @@ GameObject:
   - component: {fileID: 5376573764553119482}
   - component: {fileID: 2328577447054363733}
   - component: {fileID: 7673887231075626036}
-  - component: {fileID: 4049171534546143229}
   m_Layer: 5
   m_Name: Glow PS
   m_TagString: Untagged
@@ -9690,15 +9689,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &4049171534546143229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9080344875561541144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ba3f9761a5074e459c34d3aaaccd876, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
