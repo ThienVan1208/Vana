@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-public class ObjectPooler<T> where T : Component
+
+public class ObjectPooler<T>
 {
     private Queue<T> _pool;
     private Transform _poolHolder;
@@ -23,27 +24,25 @@ public class ObjectPooler<T> where T : Component
         }
     }
 
-    public T GetElem(bool isActive = false)
+    public T GetElem()
     {
         if (_pool.Count == 0)
         {
             GameObject elem = GameObject.Instantiate(_prefab, _poolHolder.position, Quaternion.identity);
             T elemT = elem.GetComponent<T>();
-            if(isActive) elem.SetActive(true);
             return elemT;
         }
         else
         {
             T elem = _pool.Dequeue();
-            if (isActive) elem.gameObject.SetActive(true);
             return elem;
         }
+        
     }
 
-    public void ReturnPool(T elem, bool isInactive = false)
+    public void ReturnPool(T elem)
     {
         _pool.Enqueue(elem); // Add to UnusedPool
         
-        if(isInactive) elem.gameObject.SetActive(false);
     }
 }

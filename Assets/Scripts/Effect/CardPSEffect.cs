@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -5,6 +6,7 @@ using UnityEngine;
 
 public class CardPSEffect : MonoBehaviour
 {
+    public Type type => GetType();
     private ObjectPooler<ParticleSystem> _psPool;
     private ParticleSystem _curPSEffect;
     private int initNum = 3;
@@ -13,7 +15,9 @@ public class CardPSEffect : MonoBehaviour
     private void Start()
     {
         _psPool = new ObjectPooler<ParticleSystem>(_glowEffectPrefabs, transform, initNum);
-        ObjectPoolManager.Instance?.RegisterPool(this, _psPool);
+        // ObjectPoolManager.Instance?.RegisterPool(this, _psPool);
+        // ObjectPoolManagerEvent.RaiseRegisterPoolEvent(this, _psPool);
+        ObjectPoolManager.RegisterPool(this, _psPool);
     }
 
     public ParticleSystem GetGlowEffect(Transform pos)

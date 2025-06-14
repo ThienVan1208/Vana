@@ -57,7 +57,7 @@ public class HandHolder : PlayableCardHolder
 
         chosenCardEventSO.RaiseEvent(_chosenCards);
         
-        ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
+        ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
         // Clear chosen card list for the next choosing turn.
         _chosenCards.Clear();
@@ -98,7 +98,6 @@ public class HandHolder : PlayableCardHolder
             return;
         }
 
-        //GetCard(_srcCardPointer.cardSlotRect).SetCardSlot(_dstCardPointer.cardSlotRect);
         _srcCardPointer.SetCardSlot(_dstCardPointer.cardSlotRect);
         if (srcIndex < dstIndex)
         {
@@ -142,7 +141,7 @@ public class HandHolder : PlayableCardHolder
             return;
         }
         _chosenCards.Add(card);
-        if (_chosenCards.Count == 1) ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[0].frontImg.transform);
+        if (_chosenCards.Count == 1) ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[0].frontImg.transform);
     }
     public bool CanChooseCard()
     {
@@ -156,10 +155,10 @@ public class HandHolder : PlayableCardHolder
             {
                 if (i == 0)
                 {
-                    ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
+                    ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
                     if (_chosenCards.Count > 1)
                     {
-                        ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[1].frontImg.transform);
+                        ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[1].frontImg.transform);
 
                     }
                 }

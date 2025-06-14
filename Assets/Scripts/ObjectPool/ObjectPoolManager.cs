@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-public class ObjectPoolManager : MonoBehaviour
+public static class ObjectPoolManager
 {
     /*
     - The key is the type of script having pools.
     - The value is hashmap of different pools that the key has.
     */
-    private Dictionary<Type, Dictionary<Type, object>> _poolingObjects = new Dictionary<Type, Dictionary<Type, object>>();
+    private static Dictionary<Type, Dictionary<Type, object>> _poolingObjects = new Dictionary<Type, Dictionary<Type, object>>();
 
     /*
     - The key is the type of script having pools.
@@ -15,25 +15,12 @@ public class ObjectPoolManager : MonoBehaviour
     - Used to access the script having pools -> no need to make that script become singleton.
     - It means using all scripts having pools through this ObjectPoolManager class.
     */
-    private Dictionary<Type, object> _poolObjContainer = new Dictionary<Type, object>();
+    private static Dictionary<Type, object> _poolObjContainer = new Dictionary<Type, object>();
 
-    public static ObjectPoolManager Instance;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     // Used to assign @_poolingObjects[T][N] = pooler.
-    public void RegisterPool<T, N>(T poolObj, ObjectPooler<N> pooler, bool isOverride = false)
+    public static void RegisterPool<T, N>(T poolObj, ObjectPooler<N> pooler, bool isOverride = false)
     where T : class
-    where N : Component
     {
         // If @_poolingObjects has already have T type (of @poolObj).
         if (_poolingObjects.TryGetValue(typeof(T), out var poolerMap))
@@ -61,15 +48,16 @@ public class ObjectPoolManager : MonoBehaviour
         }
     }
 
-    public void ReturnToPool<T, N>(N obj, bool isInactive = false)
+   
+    public static N ReturnToPool<T, N>(N obj)
     where T : class
-    where N : Component
     {
         if (_poolingObjects.TryGetValue(typeof(T), out var poolerMap))
         {
             if (poolerMap.TryGetValue(typeof(N), out var objectPooler))
             {
-                (objectPooler as ObjectPooler<N>).ReturnPool(obj, isInactive: isInactive);
+                (objectPooler as ObjectPooler<N>).ReturnPool(obj);
+                return obj;
             }
             else
             {
@@ -78,14 +66,14 @@ public class ObjectPoolManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("The poolingObject has not have type " + typeof(T) + "yet.");
+            Debug.LogWarning("The poolingObject has no-t have type " + typeof(T) + "yet.");
         }
+        return default;
     }
 
     // Used to get an element of pool "N" from script "T".
-    public N GetElem<T, N>()
+    public static N GetElem<T, N>()
     where T : class
-    where N : Component
     {
         if (_poolingObjects.TryGetValue(typeof(T), out var poolerMap))
         {
@@ -98,7 +86,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
 
     // Used to get the script having pools.
-    public T GetPoolingObject<T>() where T : class
+    public static T GetPoolingObject<T>() where T : class
     {
         if (_poolObjContainer.TryGetValue(typeof(T), out var poolObj))
         {
@@ -106,4 +94,5 @@ public class ObjectPoolManager : MonoBehaviour
         }
         else return default;
     }
+
 }
