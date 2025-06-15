@@ -40,4 +40,8 @@ public class PlayableInfoSO : ScriptableObject
     {
         return _playableList.AsReadOnly();
     }
+    public void ClearPlayableList()
+    {
+        _playableList.Clear();
+    }
 }

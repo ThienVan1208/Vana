@@ -9,9 +9,12 @@ public class HandHolder : PlayableCardHolder
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
+    protected override void OnDestroy()
+    {
+        _chosenCards.Clear();
+    }
     public override void AddCard(Card card)
     {
-        // DisconnectCardSlot(card);
         base.AddCard(card);
         card.CanInteract(true);
         foreach (var keyVal in _cardsDic)
@@ -39,20 +42,8 @@ public class HandHolder : PlayableCardHolder
 
         foreach (var card in _chosenCards)
         {
-            // Disconnect from current cardHolder.
-
             _cardsDic[card.transform.parent as RectTransform] = null;
             curCardNum--;
-
-            /* 
-            - The distance between 2 cards is the distance that 
-                the UI panel contains gameConfigSO.initCardNum elements.
-            - So if the current card number is over gameConfigSO.initCardNum -> active it false.
-            */
-            // if (curCardNum > gameConfigSO.initCardNum)
-            // {
-            //     card.cardSlotRect?.gameObject.SetActive(false);
-            // }
         }
 
         chosenCardEventSO.RaiseEvent(_chosenCards);

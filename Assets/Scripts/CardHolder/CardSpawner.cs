@@ -11,6 +11,10 @@ public class CardSpawner : MonoBehaviour
     {
         Init();
     }
+    private void OnDestroy() {
+        _allCardsContainerSO.Init();
+        _unusedCardList.Clear();
+    }
     private void Init()
     {
         _allCardsContainerSO.Init();

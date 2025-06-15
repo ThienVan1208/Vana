@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 public enum EndGameType
 {
@@ -38,25 +40,37 @@ public class GameManager : MonoBehaviour
         _playableInfoSO.curPlayerIdx = 0;
         _playableInfoSO.prevPlayerIdx = 0;
     }
+    private void OnDestroy()
+    {
+        _playableInfoSO.ClearPlayableList();
+    }
     private void Start()
     {
         _ = HelpDrawCard();
     }
-    
+
     private async UniTask HelpDrawCard()
     {
-        await UniTask.Delay(1000);
-        for (int i = 0; i < _gameConfigSO.initCardNum; i++)
+        try
         {
-            foreach (var playable in _playableInfoSO.GetPlayableList())
+            await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
+            for (int i = 0; i < _gameConfigSO.initCardNum; i++)
             {
-                Card newCard = _cardSpawner.GetCards();
-                newCard.gameObject.SetActive(true);
-                playable.AddCards(newCard);
-                await UniTask.Delay(200);
+                foreach (var playable in _playableInfoSO.GetPlayableList())
+                {
+                    Card newCard = _cardSpawner.GetCards();
+                    newCard.gameObject.SetActive(true);
+                    playable.AddCards(newCard);
+                    await UniTask.Delay(200, cancellationToken: this.GetCancellationTokenOnDestroy());
+                }
             }
+            _playableInfoSO.GetPlayerByIndex(_playableInfoSO.curPlayerIdx).BeginTurn();
         }
-        _playableInfoSO.GetPlayerByIndex(_playableInfoSO.curPlayerIdx).BeginTurn();
+        catch (OperationCanceledException)
+        {
+            Debug.Log("Unitask is cancelled.");
+        }
+
     }
     private void OnEnable()
     {
@@ -90,10 +104,18 @@ public class GameManager : MonoBehaviour
     }
     private async UniTask HelpAddCards4CurPlayer(int playerIndex, List<Card> cards, float time)
     {
-        foreach (var card in cards)
+        try
         {
-            await UniTask.Delay((int)(time * 1000));
-            _playableInfoSO.GetPlayerByIndex(playerIndex).AddCards(card);
+            foreach (var card in cards)
+            {
+                await UniTask.Delay((int)(time * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
+                _playableInfoSO.GetPlayerByIndex(playerIndex).AddCards(card);
+            }
         }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("Unitask is cancelled.");
+        }
+
     }
 }

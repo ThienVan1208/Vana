@@ -10,7 +10,7 @@ public enum PopupUIType
     LoseGame,
     Setting,
 }
-public class PopupUIEvent
+public static class PopupUIEvent
 {
     public static Action<PopupUIType, bool> displayPopupAction;
     public static void RaiseAction(PopupUIType type, bool active = true)

@@ -4,6 +4,7 @@ using UnityEngine;
 public class CardHolder : MonoBehaviour
 {
     [SerializeField] protected GameConfigSO gameConfigSO;
+    public List<RectTransform> testList = new List<RectTransform>();
 
     // The key is cardSlot, value is card.
     protected Dictionary<RectTransform, Card> _cardsDic = new Dictionary<RectTransform, Card>();
@@ -13,6 +14,12 @@ public class CardHolder : MonoBehaviour
     protected virtual void Awake()
     {
         InitHolder();
+        Debug.Log("awake in card holder");
+    }
+    protected virtual void OnDestroy()
+    {
+        // InitHolder();
+        Debug.Log("destroy in card holder");
     }
     protected virtual void InitHolder()
     {
@@ -20,6 +27,7 @@ public class CardHolder : MonoBehaviour
         foreach (Transform child in transform)
         {
             _cardsDic[child as RectTransform] = null;
+            testList.Add(child as RectTransform);
         }
     }
 
@@ -99,6 +107,8 @@ public class CardHolder : MonoBehaviour
     #region Add card
     public virtual void AddCard(Card card)
     {
+        if (card == null) return;
+
         // Remove from previous cardHolder.
         DisconnectCardSlot(card);
 

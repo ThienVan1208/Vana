@@ -50,7 +50,10 @@ public class RuleGameHandler : MonoBehaviour
 
         _chosenCardEventSO.EventChannel -= PlayCards;
     }
-
+    private void OnDestroy()
+    {
+    
+    }
     #region Play card
     /*
     - This func means when playable one plays cards and ends turn

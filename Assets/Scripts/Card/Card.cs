@@ -3,6 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using System;
 
 public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                     , IPointerClickHandler, IDragHandler, IPointerEnterHandler
@@ -14,7 +15,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public RectTransform cardSlotRect, myRect;
 
     public RectTransform frontImg, backImg;
-    public FSM stateMachine{ get; private set; }
+    public FSM stateMachine { get; private set; }
     private IdleState _idleState;
     private DragState _dragState;
     private HoverState _hoverState;
@@ -52,7 +53,22 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         stateMachine.AddTransit(_clickState, _idleState);
         stateMachine.AddTransit(_flipState, _idleState);
     }
-    // private void Start() 
+    private void OnDestroy()
+    {
+        // stateMachine.StopAllState();
+
+        stateMachine = null;
+        _idleState = null;
+        _dragState = null;
+        _moveState = null;
+        _hoverState = null;
+        _clickState = null;
+        _flipState = null;
+        cardSlotRect = null;
+        myRect = null;
+    }
+
+    // private void Start() {
     //     myRect.localScale = Vector3.one * _gameConfigSO.cardSize;
     // }
     //     private void OnValidate()
@@ -85,6 +101,9 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     //             }
     //         }
     //     }
+
+
+
     /*
     in unity, when the canvas render mode is world, so the recttransform of all UI elements in that canvas is equal to transform?
     */
@@ -100,8 +119,9 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         cardHolder = holder;
         if (!_canInteract) return;
     }
-    public void SetParent(RectTransform parent)
+    public void SetCardParent(RectTransform parent)
     {
+        if (parent == null) return;
         myRect.SetParent(parent, false);
     }
     #endregion
@@ -167,60 +187,74 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     #region Flip card
     public async UniTask FaceCardDown(bool hasTransition = false)
     {
-
-        if (hasTransition)
+        try
         {
-            stateMachine.StopAllState();
-            Vector3 rotateDir = new Vector3(0f, 90f, 0f);
-            myRect.transform.localEulerAngles = Vector3.zero;
-            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
-            .OnComplete(() =>
+            if (hasTransition)
+            {
+                stateMachine.StopAllState();
+                Vector3 rotateDir = new Vector3(0f, 90f, 0f);
+                myRect.transform.localEulerAngles = Vector3.zero;
+                myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
+                .OnComplete(() =>
+                {
+                    frontImg.gameObject.SetActive(false);
+                    backImg.gameObject.SetActive(true);
+                    myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
+                    .OnComplete(() => stateMachine.ContinuePrevState());
+                });
+                await UniTask.Delay((int)(2 * _time2HaflRotate), cancellationToken: this.GetCancellationTokenOnDestroy());
+            }
+            else
             {
                 frontImg.gameObject.SetActive(false);
                 backImg.gameObject.SetActive(true);
-                myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
-                .OnComplete(() => stateMachine.ContinuePrevState());
-            });
-            await UniTask.Delay((int)(2 * _time2HaflRotate));
+            }
         }
-        else
+        catch (OperationCanceledException)
         {
-            frontImg.gameObject.SetActive(false);
-            backImg.gameObject.SetActive(true);
+            Debug.Log("Unitask is cancelled.");
         }
+
     }
 
     public async UniTask FaceCardUp(bool hasTransition = false)
     {
-
-        if (hasTransition)
+        try
         {
-            stateMachine.StopAllState();
-            Vector3 rotateDir = new Vector3(0f, 90f, 0f);
-            myRect.transform.localEulerAngles = Vector3.zero;
-            myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
-            .OnComplete(() =>
+            if (hasTransition)
             {
-                // await UniTask.Delay(500);
-                backImg.gameObject.SetActive(false);
-                frontImg.gameObject.SetActive(true);
-
-                // await UniTask.Delay(500);
-
-                myRect.DORotate(myRect.transform.localEulerAngles - rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
+                stateMachine.StopAllState();
+                Vector3 rotateDir = new Vector3(0f, 90f, 0f);
+                myRect.transform.localEulerAngles = Vector3.zero;
+                myRect.DORotate(myRect.transform.localEulerAngles + rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
                 .OnComplete(() =>
                 {
-                    stateMachine.ContinuePrevState();
-                    stateMachine.ChangeState(_flipState);
+                    // await UniTask.Delay(500);
+                    backImg.gameObject.SetActive(false);
+                    frontImg.gameObject.SetActive(true);
+
+                    // await UniTask.Delay(500);
+
+                    myRect.DORotate(myRect.transform.localEulerAngles - rotateDir, _time2HaflRotate).SetEase(Ease.InOutCubic)
+                    .OnComplete(() =>
+                    {
+                        stateMachine.ContinuePrevState();
+                        stateMachine.ChangeState(_flipState);
+                    });
                 });
-            });
-            await UniTask.Delay((int)(2 * _time2HaflRotate));
+                await UniTask.Delay((int)(2 * _time2HaflRotate), cancellationToken: this.GetCancellationTokenOnDestroy());
+            }
+            else
+            {
+                frontImg.gameObject.SetActive(true);
+                backImg.gameObject.SetActive(false);
+            }
         }
-        else
+        catch (OperationCanceledException)
         {
-            frontImg.gameObject.SetActive(true);
-            backImg.gameObject.SetActive(false);
+            Debug.Log("Unitask is cancelled.");
         }
+
     }
     #endregion
 
