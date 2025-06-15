@@ -10,8 +10,6 @@ public class UsedCardHolder : MonoBehaviour
 
     public async UniTask AddUsedCards(List<Card> usedCards)
     {
-        var token = this.GetCancellationTokenOnDestroy(); // Get cancellation token tied to MonoBehaviour lifecycle
-        try
         {
             for (int i = 0; i < usedCards.Count; i++)
             {
@@ -21,10 +19,6 @@ public class UsedCardHolder : MonoBehaviour
                 _usedCardQueue.Enqueue(usedCards[i]);
                 usedCards[i].CanInteract(false);
             }
-        }
-        catch (OperationCanceledException)
-        {
-            Debug.Log("AddUsedCards was canceled due to GameObject destruction!");
         }
     }
 

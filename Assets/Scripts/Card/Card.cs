@@ -214,7 +214,6 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         {
             Debug.Log("Unitask is cancelled.");
         }
-
     }
 
     public async UniTask FaceCardUp(bool hasTransition = false)

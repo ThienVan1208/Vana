@@ -11,7 +11,6 @@ public class LoadSceneHandler : MonoBehaviour
     private static int _nextSceneIndex = 0;
     private static int _prevSceneIndex = 0;
 
-    [System.Obsolete]
     private void Awake()
     {
         _sceneLoader = transform.GetChild(0).GetComponent<SceneLoadBase>();
@@ -37,7 +36,7 @@ public class LoadSceneHandler : MonoBehaviour
         {
             // Start loading effect.
             _sceneLoader.StartLoading();
-            await UniTask.Delay((int)(_sceneLoader.GetEffectTime() * 1000f));
+            await UniTask.Delay((int)(_sceneLoader.GetEffectTime() * 1000f), cancellationToken: this.GetCancellationTokenOnDestroy());
 
             // Time.timeScale = 0;
 
@@ -71,13 +70,13 @@ public class LoadSceneHandler : MonoBehaviour
             }
 
             // Wait to unload sceneLoader.
-            await UniTask.Delay((int)(_sceneLoader.GetEffectTime() * 1000f));
+            await UniTask.Delay((int)(_sceneLoader.GetEffectTime() * 1000f), cancellationToken: this.GetCancellationTokenOnDestroy());
 
             await SceneManager.UnloadSceneAsync(SceneLoaderPath);
         }
         catch (OperationCanceledException)
         {
-            Debug.Log("Unitask is cancelled.");
+            throw;
         }
 
     }

@@ -70,6 +70,7 @@ public static class ObjectPoolManager
     {
         return _poolingObjects.Remove(typeof(T)) && _poolObjContainer.Remove(typeof(T));
     }
+    
     public static N ReturnToPool<T, N>(N obj)
     where T : class
     {

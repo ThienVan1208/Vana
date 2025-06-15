@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using System;
 public class RuleGameHandler : MonoBehaviour
 {
     public static bool BeginTurn = true;
@@ -52,7 +53,7 @@ public class RuleGameHandler : MonoBehaviour
     }
     private void OnDestroy()
     {
-    
+
     }
     #region Play card
     /*
@@ -66,30 +67,44 @@ public class RuleGameHandler : MonoBehaviour
     }
     private async UniTask HelpPlayCards()
     {
-        // Get flip cards effects.
-        await GetFlipCardWhenPlay();
-
-        _relocatePlayerCardEventSO.RaiseEvent();
-
-        if (!CheckEndGameCond())
+        try
         {
-            _nextTurnEventSO.RaiseEvent();
-        }
+            // Get flip cards effects.
+            await GetFlipCardWhenPlay();
 
+            _relocatePlayerCardEventSO.RaiseEvent();
+
+            if (!CheckEndGameCond())
+            {
+                _nextTurnEventSO.RaiseEvent();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
     }
 
     // Used to move choosen card list to table and face them down excluding the first card.
     private async UniTask GetFlipCardWhenPlay()
     {
-        _tableHolder.ActiveSlotBeforeAddCard(_chosenCards.Count);
-        _ = _chosenCards[0].FaceCardUp();
-        _tableHolder.AddCard(_chosenCards[0]);
-        for (int i = 1; i < _chosenCards.Count; i++)
+        try
         {
-            await UniTask.Delay(300);
-            _ = _chosenCards[i].FaceCardDown();
-            _tableHolder.AddCard(_chosenCards[i]);
+            _tableHolder.ActiveSlotBeforeAddCard(_chosenCards.Count);
+            _ = _chosenCards[0].FaceCardUp();
+            _tableHolder.AddCard(_chosenCards[0]);
+            for (int i = 1; i < _chosenCards.Count; i++)
+            {
+                await UniTask.Delay(300, cancellationToken: this.GetCancellationTokenOnDestroy());
+                _ = _chosenCards[i].FaceCardDown();
+                _tableHolder.AddCard(_chosenCards[i]);
+            }
         }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+
     }
     #endregion
 
@@ -100,55 +115,76 @@ public class RuleGameHandler : MonoBehaviour
     }
     private async UniTask HelpRevealingCard()
     {
-        for (int i = 1; i < _chosenCards.Count; i++)
+        try
         {
-            await _chosenCards[i].FaceCardUp(hasTransition: true);
-            await UniTask.Delay(1000);
-            _camShakeEventSO.RaiseEvent(0.2f, 0.8f);
-
-            bool revealCondition = _chosenCards[0].GetCardSuit() != _chosenCards[i].GetCardSuit()
-                        && _chosenCards[0].GetCardRank() != _chosenCards[i].GetCardRank();
-
-            if (revealCondition)
+            for (int i = 1; i < _chosenCards.Count; i++)
             {
-                await UniTask.Delay(1000);
-                await SuccessRevealCard();
-                return;
-            }
-        }
+                await _chosenCards[i].FaceCardUp(hasTransition: true);
+                await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
+                _camShakeEventSO.RaiseEvent(0.2f, 0.8f);
 
-        await UniTask.Delay(1000);
-        await FailRevealCard();
+                bool revealCondition = _chosenCards[0].GetCardSuit() != _chosenCards[i].GetCardSuit()
+                            && _chosenCards[0].GetCardRank() != _chosenCards[i].GetCardRank();
+
+                if (revealCondition)
+                {
+                    await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
+                    await SuccessRevealCard();
+                    return;
+                }
+            }
+
+            await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
+            await FailRevealCard();
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
     }
     private async UniTask SuccessRevealCard()
     {
-        // Add choosen card list to usedCardQueue.
-        await _usedCardHolder.AddUsedCards(_chosenCards);
+        try
+        {
+            // Add choosen card list to usedCardQueue.
+            await _usedCardHolder.AddUsedCards(_chosenCards);
 
-        _addCard2PlayerEventSO.RaiseEvent(_playableInfoSO.prevPlayerIdx
-                                , _usedCardHolder.GetUsedCardList());
+            _addCard2PlayerEventSO.RaiseEvent(_playableInfoSO.prevPlayerIdx
+                                    , _usedCardHolder.GetUsedCardList());
 
-        await UniTask.Delay(1000);
+            await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
 
-        _tableHolder.RefreshTable();
-        _checkRevealEventSO.RaiseEvent(true);
-        _continuedCurTurnEventSO.RaiseEvent();
+            _tableHolder.RefreshTable();
+            _checkRevealEventSO.RaiseEvent(true);
+            _continuedCurTurnEventSO.RaiseEvent();
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
     }
     private async UniTask FailRevealCard()
     {
-        // Add choosen card list to usedCardQueue.
-        await _usedCardHolder.AddUsedCards(_chosenCards);
+        try
+        {
+            // Add choosen card list to usedCardQueue.
+            await _usedCardHolder.AddUsedCards(_chosenCards);
 
 
-        _addCard2PlayerEventSO.RaiseEvent(_playableInfoSO.curPlayerIdx
-                                , _usedCardHolder.GetUsedCardList());
+            _addCard2PlayerEventSO.RaiseEvent(_playableInfoSO.curPlayerIdx
+                                    , _usedCardHolder.GetUsedCardList());
 
-        await UniTask.Delay(1000);
+            await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
 
-        _tableHolder.RefreshTable();
-        BeginTurn = true;
-        _checkRevealEventSO.RaiseEvent(false);
-        _nextTurnEventSO.RaiseEvent();
+            _tableHolder.RefreshTable();
+            BeginTurn = true;
+            _checkRevealEventSO.RaiseEvent(false);
+            _nextTurnEventSO.RaiseEvent();
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
     }
     #endregion
 
@@ -161,16 +197,21 @@ public class RuleGameHandler : MonoBehaviour
     }
     private async UniTask HelpPassTurn()
     {
-        // DisconnectCardsFromTable(_chosenCards);
+        try
+        {
+            // Add choosen card list to usedCardQueue.
+            await _usedCardHolder.AddUsedCards(_chosenCards);
 
-        // Add choosen card list to usedCardQueue.
-        await _usedCardHolder.AddUsedCards(_chosenCards);
+            BeginTurn = true;
 
-        BeginTurn = true;
+            _tableHolder.RefreshTable();
 
-        _tableHolder.RefreshTable();
-
-        _nextTurnEventSO.RaiseEvent();
+            _nextTurnEventSO.RaiseEvent();
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
     }
     #endregion
 
@@ -189,17 +230,24 @@ public class RuleGameHandler : MonoBehaviour
     }
     private async UniTask EndGame(int playerIndex)
     {
-        for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
+        try
         {
-            await UniTask.Delay(200);
-            if (playerIndex == i)
+            for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
             {
-                _playableInfoSO.GetPlayerByIndex(i).WinGame();
+                await UniTask.Delay(200, cancellationToken: this.GetCancellationTokenOnDestroy());
+                if (playerIndex == i)
+                {
+                    _playableInfoSO.GetPlayerByIndex(i).WinGame();
+                }
+                else
+                {
+                    _playableInfoSO.GetPlayerByIndex(i).LoseGame();
+                }
             }
-            else
-            {
-                _playableInfoSO.GetPlayerByIndex(i).LoseGame();
-            }
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
         }
     }
     #endregion

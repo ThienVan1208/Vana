@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         }
         catch (OperationCanceledException)
         {
-            Debug.Log("Unitask is cancelled.");
+            throw;
         }
 
     }
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
         }
         catch (OperationCanceledException)
         {
-            Debug.Log("Unitask is cancelled.");
+            throw;
         }
 
     }
