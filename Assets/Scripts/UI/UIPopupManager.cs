@@ -8,6 +8,8 @@ public enum PopupUIType
 {
     WinGame,
     LoseGame,
+    PlayPanel,
+    InforPanel,
     Setting,
 }
 public static class PopupUIEvent

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PopupUIBase : MonoBehaviour
 {
-    [SerializeField] protected PopupUIEventSO subcribedPopupUIEventSO;
     [SerializeField] protected PopupUIType popupUIType;
+    [SerializeField] protected PopupUIEventSO subcribedPopupUIEventSO;
     [SerializeField] protected GameObject popupWindow;
     protected virtual void Start()
     {
