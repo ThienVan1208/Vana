@@ -231,7 +231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 190348036}
   m_Layer: 0
-  m_Name: -----------UI------------
+  m_Name: -----------UI------------------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,6 +247,52 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.54557776, y: 0.93529993, z: -0.29029903}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &227523384
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 227523386}
+  - component: {fileID: 227523385}
+  m_Layer: 0
+  m_Name: Level Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &227523385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227523384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: babe2f38f5232694ebb1fd457b44f18a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelInfoSO: {fileID: 11400000, guid: 7977c62e8f3550347bc62ee3f57ce341, type: 2}
+  _levelUpEventSO: {fileID: 11400000, guid: 521bfb9a18bb09c4081187d959c11163, type: 2}
+--- !u!4 &227523386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227523384}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1009,6 +1055,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camShakeEventSO: {fileID: 11400000, guid: 9a80ccfd075909540b86af7fcc3e4cda, type: 2}
+--- !u!1 &584936711
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 584936712}
+  m_Layer: 0
+  m_Name: ----------IN GAME ELEMENT------------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &584936712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584936711}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 182.22801, y: 169.69926, z: -2.0186975}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &585499598
 GameObject:
   m_ObjectHideFlags: 0
@@ -1071,7 +1148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 602546311}
   m_Layer: 0
-  m_Name: -----------Player------------
+  m_Name: -----------PLAYER--------------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1296,6 +1373,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &677416077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 677416079}
+  - component: {fileID: 677416078}
+  m_Layer: 0
+  m_Name: Currency Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &677416078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677416077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 167d9ea8263cbd74e8758a4031aa7390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currencyInfoSO: {fileID: 11400000, guid: 0ae2e1122a247204cb2541fbf0c90b62, type: 2}
+  _increaseCurrencyEventSO: {fileID: 11400000, guid: 35ce08836dfbc4d4fbd9dece1493290e, type: 2}
+--- !u!4 &677416079
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677416077}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 182.22801, y: 169.69926, z: -2.0186975}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &740087951
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,6 +1556,8 @@ MonoBehaviour:
   _playButtonPrefab: {fileID: 4998945517929767177, guid: cf8d6832aa34cf54b8e3d3472c6a39bf, type: 3}
   _revealButtonPrefab: {fileID: 8942940341439447720, guid: a39c940a3a3a37f419aeec80d0e4a15f, type: 3}
   _passButtonPrefab: {fileID: 4085882491416559211, guid: dfd5a91ef08ddcd4b86476e56e4be25d, type: 3}
+  _increaseCurrencyEventSO: {fileID: 11400000, guid: 35ce08836dfbc4d4fbd9dece1493290e, type: 2}
+  _levelUpEventSO: {fileID: 11400000, guid: 521bfb9a18bb09c4081187d959c11163, type: 2}
 --- !u!4 &920495731
 Transform:
   m_ObjectHideFlags: 0
@@ -1458,7 +1583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 992824349}
   m_Layer: 0
-  m_Name: -----------Environment------------
+  m_Name: -----------ENVIRONMENT------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2068,7 +2193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1352840597}
   m_Layer: 0
-  m_Name: -----------In Game Element------------
+  m_Name: -----------MANAGER------------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13339,11 +13464,9 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1352840597}
-  - {fileID: 60038285}
-  - {fileID: 147542043}
-  - {fileID: 740087953}
-  - {fileID: 660636596}
   - {fileID: 1703245312}
+  - {fileID: 677416079}
+  - {fileID: 227523386}
   - {fileID: 190348036}
   - {fileID: 419142506}
   - {fileID: 1245340140}
@@ -13351,3 +13474,8 @@ SceneRoots:
   - {fileID: 602546311}
   - {fileID: 920495731}
   - {fileID: 1014271832}
+  - {fileID: 584936712}
+  - {fileID: 60038285}
+  - {fileID: 660636596}
+  - {fileID: 147542043}
+  - {fileID: 740087953}

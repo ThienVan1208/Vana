@@ -215,7 +215,7 @@ public class RuleGameHandler : MonoBehaviour
     }
     #endregion
 
-    #region End game condition
+    #region EndGame
     private bool CheckEndGameCond()
     {
         for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)

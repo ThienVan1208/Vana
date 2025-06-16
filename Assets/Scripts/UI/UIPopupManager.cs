@@ -36,11 +36,12 @@ public class UIPopupManager : MonoBehaviour
     // Used to count the number of popup UI which is active.
     private int _countPopupNum = 0;
     private Image _panel;
+    
     private void Awake()
     {
         _subcribedPopupUIEventSO.EventChannel += SubcribePopupUI;
         PopupUIEvent.displayPopupAction += DisplayPopup;
-        
+
         _panel = GetComponent<Image>();
         ShowPanel(false);
 
@@ -48,7 +49,7 @@ public class UIPopupManager : MonoBehaviour
     private void OnDestroy()
     {
         _subcribedPopupUIEventSO.EventChannel -= SubcribePopupUI;
-        PopupUIEvent.displayPopupAction += DisplayPopup;
+        PopupUIEvent.displayPopupAction -= DisplayPopup;
     }
     
     private void SubcribePopupUI(PopupUIType type, PopupUIBase popupUI)
@@ -57,17 +58,15 @@ public class UIPopupManager : MonoBehaviour
         _popupUIDics[type] = popupUI;
     }
 
-    public void DisplayPopup(PopupUIType type, bool active = true)
+    private void DisplayPopup(PopupUIType type, bool active = true)
     {
         _popupRequest.Enqueue(type);
 
-        _ = HandlePopupRequest(active);
+        if (!_lockPopupHandler) _ = HandlePopupRequest(active);
 
     }
     private async UniTask HandlePopupRequest(bool active = true)
     {
-        if (_lockPopupHandler) return;
-
         _lockPopupHandler = true;
         while (_popupRequest.TryDequeue(out var type))
         {
@@ -101,6 +100,7 @@ public class UIPopupManager : MonoBehaviour
     }
     private void ShowPanel(bool active = true)
     {
+        if (_panel == null) return;
         _panel.enabled = active;
     }
 }

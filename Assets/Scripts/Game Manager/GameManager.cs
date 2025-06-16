@@ -10,14 +10,7 @@ public enum EndGameType
     Win,
     Lose,
 }
-// public class EndGameEvent
-// {
-//     public static Action<IPlayable> EndGameAction;
-//     public static void RaiseAction(IPlayable player)
-//     {
-//         EndGameAction?.Invoke(player);
-//     }
-// }
+
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private CardSpawner _cardSpawner;

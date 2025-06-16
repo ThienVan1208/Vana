@@ -9,6 +9,11 @@ public class Player : PlayerBase
     [SerializeField] private GameObject _playButtonPrefab;
     [SerializeField] private GameObject _revealButtonPrefab, _passButtonPrefab;
 
+    // Ref in CurrencyManager.
+    [SerializeField] private IntEventSO _increaseCurrencyEventSO;
+
+    // Ref in LevelManager.
+    [SerializeField] private VoidEventSO _levelUpEventSO;
     protected override void InitCardHolder()
     {
         base.InitCardHolder();
@@ -173,11 +178,14 @@ public class Player : PlayerBase
     {
         base.WinGame();
         PopupUIEvent.RaiseAction(PopupUIType.WinGame);
+        _increaseCurrencyEventSO.RaiseEvent(5);
+        _levelUpEventSO.RaiseEvent();
     }
     public override void LoseGame()
     {
         base.LoseGame();
         PopupUIEvent.RaiseAction(PopupUIType.LoseGame);
+        _increaseCurrencyEventSO.RaiseEvent(-5);
     }
     
 }
