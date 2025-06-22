@@ -11,13 +11,14 @@ public class HoverState : InteractableState
     public override void OnEnter()
     {
         base.OnEnter();
-        isComplete = false;
-        Sequence seq = DOTween.Sequence();
-        seq.Append(myCard.myRect.DOShakeRotation(0.2f, new Vector3(0, 0, 5))).OnComplete(() =>
-        {
-            isComplete = true;
-            myCard.stateMachine.RequestChangeState();
-        });
+        isComplete = true;
+        // isComplete = false;
+        // Sequence seq = DOTween.Sequence();
+        // seq.Append(myCard.myRect.DOShakeRotation(0.2f, new Vector3(0, 0, 5))).OnComplete(() =>
+        // {
+        //     isComplete = true;
+        //     myCard.stateMachine.RequestChangeState();
+        // });
 
         if (myCard.cardHolder == null || !(myCard.cardHolder is HandHolder))
         {

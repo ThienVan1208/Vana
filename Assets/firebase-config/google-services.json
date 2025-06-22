@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "735053440217",
+    "project_id": "vana-56f0d",
+    "storage_bucket": "vana-56f0d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735053440217:android:d864ab3cd9d9b606168ac8",
+        "android_client_info": {
+          "package_name": "com.google.firebase.vana"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO18yklr6kBkme01xPjZb5RFldOKLMCs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

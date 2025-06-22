@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
+// using Unity.VisualScripting;
 using UnityEngine;
 
 public class ClickState : InteractableState
@@ -7,15 +9,18 @@ public class ClickState : InteractableState
     private float _dis2Up = 20f;
     private float _time2Up = 0.2f;
     private bool _chosenFlag = true;
+    private bool _scaleLock = false;
     public ClickState(Card card) : base(card)
     {
     }
 
     public override void OnEnter()
     {
+        // Debug.Log("stateclick " + isComplete);
         base.OnEnter();
-        isComplete = false;
 
+        isComplete = false;
+        
         if (_isUp)
         {
             GetUp();
@@ -25,7 +30,23 @@ public class ClickState : InteractableState
             GetDown();
         }
     }
+    private void ShakeEffect()
+    {
+        _scaleLock = true;
+        Vector3 scaleOff = Vector3.one / 10f;
+        CamShakeEvent.RaiseEvent(0.05f, 0.6f);
 
+        myCard.myRect.DOScale(myCard.myRect.localScale + scaleOff, 0.25f).SetEase(Ease.InOutSine)
+        .OnComplete(() =>
+        {
+            myCard.myRect.DOScale(myCard.myRect.localScale - scaleOff, 0.25f).SetEase(Ease.InOutSine);
+        });
+        myCard.myRect.DOShakeRotation(0.5f, new Vector3(0, 0, 5)).OnComplete(() =>
+        {
+            _scaleLock = false;
+        });
+
+    }
     private void GetUp()
     {
         if (_chosenFlag)
@@ -34,7 +55,8 @@ public class ClickState : InteractableState
                 && !(myCard.cardHolder as HandHolder).CanChooseCard())
             {
                 Debug.Log("Can not choose more card.");
-                OnExit();
+                myCard.stateMachine.RequestChangeState();
+                // await UniTask.Yield();
                 return;
             }
 
@@ -44,25 +66,34 @@ public class ClickState : InteractableState
 
         _isUp = !_isUp;
 
-        // _psEffect = ObjectPoolManager.Instance?.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(myCard.frontImg.transform);
+        ShakeEffect();
 
         myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
         myCard.frontImg.DOAnchorPosY(myCard.frontImg.localPosition.y + _dis2Up, _time2Up)
-        .SetEase(Ease.OutQuad).OnComplete(() => myCard.stateMachine.RequestChangeState());
+        .SetEase(Ease.OutQuad).OnComplete(async () =>
+        {
+            await UniTask.WaitUntil(() => !_scaleLock);
+            myCard.stateMachine.RequestChangeState();
+        });
     }
     private void GetDown()
     {
         _isUp = !_isUp;
 
         if (_chosenFlag) (myCard.cardHolder as HandHolder).RejectCard(myCard);
-    
-        // ObjectPoolManager.Instance?.ReturnToPool<CardPSEffect, ParticleSystem>(_psEffect, isInactive: true);
+
+        ShakeEffect();
 
         myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
         myCard.frontImg.DOAnchorPosY(myCard.frontImg.localPosition.y - _dis2Up, _time2Up)
-        .SetEase(Ease.OutQuad).OnComplete(() => myCard.stateMachine.RequestChangeState());
+        .SetEase(Ease.OutQuad).OnComplete(async () =>
+        {
+            await UniTask.WaitUntil(() => !_scaleLock);
+
+            myCard.stateMachine.RequestChangeState();
+        });
     }
     public void SetChosenFlag(bool val)
     {

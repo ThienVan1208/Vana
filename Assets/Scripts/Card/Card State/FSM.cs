@@ -29,8 +29,9 @@ public class FSM
     }
     public void ChangeState(StateBase state, bool isForce = false, bool isExit = true, bool isEnter = true)
     {
+        if(state == _curState) return;
         if (_isStop || !isForce && !_curState.isComplete) return;
-
+        // if(_curState != null) Debug.Log(_curState.isComplete);
         if (isExit) _curState.OnExit();
         _curState = state;
         if (isEnter) _curState.OnEnter();

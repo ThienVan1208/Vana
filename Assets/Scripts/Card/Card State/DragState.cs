@@ -1,19 +1,20 @@
-using System;
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class DragState : MoveableState
 {
 
     private bool _isDrag = false;
+    private Vector2 _targetPos;
     public DragState(Card card) : base(card)
     {
+        InputSystem.Update();
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
+        myCard.interactInputReaderSO.MousePosAction += SetTarget;
 
         _isDrag = true;
         if (myCard.cardHolder == null || !(myCard.cardHolder is HandHolder)) return;
@@ -33,15 +34,14 @@ public class DragState : MoveableState
         if (_isDrag)
         {
             // Canvas is in overlay mode -> camera = null.
-            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(myCard.myRect
-            , Input.mousePosition, Camera.main, out var worldPos))
+
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(myCard.myRect, _targetPos, Camera.main, out var worldPos))
             {
                 // Move.
                 GetMoveEffect(worldPos);
 
                 // Rotate.
                 GetRotateEffect(worldPos);
-
             }
         }
 
@@ -53,13 +53,18 @@ public class DragState : MoveableState
             GetRotateEffect(myCard.cardSlotRect.position);
             if (Vector2.Distance(myCard.cardSlotRect.position, myCard.myRect.position) < 0.001f)
             {
+                isComplete = true;
                 myCard.stateMachine.RequestChangeState();
                 wait4Transit = true;
 
             }
         }
     }
-
+    public override void OnExit()
+    {
+        base.OnExit();
+        myCard.interactInputReaderSO.MousePosAction -= SetTarget;
+    }
     public void StartDrag()
     {
         _isDrag = true;
@@ -70,5 +75,9 @@ public class DragState : MoveableState
         if (!myCard.IsInteractable()) return;
         (myCard.cardHolder as HandHolder).SetDrag(false);
 
+    }
+    public void SetTarget(Vector2 target)
+    {
+        _targetPos = target;
     }
 }

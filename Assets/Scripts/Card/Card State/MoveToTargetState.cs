@@ -13,6 +13,7 @@ public class MoveToTargetState : MoveableState
         GetRotateEffect(myCard.cardSlotRect.position);
         if (Vector2.Distance(myCard.cardSlotRect.position, myCard.myRect.position) < 0.001f)
         {
+            isComplete = true;
             myCard.stateMachine.RequestChangeState();
             wait4Transit = true;
         }

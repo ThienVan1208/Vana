@@ -23,6 +23,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     private ClickState _clickState;
     private FlipState _flipState;
     private bool _canInteract = true;
+    [SerializeField] public InteractInputReaderSO interactInputReaderSO;
     public CardHolder cardHolder { get; private set; }
 
     // 2 * _time2HaflRotate is the total time for card to rotate (used to flip card).
@@ -68,23 +69,20 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         myRect = null;
     }
 
-    // private void Start() {
-    //     myRect.localScale = Vector3.one * _gameConfigSO.cardSize;
-    // }
     //     private void OnValidate()
     //     {
     //         // Only run if _gameConfigSO is not already assigned
-    //         if (gameConfigSO == null)
+    //         if (interactInputReaderSO == null)
     //         {
     //             // Find the ScriptableObject in the asset database
-    //             string[] guids = AssetDatabase.FindAssets($"t:{typeof(GameConfigSO).Name}");
+    //             string[] guids = AssetDatabase.FindAssets($"t:{typeof(InteractInputReaderSO).Name}");
     //             if (guids.Length > 0)
     //             {
     //                 string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-    //                 gameConfigSO = AssetDatabase.LoadAssetAtPath<GameConfigSO>(path);
-    //                 if (gameConfigSO != null)
+    //                 interactInputReaderSO = AssetDatabase.LoadAssetAtPath<InteractInputReaderSO>(path);
+    //                 if (interactInputReaderSO != null)
     //                 {
-    //                     Debug.Log($"Assigned ScriptableObject: {gameConfigSO.name}");
+    //                     Debug.Log($"Assigned ScriptableObject: {interactInputReaderSO.name}");
     // #if UNITY_EDITOR
     //                     // Mark the object as dirty to ensure the change is saved
     //                     EditorUtility.SetDirty(this);

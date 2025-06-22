@@ -14,12 +14,12 @@ public class CardHolder : MonoBehaviour
     protected virtual void Awake()
     {
         InitHolder();
-        Debug.Log("awake in card holder");
+        // Debug.Log("awake in card holder");
     }
     protected virtual void OnDestroy()
     {
         // InitHolder();
-        Debug.Log("destroy in card holder");
+        // Debug.Log("destroy in card holder");
     }
     protected virtual void InitHolder()
     {
