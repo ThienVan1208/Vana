@@ -81,6 +81,3 @@ Assets/Plugins/ParrelSync.meta
 # Ignore JVM crash logs
 *.log
 
-
-Assets/Firebase/Plugins/*.so
-Assets/Firebase/Plugins/*.bundle
