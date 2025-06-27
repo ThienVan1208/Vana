@@ -74,3 +74,13 @@ crashlytics-build.properties
 ProjectSettings/ProjectVersion.txt
 Assets/Plugins/ParrelSync.meta
 /Assets/Plugins/ParrelSync
+
+# Ignore Unity temporary folder
+.utmp/
+
+# Ignore JVM crash logs
+*.log
+
+
+Assets/Firebase/Plugins/*.so
+Assets/Firebase/Plugins/*.bundle
