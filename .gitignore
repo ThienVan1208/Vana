@@ -81,3 +81,6 @@ Assets/Plugins/ParrelSync.meta
 
 # Ignore JVM crash logs
 *.log
+
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp-12_10_0.bundle
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp-12_10_0.so
