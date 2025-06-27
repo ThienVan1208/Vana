@@ -25,6 +25,11 @@ public class LoadSceneHandler : MonoBehaviour
         _nextSceneIndex = index;
         SceneManager.LoadScene(SceneLoaderPath, LoadSceneMode.Additive);
     }
+    public static void LoadNextScene()
+    {
+        _prevSceneIndex = _nextSceneIndex++;
+        SceneManager.LoadScene(SceneLoaderPath, LoadSceneMode.Additive);
+    }
 
     private async void Start()
     {

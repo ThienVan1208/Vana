@@ -12,5 +12,9 @@ public class CurrencyInfoSO : ScriptableObject
     {
         return _currency;
     }
+    public void SetCurrency(int val)
+    {
+        _currency = val;
+    }
 }
 
