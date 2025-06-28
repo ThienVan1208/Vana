@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AceOfClubs
   m_EditorClassIdentifier: 
   cardRank: 0
-  cardSuit: 0
+  cardSuit: 2

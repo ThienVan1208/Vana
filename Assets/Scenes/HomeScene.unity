@@ -1003,6 +1003,7 @@ MonoBehaviour:
   popupUIType: 2
   subcribedPopupUIEventSO: {fileID: 11400000, guid: 109e8e22d25db8b49bd727a7a0fb9dd1, type: 2}
   popupWindow: {fileID: 984029712}
+  _playButton: {fileID: 1478280757}
 --- !u!1 &887357370
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,7 +1858,6 @@ GameObject:
   - component: {fileID: 1478280759}
   - component: {fileID: 1478280758}
   - component: {fileID: 1478280757}
-  - component: {fileID: 1478280760}
   m_Layer: 5
   m_Name: Play Button
   m_TagString: Untagged
@@ -1928,19 +1928,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1478280758}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1478280760}
-        m_TargetAssemblyTypeName: LoadSceneFunc, Assembly-CSharp
-        m_MethodName: LoadNextScene
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1478280758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1979,19 +1967,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478280755}
   m_CullTransparentMesh: 1
---- !u!114 &1478280760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1478280755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 810955cb0e2acf646b6746e89bcf8aaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numScene: 1
 --- !u!1 &1514522484
 GameObject:
   m_ObjectHideFlags: 0

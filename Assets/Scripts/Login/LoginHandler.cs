@@ -32,7 +32,7 @@ public class LoginHandler : MonoBehaviour
             return;
         }
 
-        await _dbRef.Child("users").GetValueAsync().ContinueWithOnMainThread(async task =>
+        await _dbRef.Child(Constant.UsersNode).GetValueAsync().ContinueWithOnMainThread(async task =>
         {
             if (task.IsFaulted || task.IsCanceled)
             {
@@ -48,7 +48,7 @@ public class LoginHandler : MonoBehaviour
                         break;
                     case LoginState.Success:
                         await LoadDataEvent.RaiseAction(_userID);
-                        LoadSceneHandler.LoadNextScene();
+                        LoadSceneHandler.LoadSceneByIndex(Constant.HomeScene);
                         break;
                     default:
                         break;
@@ -62,10 +62,10 @@ public class LoginHandler : MonoBehaviour
         foreach (DataSnapshot data in task)
         {
             // If userName is incorrect.
-            if (_accInput.text != data.Child("userName").Value?.ToString()) continue;
+            if (_accInput.text != data.Child(Constant.UserName).Value?.ToString()) continue;
 
             // If password is incorrect.
-            if (_pwInput.text != data.Child("password").Value?.ToString())
+            if (_pwInput.text != data.Child(Constant.Password).Value?.ToString())
             {
                 Debug.Log("Password is incorrect.");
                 return LoginState.Fail;

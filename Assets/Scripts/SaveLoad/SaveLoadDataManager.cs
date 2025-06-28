@@ -3,7 +3,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using Firebase.Database;
 using Firebase.Extensions;
-using Unity.Android.Gradle.Manifest;
+
 using UnityEngine;
 public static class SaveDataEvent
 {
@@ -44,11 +44,11 @@ public class SaveLoadDataManager : MonoBehaviour
         string json = JsonUtility.ToJson(dataSaver);
         if (userID != "")
         {
-            _dbRef.Child("users").Child(userID).SetRawJsonValueAsync(json);
+            _dbRef.Child(Constant.UsersNode).Child(userID).SetRawJsonValueAsync(json);
         }
         else
         {
-            _dbRef.Child("users").Child(_userDataSO.GetUserID()).SetRawJsonValueAsync(json);
+            _dbRef.Child(Constant.UsersNode).Child(_userDataSO.GetUserID()).SetRawJsonValueAsync(json);
         }
 
         Debug.Log("Save successfully");
@@ -57,7 +57,7 @@ public class SaveLoadDataManager : MonoBehaviour
     {
         if (userID == "")
         {
-            await _dbRef.Child("users").Child(_userDataSO.GetUserID()).GetValueAsync().ContinueWithOnMainThread(task =>
+            await _dbRef.Child(Constant.UsersNode).Child(_userDataSO.GetUserID()).GetValueAsync().ContinueWithOnMainThread(task =>
             {
                 if (task.IsFaulted || task.IsCanceled)
                 {
@@ -67,10 +67,10 @@ public class SaveLoadDataManager : MonoBehaviour
                 else
                 {
                     _userDataSO.SetData(
-                        userName: (string)task.Result.Child("userName").Value,
-                        password: (string)task.Result.Child("password").Value,
-                        currency: (int)task.Result.Child("currency").Value,
-                        level: (int)task.Result.Child("level").Value
+                        userName: (string)task.Result.Child(Constant.UserName).Value,
+                        password: (string)task.Result.Child(Constant.Password).Value,
+                        currency: (int)task.Result.Child(Constant.Currency).Value,
+                        level: (int)task.Result.Child(Constant.Level).Value
                     );
                 }
             });
@@ -79,15 +79,15 @@ public class SaveLoadDataManager : MonoBehaviour
         {
             try
             {
-                DataSnapshot snapshot = await _dbRef.Child("users").Child(userID).GetValueAsync();
+                DataSnapshot snapshot = await _dbRef.Child(Constant.UsersNode).Child(userID).GetValueAsync();
                 if (snapshot.Exists)
                 {
                     _userDataSO.SetData(
                         ID: userID,
-                        userName: snapshot.Child("userName").Value != null ? (string)snapshot.Child("userName").Value : "",
-                        password: snapshot.Child("password").Value != null ? (string)snapshot.Child("password").Value : "",
-                        currency: snapshot.Child("currency").Value != null ? Convert.ToInt32(snapshot.Child("currency").Value) : 0,
-                        level: snapshot.Child("level").Value != null ? Convert.ToInt32(snapshot.Child("level").Value) : 0
+                        userName: snapshot.Child(Constant.UserName).Value != null ? (string)snapshot.Child(Constant.UserName).Value : "",
+                        password: snapshot.Child(Constant.Password).Value != null ? (string)snapshot.Child(Constant.Password).Value : "",
+                        currency: snapshot.Child(Constant.Currency).Value != null ? Convert.ToInt32(snapshot.Child(Constant.Currency).Value) : 0,
+                        level: snapshot.Child(Constant.Level).Value != null ? Convert.ToInt32(snapshot.Child(Constant.Level).Value) : 0
                     );
                 }
                 else

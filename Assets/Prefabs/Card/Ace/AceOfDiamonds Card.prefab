@@ -97,6 +97,7 @@ MonoBehaviour:
   myRect: {fileID: 0}
   frontImg: {fileID: 3059400648538070753}
   backImg: {fileID: 2377092455780947831}
+  interactInputReaderSO: {fileID: 11400000, guid: 9954b10fda5bed94ab69891e4fa29a73, type: 2}
 --- !u!1 &4250745383417547319
 GameObject:
   m_ObjectHideFlags: 0

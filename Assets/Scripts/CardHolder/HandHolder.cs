@@ -13,6 +13,8 @@ public class HandHolder : PlayableCardHolder
     {
         _chosenCards.Clear();
     }
+
+    #region Add card
     public override void AddCard(Card card)
     {
         base.AddCard(card);
@@ -30,7 +32,9 @@ public class HandHolder : PlayableCardHolder
             }
         }
     }
+    #endregion
 
+    #region Play card
     // Used thru button.
     public override bool HelpPlayingCard()
     {
@@ -47,14 +51,17 @@ public class HandHolder : PlayableCardHolder
         }
 
         chosenCardEventSO.RaiseEvent(_chosenCards);
-        
+
         ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
         // Clear chosen card list for the next choosing turn.
         _chosenCards.Clear();
-        
+
         return true;
     }
+    #endregion
+
+    #region  Swap card
     public void SetSrcCardPointer(Card card)
     {
         if (!_isDrag) return;
@@ -66,14 +73,6 @@ public class HandHolder : PlayableCardHolder
 
         _dstCardPointer = card;
         SwapCard();
-    }
-    public bool IsDrag()
-    {
-        return _isDrag;
-    }
-    public void SetDrag(bool isDrag)
-    {
-        _isDrag = isDrag;
     }
 
     public void SwapCard()
@@ -123,7 +122,20 @@ public class HandHolder : PlayableCardHolder
 
         _isSwap = false;
     }
+    #endregion
 
+    #region Check drag
+    public bool IsDrag()
+    {
+        return _isDrag;
+    }
+    public void SetDrag(bool isDrag)
+    {
+        _isDrag = isDrag;
+    }
+    #endregion
+
+    #region  Choose card
     public void ChooseCard(Card card)
     {
         if (!CanChooseCard())
@@ -138,6 +150,9 @@ public class HandHolder : PlayableCardHolder
     {
         return _chosenCards.Count < gameConfigSO.maxCard2Play;
     }
+    #endregion
+
+    #region Reject card
     public void RejectCard(Card card)
     {
         for (int i = 0; i < _chosenCards.Count; i++)
@@ -158,13 +173,6 @@ public class HandHolder : PlayableCardHolder
             }
         }
     }
-    // private void Update() {
-    //     foreach (var keyVal in _cardsDic)
-    //     {
-    //         if (keyVal.Key.transform.childCount >= 2)
-    //         {
-    //             Debug.LogWarning("ERROR IN CARD SWAP");
-    //         }
-    //     }
-    // }
+    #endregion
+   
 }

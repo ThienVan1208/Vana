@@ -10,6 +10,7 @@ public class LoadSceneHandler : MonoBehaviour
     public static string SceneLoaderPath = "SceneLoader";
     private static int _nextSceneIndex = 0;
     private static int _prevSceneIndex = 0;
+    private static bool _lock = false;
 
     private void Awake()
     {
@@ -21,12 +22,14 @@ public class LoadSceneHandler : MonoBehaviour
     // Used this method to load sceneLoader, then the start method will load next scene.
     public static void LoadSceneByIndex(int index)
     {
+        if (_lock) return;
         _prevSceneIndex = SceneManager.GetActiveScene().buildIndex;
         _nextSceneIndex = index;
         SceneManager.LoadScene(SceneLoaderPath, LoadSceneMode.Additive);
     }
     public static void LoadNextScene()
     {
+        if( _lock) return;
         _prevSceneIndex = _nextSceneIndex++;
         SceneManager.LoadScene(SceneLoaderPath, LoadSceneMode.Additive);
     }
@@ -39,6 +42,8 @@ public class LoadSceneHandler : MonoBehaviour
     {
         try
         {
+            _lock = true;
+
             // Start loading effect.
             _sceneLoader.StartLoading();
             await UniTask.Delay((int)(_sceneLoader.GetEffectTime() * 1000f), cancellationToken: this.GetCancellationTokenOnDestroy());
@@ -78,6 +83,8 @@ public class LoadSceneHandler : MonoBehaviour
             await UniTask.Delay((int)(_sceneLoader.GetEffectTime() * 1000f), cancellationToken: this.GetCancellationTokenOnDestroy());
 
             await SceneManager.UnloadSceneAsync(SceneLoaderPath);
+
+            _lock = false;
         }
         catch (OperationCanceledException)
         {
