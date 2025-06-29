@@ -6,26 +6,36 @@ public enum TurnState
 }
 public class PlayerBase : MonoBehaviour, IPlayable
 {
+    [Header("Playable Events")]
     // Ref in RuleGameHandler class.
-    [SerializeField] protected VoidEventSO revealCardEventSO, passTurnEventSO;
-
-    // Ref in RuleGameHandler.
-    [SerializeField] protected BoolEventSO checkRevealEventSO;
-    [SerializeField] protected Canvas mainCanvas;
-    [SerializeField] protected GameConfigSO gameConfigSO;
+    [SerializeField] protected VoidEventSO revealCardEventSO;
+    [SerializeField] protected VoidEventSO passTurnEventSO;
     [SerializeField] protected VoidEventSO relocatePlayerCardEventSO;
+    [SerializeField] protected BoolEventSO checkRevealEventSO;
 
+    [Header("Game Configuration")]
+    [SerializeField] protected GameConfigSO gameConfigSO;
+
+    protected Canvas mainCanvas;
     protected CardHolder cardHolder;
     protected TurnState curTurnState;
     protected virtual void Awake()
     {
+        // InitPlayableCanvas method must be called before InitCardHolder.
+        InitPlayableCanvas();
         InitCardHolder();
     }
+
     protected virtual void Start()
     {
         curTurnState = TurnState.ChooseActionState;
     }
 
+    protected virtual void InitPlayableCanvas()
+    {
+        mainCanvas = PlayableCanvasEvent.RaiseGetPlayableCanvasEvent();
+    }
+    
     #region Interface Declaration
     public virtual void AddCards(Card card) { }
     public virtual void RemoveCards(Card card) { }

@@ -19,9 +19,10 @@ public class FlipState : InteractableState
         });
         seq.Append(myCard.myRect.DOShakeRotation(0.5f, new Vector3(0, 0, 10))).OnComplete(() =>
         {
+            CamShakeEvent.RaiseEvent(0.07f, 0.5f);
             isComplete = true;
             myCard.stateMachine.RequestChangeState();
         });
     }
-    
+
 }

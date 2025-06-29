@@ -10,19 +10,35 @@ public enum EndGameType
     Win,
     Lose,
 }
+public static class GameManagerEvent
+{
+    public static Action NextTurnEvent;
+    public static void RaiseNextTurnEvent()
+    {
+        NextTurnEvent?.Invoke();
+    }
 
+    public static Action ContinueTurnEvent;
+    public static void RaiseContinueTUrnEvent()
+    {
+        ContinueTurnEvent?.Invoke();
+    }
+}
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private CardSpawner _cardSpawner;
-    [SerializeField] private VoidEventSO _nextTurnEventSO, _continuedCurTurnEventSO;
-
+    [Header("In-Game Events")]
     // Ref in RuleGameHandler class. 
     [SerializeField] private AddCard2PlayerEventSO _addCard2PlayerEventSO;
     [SerializeField] private PlayableInfoSO _playableInfoSO;
+
+    [Header("Game Configuration")]
     [SerializeField] private GameConfigSO _gameConfigSO;
 
+    [Header("Playable List")]
     public PlayerBase player, virPlayer;
+
     public static bool endGame { get; private set; }
+
     private void Awake()
     {
         endGame = false;
@@ -32,6 +48,7 @@ public class GameManager : MonoBehaviour
 
         _playableInfoSO.curPlayerIdx = 0;
         _playableInfoSO.prevPlayerIdx = 0;
+
     }
     private void OnDestroy()
     {
@@ -51,7 +68,7 @@ public class GameManager : MonoBehaviour
             {
                 foreach (var playable in _playableInfoSO.GetPlayableList())
                 {
-                    Card newCard = _cardSpawner.GetCards();
+                    Card newCard = CardSpawnerEvent.RaiseGetCardEvent();
                     newCard.gameObject.SetActive(true);
                     playable.AddCards(newCard);
                     await UniTask.Delay(200, cancellationToken: this.GetCancellationTokenOnDestroy());
@@ -67,16 +84,17 @@ public class GameManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        _nextTurnEventSO.EventChannel += NextTurn;
-        _continuedCurTurnEventSO.EventChannel += ContinueTurn;
+        GameManagerEvent.NextTurnEvent += NextTurn;
+        GameManagerEvent.ContinueTurnEvent += ContinueTurn;
+        
         _addCard2PlayerEventSO.EventChannel += AddCards4CurPlayer;
     }
     private void OnDisable()
     {
-        _nextTurnEventSO.EventChannel -= NextTurn;
-        _continuedCurTurnEventSO.EventChannel -= ContinueTurn;
-        _addCard2PlayerEventSO.EventChannel -= AddCards4CurPlayer;
+        GameManagerEvent.NextTurnEvent -= NextTurn;
+        GameManagerEvent.ContinueTurnEvent -= ContinueTurn;
 
+        _addCard2PlayerEventSO.EventChannel -= AddCards4CurPlayer;
     }
     private void NextTurn()
     {

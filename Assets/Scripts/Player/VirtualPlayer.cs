@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class VirtualPlayer : PlayerBase
 {
+    [Header("Player UI Prefab")]
     [SerializeField] private GameObject _handHolderPrefab;
     private Vector3 _initCardHolderPos = new Vector3(283, -50f, 0f);
     protected override void InitCardHolder()

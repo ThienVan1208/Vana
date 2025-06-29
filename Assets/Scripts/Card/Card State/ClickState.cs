@@ -6,8 +6,14 @@ using UnityEngine;
 public class ClickState : InteractableState
 {
     private bool _isUp = true;
+
+    // Distance to move up when being clicked.
     private float _dis2Up = 20f;
+
+    // Time to move up when being clicked.
     private float _time2Up = 0.2f;
+
+    // If card is chosen to play, this val is true, else is false.
     private bool _chosenFlag = true;
     private bool _scaleLock = false;
     public ClickState(Card card) : base(card)
@@ -34,7 +40,7 @@ public class ClickState : InteractableState
     {
         _scaleLock = true;
         Vector3 scaleOff = Vector3.one / 10f;
-        CamShakeEvent.RaiseEvent(0.05f, 0.6f);
+        CamShakeEvent.RaiseEvent(0.05f, 0.1f);
 
         myCard.myRect.DOScale(myCard.myRect.localScale + scaleOff, 0.25f).SetEase(Ease.InOutSine)
         .OnComplete(() =>
@@ -62,11 +68,12 @@ public class ClickState : InteractableState
 
             // Add card to chosen card list.
             (myCard.cardHolder as HandHolder).ChooseCard(myCard);
+            ShakeEffect();
         }
 
         _isUp = !_isUp;
 
-        ShakeEffect();
+        
 
         myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);
@@ -81,9 +88,11 @@ public class ClickState : InteractableState
     {
         _isUp = !_isUp;
 
-        if (_chosenFlag) (myCard.cardHolder as HandHolder).RejectCard(myCard);
-
-        ShakeEffect();
+        if (_chosenFlag)
+        {
+            (myCard.cardHolder as HandHolder).RejectCard(myCard);
+            ShakeEffect();
+        }
 
         myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y - _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);

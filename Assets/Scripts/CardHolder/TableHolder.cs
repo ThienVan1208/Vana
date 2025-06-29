@@ -3,6 +3,21 @@ using UnityEngine;
 
 public class TableHolder : CardHolder
 {
+    [SerializeField] private IntEventSO _activeCardSlotEventSO;
+    [SerializeField] private CardEventSO _moveCardToTableEventSO;
+    [SerializeField] private VoidEventSO _refeshTableEventSO;
+    private void OnEnable()
+    {
+        _activeCardSlotEventSO.EventChannel += ActiveSlotBeforeAddCard;
+        _moveCardToTableEventSO.EventChannel += AddCard;
+        _refeshTableEventSO.EventChannel += RefreshTable;
+    }
+    private void OnDisable()
+    {
+        _activeCardSlotEventSO.EventChannel -= ActiveSlotBeforeAddCard;
+        _moveCardToTableEventSO.EventChannel -= AddCard;
+        _refeshTableEventSO.EventChannel -= RefreshTable;
+    }
     protected override void InitHolder()
     {
         base.InitHolder();

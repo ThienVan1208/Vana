@@ -5,15 +5,20 @@ using UnityEngine.UI;
 
 public class Player : PlayerBase
 {
-    [SerializeField] private GameObject _handHolderPrefab;
-    [SerializeField] private GameObject _playButtonPrefab;
-    [SerializeField] private GameObject _revealButtonPrefab, _passButtonPrefab;
-
+    [Header("Data Events")]
     // Ref in CurrencyManager.
     [SerializeField] private IntEventSO _increaseCurrencyEventSO;
 
     // Ref in LevelManager.
     [SerializeField] private VoidEventSO _levelUpEventSO;
+
+    [Header("Player UI Prefabs")]
+    [SerializeField] private GameObject _handHolderPrefab;
+    [SerializeField] private GameObject _playButtonPrefab;
+    [SerializeField] private GameObject _revealButtonPrefab;
+    [SerializeField] private GameObject _passButtonPrefab;
+
+    
     protected override void InitCardHolder()
     {
         base.InitCardHolder();
@@ -81,7 +86,7 @@ public class Player : PlayerBase
     protected override void PlayCards()
     {
         if (!(cardHolder as HandHolder).HelpPlayingCard()) return;
-        // if ((cardHolder as HandHolder).GetCardNum() == 0) EndGameEvent.RaiseAction(this);
+
         DisplayPlayCardUI(false);
     }
     public override void AddCards(Card card)

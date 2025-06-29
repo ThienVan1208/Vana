@@ -238,6 +238,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                         stateMachine.ChangeState(_flipState);
                     });
                 });
+
                 await UniTask.Delay((int)(2 * _time2HaflRotate), cancellationToken: this.GetCancellationTokenOnDestroy());
             }
             else

@@ -1,6 +1,14 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+public static class CardSpawnerEvent
+{
+    public static Func<Card> GetCardEvent;
+    public static Card RaiseGetCardEvent()
+    {
+        return GetCardEvent?.Invoke();
+    }
+}
 public class CardSpawner : MonoBehaviour
 {
     private int _initNum = 20;
@@ -11,9 +19,17 @@ public class CardSpawner : MonoBehaviour
     {
         Init();
     }
-    private void OnDestroy() {
-        _allCardsContainerSO.Init();
-        _unusedCardList.Clear();
+    // private void OnDestroy() {
+    //     _allCardsContainerSO.Init();
+    //     _unusedCardList.Clear();
+    // }
+    private void OnEnable()
+    {
+        CardSpawnerEvent.GetCardEvent += GetCards;
+    }
+    private void OnDisable()
+    {
+        CardSpawnerEvent.GetCardEvent -= GetCards;
     }
     private void Init()
     {
@@ -28,6 +44,14 @@ public class CardSpawner : MonoBehaviour
     }
     public Card GetCards()
     {
+        if (_unusedCardList.Count <= 0)
+        {
+            GameObject cardObj = Instantiate(_allCardsContainerSO.GetRandomCardPrefab(), _cardSpawnerPos.position, Quaternion.identity);
+            cardObj.SetActive(false);
+            cardObj.transform.SetParent(_cardSpawnerPos, false);
+            _unusedCardList.Push(cardObj.GetComponent<Card>());
+        }
+        
         return _unusedCardList.Pop();
     }
 }

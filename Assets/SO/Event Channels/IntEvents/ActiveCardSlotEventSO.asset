@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb07ca7d980b6741bb05c41f555578d, type: 3}
-  m_Name: CamShakeEventSO
+  m_Script: {fileID: 11500000, guid: 6f2d47fb461977547854d57836b663fa, type: 3}
+  m_Name: ActiveCardSlotEventSO
   m_EditorClassIdentifier: 
