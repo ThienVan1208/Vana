@@ -8,7 +8,7 @@ using UnityEngine;
 public static class SaveDataEvent
 {
     public static Action<DataSaver, string> action;
-    public static void RaiseAction(DataSaver arg1, string arg2 = "")
+    public static void RaiseAction(DataSaver arg1 = null, string arg2 = "")
     {
         action?.Invoke(arg1, arg2);
     }
@@ -39,8 +39,18 @@ public class SaveLoadDataManager : MonoBehaviour
         SaveDataEvent.action -= SaveData;
         LoadDataEvent.action -= LoadData;
     }
-    public void SaveData(DataSaver dataSaver, string userID = "")
+    public void SaveData(DataSaver dataSaver = null, string userID = "")
     {
+        if (dataSaver == null)
+        {
+            dataSaver = new DataSaver
+            {
+                userName = _userDataSO.GetUserName(),
+                password = _userDataSO.GetPassword(),
+                currency = _userDataSO.currencyInfoSO.GetCurrency(),
+                level = _userDataSO.levelInfoSO.GetLevel()
+            };
+        }
         string json = JsonUtility.ToJson(dataSaver);
         if (userID != "")
         {

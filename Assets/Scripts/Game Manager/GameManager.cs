@@ -28,11 +28,14 @@ public class GameManager : MonoBehaviour
 {
     [Header("In-Game Events")]
     // Ref in RuleGameHandler class. 
+    // When player reveals cards, raise this event to add used cards for current player if revealing fails or for the opponent if revealing successes.
     [SerializeField] private AddCard2PlayerEventSO _addCard2PlayerEventSO;
     [SerializeField] private PlayableInfoSO _playableInfoSO;
 
+
     [Header("Game Configuration")]
     [SerializeField] private GameConfigSO _gameConfigSO;
+
 
     [Header("Playable List")]
     public PlayerBase player, virPlayer;
@@ -59,6 +62,21 @@ public class GameManager : MonoBehaviour
         _ = HelpDrawCard();
     }
 
+    private void OnEnable()
+    {
+        GameManagerEvent.NextTurnEvent += NextTurn;
+        GameManagerEvent.ContinueTurnEvent += ContinueTurn;
+
+        _addCard2PlayerEventSO.EventChannel += AddCards2CurPlayer;
+    }
+    private void OnDisable()
+    {
+        GameManagerEvent.NextTurnEvent -= NextTurn;
+        GameManagerEvent.ContinueTurnEvent -= ContinueTurn;
+
+        _addCard2PlayerEventSO.EventChannel -= AddCards2CurPlayer;
+    }
+
     private async UniTask HelpDrawCard()
     {
         try
@@ -82,20 +100,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    private void OnEnable()
-    {
-        GameManagerEvent.NextTurnEvent += NextTurn;
-        GameManagerEvent.ContinueTurnEvent += ContinueTurn;
-        
-        _addCard2PlayerEventSO.EventChannel += AddCards4CurPlayer;
-    }
-    private void OnDisable()
-    {
-        GameManagerEvent.NextTurnEvent -= NextTurn;
-        GameManagerEvent.ContinueTurnEvent -= ContinueTurn;
 
-        _addCard2PlayerEventSO.EventChannel -= AddCards4CurPlayer;
-    }
     private void NextTurn()
     {
         _playableInfoSO.prevPlayerIdx = _playableInfoSO.curPlayerIdx;
@@ -109,11 +114,11 @@ public class GameManager : MonoBehaviour
         _playableInfoSO.GetPlayerByIndex(_playableInfoSO.curPlayerIdx).BeginTurn();
     }
 
-    private void AddCards4CurPlayer(int playerIndex, List<Card> cards)
+    private async void AddCards2CurPlayer(int playerIndex, List<Card> cards)
     {
-        _ = HelpAddCards4CurPlayer(playerIndex, cards, 0.2f);
+        await HelpAddCards2CurPlayer(playerIndex, cards, 0.2f);
     }
-    private async UniTask HelpAddCards4CurPlayer(int playerIndex, List<Card> cards, float time)
+    private async UniTask HelpAddCards2CurPlayer(int playerIndex, List<Card> cards, float time)
     {
         try
         {

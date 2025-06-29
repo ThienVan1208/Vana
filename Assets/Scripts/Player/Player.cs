@@ -18,7 +18,13 @@ public class Player : PlayerBase
     [SerializeField] private GameObject _revealButtonPrefab;
     [SerializeField] private GameObject _passButtonPrefab;
 
-    
+    protected override void Start()
+    {
+        base.Start();
+        _playButtonPrefab.SetActive(false);
+    }
+
+    #region Init
     protected override void InitCardHolder()
     {
         base.InitCardHolder();
@@ -78,11 +84,9 @@ public class Player : PlayerBase
         _revealButtonPrefab.transform.localScale = Vector3.one;
         _passButtonPrefab.transform.localScale = Vector3.one;
     }
-    protected override void Start()
-    {
-        base.Start();
-        _playButtonPrefab.SetActive(false);
-    }
+    #endregion
+
+    #region Use cards
     protected override void PlayCards()
     {
         if (!(cardHolder as HandHolder).HelpPlayingCard()) return;
@@ -95,6 +99,9 @@ public class Player : PlayerBase
         cardHolder.AddCard(card);
         card.CanInteract(true);
     }
+    #endregion
+
+    #region Player UI
     private void DisplayPlayCardUI(bool val = true)
     {
         _playButtonPrefab.SetActive(val);
@@ -110,22 +117,9 @@ public class Player : PlayerBase
         // If it comes to choose acion state -> next state is playing cards.
         if (val == true) curTurnState = TurnState.PlayCardState;
     }
+    #endregion
 
-
-    protected override void RevealCards()
-    {
-        base.RevealCards();
-        DisplayChooseUI(false);
-        revealCardEventSO.RaiseEvent();
-    }
-    protected override void PassTurn()
-    {
-        base.PassTurn();
-        DisplayChooseUI(false);
-        curTurnState = TurnState.ChooseActionState;
-        passTurnEventSO.RaiseEvent();
-    }
-
+    #region In turn
     public override void BeginTurn()
     {
         base.BeginTurn();
@@ -161,12 +155,21 @@ public class Player : PlayerBase
         relocatePlayerCardEventSO.EventChannel -= (cardHolder as HandHolder).RelocateCards;
         checkRevealEventSO.EventChannel -= CheckReveal;
     }
+    #endregion
+
+    #region Reveal/Pass
     protected override void CheckReveal(bool check)
     {
         base.CheckReveal(check);
         if (check) SuccessRevealCard();
         else FailRevealCard();
 
+    }
+    protected override void RevealCards()
+    {
+        base.RevealCards();
+        DisplayChooseUI(false);
+        revealCardEventSO.RaiseEvent();
     }
     protected override void SuccessRevealCard()
     {
@@ -179,18 +182,30 @@ public class Player : PlayerBase
         curTurnState = TurnState.ChooseActionState;
     }
 
+    protected override void PassTurn()
+    {
+        base.PassTurn();
+        DisplayChooseUI(false);
+        curTurnState = TurnState.ChooseActionState;
+        passTurnEventSO.RaiseEvent();
+    }
+    #endregion
+
+    #region End game
     public override void WinGame()
     {
         base.WinGame();
         PopupUIEvent.RaiseAction(PopupUIType.WinGame);
         _increaseCurrencyEventSO.RaiseEvent(5);
         _levelUpEventSO.RaiseEvent();
+        SaveDataEvent.RaiseAction();
     }
     public override void LoseGame()
     {
         base.LoseGame();
         PopupUIEvent.RaiseAction(PopupUIType.LoseGame);
         _increaseCurrencyEventSO.RaiseEvent(-5);
+        SaveDataEvent.RaiseAction();
     }
-    
+    #endregion
 }
