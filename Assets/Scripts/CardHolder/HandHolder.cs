@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -57,6 +58,33 @@ public class HandHolder : PlayableCardHolder
         // Clear chosen card list for the next choosing turn.
         _chosenCards.Clear();
 
+        return true;
+    }
+    #endregion
+
+    #region Change card
+    public async UniTask<bool> HelpChangingCard()
+    {
+        foreach (var card in _chosenCards)
+        {
+            _cardsDic[card.transform.parent as RectTransform] = null;
+            curCardNum--;
+        }
+
+        ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
+
+        // Move cards to cardSpawner.
+        await CardSpawnerEvent.RaiseAddCardEvent(_chosenCards);
+
+        // Get new cards.
+        for (int i = 0; i < _chosenCards.Count; i++)
+        {
+            Card newCard = CardSpawnerEvent.GetCardEvent();
+            newCard.gameObject.SetActive(true);
+            AddCard(newCard);
+        }
+
+        _chosenCards.Clear();
         return true;
     }
     #endregion
@@ -173,6 +201,8 @@ public class HandHolder : PlayableCardHolder
             }
         }
     }
+
+
     #endregion
-   
+
 }

@@ -631,7 +631,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1539,6 +1539,7 @@ MonoBehaviour:
   _levelUpEventSO: {fileID: 11400000, guid: 521bfb9a18bb09c4081187d959c11163, type: 2}
   _handHolderPrefab: {fileID: 4083175592908992002, guid: 0d17b878497b6c8439ab0e5b40d63f16, type: 3}
   _playButtonPrefab: {fileID: 4998945517929767177, guid: cf8d6832aa34cf54b8e3d3472c6a39bf, type: 3}
+  _changeButtonPrefab: {fileID: 8486193234022262668, guid: 998c3b89521e55645b355cab3ca0d714, type: 3}
   _revealButtonPrefab: {fileID: 8942940341439447720, guid: a39c940a3a3a37f419aeec80d0e4a15f, type: 3}
   _passButtonPrefab: {fileID: 4085882491416559211, guid: dfd5a91ef08ddcd4b86476e56e4be25d, type: 3}
 --- !u!4 &920495731
@@ -2515,7 +2516,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
-  testList: []
   _activeCardSlotEventSO: {fileID: 11400000, guid: 16c8e6b2e6189e049a09558afd347719, type: 2}
   _moveCardToTableEventSO: {fileID: 11400000, guid: 4eb425afeec23eb488b03994434c1ed9, type: 2}
   _refeshTableEventSO: {fileID: 11400000, guid: 9124ea1b3cdafaa4f948dcf4b8262d81, type: 2}

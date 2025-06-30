@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class Player : PlayerBase
     [Header("Player UI Prefabs")]
     [SerializeField] private GameObject _handHolderPrefab;
     [SerializeField] private GameObject _playButtonPrefab;
+    [SerializeField] private GameObject _changeButtonPrefab;
     [SerializeField] private GameObject _revealButtonPrefab;
     [SerializeField] private GameObject _passButtonPrefab;
 
@@ -45,7 +47,7 @@ public class Player : PlayerBase
 
 
         // Create play-card button.
-        Vector2 buttonPos = new Vector2(286, 15f);
+        Vector2 buttonPos = new Vector2(181f, 15f);
 
         _playButtonPrefab = Instantiate(_playButtonPrefab, buttonPos, Quaternion.identity);
         _playButtonPrefab.transform.SetParent(mainCanvas.gameObject.transform, false);
@@ -59,7 +61,21 @@ public class Player : PlayerBase
         _playButtonPrefab.SetActive(false);
         _playButtonPrefab.transform.localScale = Vector3.one;
 
-        // Create choose action button.
+        // Create change-card button.
+        Vector2 changeButtonPos = new Vector2(396f, 15f);
+        _changeButtonPrefab = Instantiate(_changeButtonPrefab, changeButtonPos, Quaternion.identity);
+        _changeButtonPrefab.transform.SetParent(mainCanvas.gameObject.transform, false);
+
+        (_changeButtonPrefab.transform as RectTransform).anchorMin = anchorPos;
+        (_changeButtonPrefab.transform as RectTransform).anchorMax = anchorPos;
+        (_changeButtonPrefab.transform as RectTransform).anchoredPosition = changeButtonPos;
+
+        _changeButtonPrefab.GetComponent<Button>().onClick.AddListener(ChangeCards);
+
+        _changeButtonPrefab.SetActive(false);
+        _changeButtonPrefab.transform.localScale = Vector3.one;
+
+        // Create choose-action button.
         Vector2 revealButPos = new Vector2(181f, 15f), passButPos = new Vector2(396f, 15f);
         _revealButtonPrefab = Instantiate(_revealButtonPrefab, revealButPos, Quaternion.identity);
         _passButtonPrefab = Instantiate(_passButtonPrefab, passButPos, Quaternion.identity);
@@ -101,10 +117,19 @@ public class Player : PlayerBase
     }
     #endregion
 
+    #region Change cards
+    protected override async void ChangeCards()
+    {
+        base.ChangeCards();
+        if (! await (cardHolder as HandHolder).HelpChangingCard()) return;
+    }
+    #endregion
+
     #region Player UI
     private void DisplayPlayCardUI(bool val = true)
     {
         _playButtonPrefab.SetActive(val);
+        _changeButtonPrefab.SetActive(val);
 
         // If it comes to playcard state -> next state is choosing action.
         if (val == true) curTurnState = TurnState.ChooseActionState;

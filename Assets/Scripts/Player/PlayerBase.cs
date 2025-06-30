@@ -56,6 +56,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
 
     #region Support methods
     protected virtual void PlayCards() { }
+    protected virtual void ChangeCards(){ }
     protected virtual void InitCardHolder() { }
     protected virtual void RevealCards() { }
     protected virtual void PassTurn() { }
