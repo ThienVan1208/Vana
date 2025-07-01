@@ -35,17 +35,17 @@ public class PlayerBase : MonoBehaviour, IPlayable
     {
         mainCanvas = PlayableCanvasEvent.RaiseGetPlayableCanvasEvent();
     }
-    
+
     #region Interface Declaration
     public virtual void AddCards(Card card) { }
     public virtual void RemoveCards(Card card) { }
     public virtual void BeginTurn()
     {
-        Debug.Log(gameObject.name + " turn");    
+        Debug.Log(gameObject.name + " turn");
     }
-    public virtual void EndTurn() {}
-    public virtual void WinGame(){}
-    public virtual void LoseGame(){}
+    public virtual void EndTurn() { }
+    public virtual void WinGame() { }
+    public virtual void LoseGame() { }
 
     public virtual int GetCardNum()
     {
@@ -56,12 +56,30 @@ public class PlayerBase : MonoBehaviour, IPlayable
 
     #region Support methods
     protected virtual void PlayCards() { }
-    protected virtual void ChangeCards(){ }
+    protected virtual void ChangeCards() { }
     protected virtual void InitCardHolder() { }
     protected virtual void RevealCards() { }
     protected virtual void PassTurn() { }
-    protected virtual void CheckReveal(bool check){}
+    protected virtual void CheckReveal(bool check) { }
     protected virtual void SuccessRevealCard() { }
-    protected virtual void FailRevealCard() {}
+    protected virtual void FailRevealCard() { }
+    protected virtual GameObject InitPlayerUI(GameObject prefab
+                                    , Vector2 pos
+                                    , Quaternion quarternion
+                                    , GameObject parent
+                                    , Vector2 anchorPos
+                                    , Vector2 localScale)
+    {
+        GameObject playerUI = Instantiate(prefab, pos, quarternion);
+        playerUI.transform.SetParent(parent.transform, false);
+
+        RectTransform playerUIRect = playerUI.transform as RectTransform;
+        playerUIRect.anchorMin = anchorPos;
+        playerUIRect.anchorMax = anchorPos;
+        playerUIRect.anchoredPosition = pos;
+
+        playerUI.transform.localScale = localScale;
+        return playerUI;
+    }
     #endregion
 }

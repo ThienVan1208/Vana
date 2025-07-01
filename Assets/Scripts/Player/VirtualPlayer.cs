@@ -6,22 +6,18 @@ public class VirtualPlayer : PlayerBase
 {
     [Header("Player UI Prefab")]
     [SerializeField] private GameObject _handHolderPrefab;
-    private Vector3 _initCardHolderPos = new Vector3(283, -50f, 0f);
     protected override void InitCardHolder()
     {
         base.InitCardHolder();
 
         // Create cardHolder.
-        cardHolder = Instantiate(_handHolderPrefab
-                        , _initCardHolderPos
-                        , Quaternion.identity).GetComponent<VirtualHandHolder>();
-
-        cardHolder.gameObject.transform.SetParent(mainCanvas.gameObject.transform as RectTransform, false);
         Vector2 anchorPos = new Vector2(0f, 1f);
-        (cardHolder.gameObject.transform as RectTransform).anchorMin = anchorPos;
-        (cardHolder.gameObject.transform as RectTransform).anchorMax = anchorPos;
-        (cardHolder.gameObject.transform as RectTransform).anchoredPosition = _initCardHolderPos;
-        cardHolder.gameObject.transform.localScale = Vector3.one * gameConfigSO.cardHolderSize;
+        cardHolder = InitPlayerUI(_handHolderPrefab
+                                , gameConfigSO.virtualHolderPos
+                                , Quaternion.identity,
+                                mainCanvas.gameObject,
+                                anchorPos,
+                                Vector3.one * gameConfigSO.cardHolderSize).GetComponent<VirtualHandHolder>();
     }
     public override void AddCards(Card card)
     {
