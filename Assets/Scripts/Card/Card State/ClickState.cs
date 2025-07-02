@@ -112,7 +112,7 @@ public class ClickState : InteractableState
     {
         base.OnExit();
         isComplete = true;
-
+        myCard.myRect.localScale = Vector2.one;
     }
     public bool IsClick()
     {

@@ -136,29 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
-  _cardSlots:
-  - {fileID: 8287723370972379766}
-  - {fileID: 3741452806976535967}
-  - {fileID: 171363390245042295}
-  - {fileID: 8339485387488505524}
-  - {fileID: 6283028279313790752}
-  - {fileID: 2465361026512239273}
-  - {fileID: 3215755292875515322}
-  - {fileID: 7710026238165506328}
-  - {fileID: 7382628120449878519}
-  - {fileID: 7171176437293779351}
-  - {fileID: 2478879033907860565}
-  - {fileID: 8505345151621134974}
-  - {fileID: 6956365464279919535}
-  - {fileID: 7278788396925123760}
-  - {fileID: 570800093072778167}
-  - {fileID: 4489875911479032128}
-  - {fileID: 7823250621308137116}
-  - {fileID: 712486572324259801}
-  - {fileID: 702269404436778231}
-  - {fileID: 3929111377270723747}
   chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
   _chosenCards: []
+  _exchangeCardEventSO: {fileID: 11400000, guid: 0006c6689d07c5f4c8110786e761e44c, type: 2}
 --- !u!1001 &92553751181002250
 PrefabInstance:
   m_ObjectHideFlags: 0

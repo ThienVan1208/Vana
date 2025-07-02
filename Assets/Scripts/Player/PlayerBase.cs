@@ -16,7 +16,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
     [Header("Game Configuration")]
     [SerializeField] protected GameConfigSO gameConfigSO;
 
-    protected Canvas mainCanvas;
+    [SerializeField]protected Canvas mainCanvas;
     protected CardHolder cardHolder;
     protected TurnState curTurnState;
     protected virtual void Awake()
@@ -25,6 +25,11 @@ public class PlayerBase : MonoBehaviour, IPlayable
         InitPlayableCanvas();
         InitCardHolder();
     }
+    // protected virtual void OnValidate()0
+    // {
+    //     InitPlayableCanvas();
+    //     InitCardHolder();
+    // }
 
     protected virtual void Start()
     {

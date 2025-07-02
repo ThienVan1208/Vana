@@ -20,7 +20,7 @@ public class Player : PlayerBase
     protected override void Start()
     {
         base.Start();
-        _playButtonPrefab.SetActive(false);
+        // _playButtonPrefab.SetActive(false);
     }
 
     #region Init

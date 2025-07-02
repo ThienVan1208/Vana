@@ -1,6 +1,6 @@
-using DG.Tweening;
+
 using UnityEngine;
-using UnityEngine.EventSystems;
+
 
 public class IdleState : StateBase
 {
@@ -15,6 +15,7 @@ public class IdleState : StateBase
     public override void OnEnter()
     {
         base.OnEnter();
+        myCard.myRect.localScale = Vector2.one;
         isComplete = true;
         if (myCard.cardSlotRect != null) myCard.myRect.position = myCard.cardSlotRect.position;
         _ranDir = Random.Range(-4f, 5f);

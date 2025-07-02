@@ -6,13 +6,18 @@ using UnityEngine;
 public class HandHolder : PlayableCardHolder
 {
     [SerializeField] private List<Card> _chosenCards = new List<Card>();
+    [SerializeField] private IntEventSO _exchangeCardEventSO;
     private Card _srcCardPointer;
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
+    private int _changeCardNum = 3;
     protected override void OnDestroy()
     {
         _chosenCards.Clear();
+    }
+    private void OnEnable() {
+        _exchangeCardEventSO.RaiseEvent(_changeCardNum);
     }
 
     #region Add card
@@ -65,12 +70,21 @@ public class HandHolder : PlayableCardHolder
     #region Change card
     public async UniTask<bool> HelpChangingCard()
     {
+        if (_changeCardNum <= 0)
+        {
+            Debug.Log("No more exchange");
+            return false;
+        }
+
         foreach (var card in _chosenCards)
         {
             _cardsDic[card.transform.parent as RectTransform] = null;
             curCardNum--;
         }
 
+        _changeCardNum--;
+        _exchangeCardEventSO.RaiseEvent(_changeCardNum);
+        
         ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
         // Move cards to cardSpawner.
