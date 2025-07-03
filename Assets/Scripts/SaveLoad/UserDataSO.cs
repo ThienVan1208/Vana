@@ -1,6 +1,6 @@
 using UnityEngine;
 
-
+[System.Serializable]
 [CreateAssetMenu(fileName = "UserDataSO", menuName = "UserDataSO", order = 0)]
 public class UserDataSO : ScriptableObject
 {
@@ -26,5 +26,6 @@ public class UserDataSO : ScriptableObject
         _password = password;
         currencyInfoSO.SetCurrency(currency);
         levelInfoSO.SetLevel(level);
+        Debug.LogWarning("set data " + userName);
     }
 }

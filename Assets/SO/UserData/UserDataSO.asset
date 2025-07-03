@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c45dea2797692664eb114295898a9aa7, type: 3}
   m_Name: UserDataSO
   m_EditorClassIdentifier: 
-  _userName: ThienZan
-  _password: 123
+  _userID: user4
+  _userName: thienzan
+  _password: abc
   currencyInfoSO: {fileID: 11400000, guid: 0ae2e1122a247204cb2541fbf0c90b62, type: 2}
   levelInfoSO: {fileID: 11400000, guid: 7977c62e8f3550347bc62ee3f57ce341, type: 2}
