@@ -57,17 +57,22 @@ public class GameManager : MonoBehaviour
     {
         _playableInfoSO.ClearPlayableList();
     }
-    private void Start()
-    {
-        _ = HelpDrawCard();
-    }
-
+    // private void Start()
+    // {
+    //     HelpDrawCard();
+    // }
+    // private void Update() {
+    //     Debug.Log(endGame);
+    // }
     private void OnEnable()
     {
         GameManagerEvent.NextTurnEvent += NextTurn;
         GameManagerEvent.ContinueTurnEvent += ContinueTurn;
 
         _addCard2PlayerEventSO.EventChannel += AddCards2CurPlayer;
+
+        EndGameEvent.EventChannel += EndGame;
+        StartGameEvent.EventChannel += HelpDrawCard;
     }
     private void OnDisable()
     {
@@ -75,9 +80,13 @@ public class GameManager : MonoBehaviour
         GameManagerEvent.ContinueTurnEvent -= ContinueTurn;
 
         _addCard2PlayerEventSO.EventChannel -= AddCards2CurPlayer;
+
+        EndGameEvent.EventChannel -= EndGame;
+        StartGameEvent.EventChannel -= HelpDrawCard;
     }
 
-    private async UniTask HelpDrawCard()
+    #region Init
+    private async void HelpDrawCard()
     {
         try
         {
@@ -100,7 +109,9 @@ public class GameManager : MonoBehaviour
         }
 
     }
+    #endregion
 
+    #region Turn API
     private void NextTurn()
     {
         _playableInfoSO.prevPlayerIdx = _playableInfoSO.curPlayerIdx;
@@ -113,7 +124,9 @@ public class GameManager : MonoBehaviour
     {
         _playableInfoSO.GetPlayerByIndex(_playableInfoSO.curPlayerIdx).BeginTurn();
     }
+    #endregion
 
+    #region Add card API
     private async void AddCards2CurPlayer(int playerIndex, List<Card> cards)
     {
         await HelpAddCards2CurPlayer(playerIndex, cards, 0.2f);
@@ -134,4 +147,12 @@ public class GameManager : MonoBehaviour
         }
 
     }
+    #endregion
+
+    #region EndGame
+    private void EndGame()
+    {
+        endGame = true;
+    }
+    #endregion
 }

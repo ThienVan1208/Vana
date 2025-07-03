@@ -16,8 +16,8 @@ public class PlayerBase : MonoBehaviour, IPlayable
     [Header("Game Configuration")]
     [SerializeField] protected GameConfigSO gameConfigSO;
 
-    [SerializeField]protected Canvas mainCanvas;
-    protected CardHolder cardHolder;
+    [SerializeField] protected Canvas mainCanvas;
+    [SerializeField] protected CardHolder cardHolder;
     protected TurnState curTurnState;
     protected virtual void Awake()
     {
@@ -30,12 +30,22 @@ public class PlayerBase : MonoBehaviour, IPlayable
     //     InitPlayableCanvas();
     //     InitCardHolder();
     // }
-
+    protected virtual void OnEnable()
+    {
+        EndGameEvent.EventChannel += EndGame;
+    }
+    protected virtual void OnDisable()
+    {
+        EndGameEvent.EventChannel -= EndGame;
+    }
     protected virtual void Start()
     {
         curTurnState = TurnState.ChooseActionState;
     }
-
+    protected virtual void OnDestroy()
+    {
+        cardHolder = null;
+    }
     protected virtual void InitPlayableCanvas()
     {
         mainCanvas = PlayableCanvasEvent.RaiseGetPlayableCanvasEvent();
@@ -75,6 +85,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
                                     , Vector2 anchorPos
                                     , Vector2 localScale)
     {
+        Debug.Log("init");
         GameObject playerUI = Instantiate(prefab, pos, quarternion);
         playerUI.transform.SetParent(parent.transform, false);
 
@@ -86,5 +97,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
         playerUI.transform.localScale = localScale;
         return playerUI;
     }
+
+    protected virtual void EndGame() { }
     #endregion
 }

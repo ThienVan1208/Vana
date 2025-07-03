@@ -75,7 +75,7 @@ public class Player : PlayerBase
                                     , Vector2.one);
         _passButtonPrefab.SetActive(false);
         _passButtonPrefab.GetComponent<Button>().onClick.AddListener(PassTurn);
-        
+
     }
     #endregion
 
@@ -194,6 +194,7 @@ public class Player : PlayerBase
     #endregion
 
     #region Endgame
+    // These Win/LoseGame methods are used by RuleGameHandler to get reward/punish.
     public override void WinGame()
     {
         base.WinGame();
@@ -208,6 +209,13 @@ public class Player : PlayerBase
         PopupUIEvent.RaiseAction(PopupUIType.LoseGame);
         _increaseCurrencyEventSO.RaiseEvent(-5);
         SaveDataEvent.RaiseAction();
+    }
+
+    // Used to set end-game condition.
+    protected override void EndGame()
+    {
+        base.EndGame();
+        EndTurn();
     }
     #endregion
 }

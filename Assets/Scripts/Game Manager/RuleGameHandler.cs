@@ -2,7 +2,22 @@ using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using System;
-using UnityEditor;
+public static class EndGameEvent
+{
+    public static Action EventChannel;
+    public static void RaiseEvent()
+    {
+        EventChannel?.Invoke();
+    }
+}
+public static class StartGameEvent
+{
+    public static Action EventChannel;
+    public static void RaiseEvent()
+    {
+        EventChannel?.Invoke();
+    }
+}
 public class RuleGameHandler : MonoBehaviour
 {
     public static bool BeginTurn = true;
@@ -56,6 +71,7 @@ public class RuleGameHandler : MonoBehaviour
         _passTurnEventSO.EventChannel += PassTurn;
 
         _chosenCardEventSO.EventChannel += PlayCards;
+        StartGameEvent.EventChannel += StartGame;
     }
     private void OnDisable()
     {
@@ -63,8 +79,12 @@ public class RuleGameHandler : MonoBehaviour
         _passTurnEventSO.EventChannel -= PassTurn;
 
         _chosenCardEventSO.EventChannel -= PlayCards;
+        StartGameEvent.EventChannel -= StartGame;
     }
-
+    private void Start()
+    {
+        StartGameEvent.RaiseEvent();
+    }
     #region Play card
     /*
     - This func means when playable one plays cards and ends turn
@@ -260,11 +280,20 @@ public class RuleGameHandler : MonoBehaviour
                     _playableInfoSO.GetPlayerByIndex(i).LoseGame();
                 }
             }
+            EndGameEvent.RaiseEvent();
+
         }
         catch (OperationCanceledException)
         {
             throw;
         }
+    }
+    #endregion
+
+    #region StartGame
+    private void StartGame()
+    {
+        BeginTurn = true;
     }
     #endregion
 }

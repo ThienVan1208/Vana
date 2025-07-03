@@ -73,7 +73,7 @@ public class VirtualPlayer : PlayerBase
                 {
                     RevealCards();
                 }
-                
+
             }
             else
             {
@@ -111,5 +111,11 @@ public class VirtualPlayer : PlayerBase
     {
         (cardHolder as VirtualHandHolder).HelpPlayingCard();
         // if ((cardHolder as VirtualHandHolder).GetCardNum() == 0) EndGameEvent.RaiseAction(this);
+    }
+
+    protected override void EndGame()
+    {
+        base.EndGame();
+        EndTurn();
     }
 }
