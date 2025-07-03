@@ -10,14 +10,15 @@ public class FlipState : InteractableState
     {
         base.OnEnter();
         isComplete = false;
-        Sequence seq = DOTween.Sequence();
+        // Sequence seq = DOTween.Sequence();
         Vector3 scaleOff = Vector3.one / 2f;
         myCard.myRect.DOScale(myCard.myRect.localScale + scaleOff, 0.25f).SetEase(Ease.InOutSine)
         .OnComplete(() =>
         {
             myCard.myRect.DOScale(myCard.myRect.localScale - scaleOff, 0.25f).SetEase(Ease.InOutSine);
         });
-        seq.Append(myCard.myRect.DOShakeRotation(0.5f, new Vector3(0, 0, 10))).OnComplete(() =>
+        
+        myCard.myRect.DOShakeRotation(0.5f, new Vector3(0, 0, 10)).OnComplete(() =>
         {
             CamShakeEvent.RaiseEvent(0.07f, 0.5f);
             isComplete = true;

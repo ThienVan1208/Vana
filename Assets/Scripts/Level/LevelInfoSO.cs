@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "LevelInfoSO", menuName = "LevelInfoSO")]
 public class LevelInfoSO : ScriptableObject
 {
-    [SerializeField] private int _level;
+    private int _level;
     public void SetLevel(int val)
     {
         _level = val;

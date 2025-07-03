@@ -164,6 +164,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &50984315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 50984316}
+  - component: {fileID: 50984317}
+  m_Layer: 5
+  m_Name: In-game Window
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &50984316
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50984315}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1246552163}
+  - {fileID: 943843934}
+  m_Father: {fileID: 1481431439}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &50984317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50984315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eadbb01c5081d84e8cf3f3ca2b74175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _initPosY: -503
 --- !u!1 &60038283
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,6 +405,7 @@ GameObject:
   - component: {fileID: 241570343}
   - component: {fileID: 241570342}
   - component: {fileID: 241570341}
+  - component: {fileID: 241570344}
   m_Layer: 5
   m_Name: Home Button
   m_TagString: Untagged
@@ -423,7 +476,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 241570342}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 241570344}
+        m_TargetAssemblyTypeName: ShakeClickedButtonEfect, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &241570342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +527,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 241570338}
   m_CullTransparentMesh: 1
+--- !u!114 &241570344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241570338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0930359cfe2e7ea44a68baa05b39f318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
 --- !u!1 &325585312
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,6 +1092,7 @@ GameObject:
   - component: {fileID: 465572474}
   - component: {fileID: 465572476}
   - component: {fileID: 465572475}
+  - component: {fileID: 465572477}
   m_Layer: 5
   m_Name: Window
   m_TagString: Untagged
@@ -1080,6 +1159,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465572473}
   m_CullTransparentMesh: 1
+--- !u!114 &465572477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465572473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc538f7843820d49bcf4015fc637706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _scale: 2.649272
 --- !u!1 &469152062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,6 +1543,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61b50781b6c6f1478431e5ec1f41a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayEffectOnStart:
+    m_PersistentCalls:
+      m_Calls: []
   popupUIType: 0
   subcribedPopupUIEventSO: {fileID: 11400000, guid: 109e8e22d25db8b49bd727a7a0fb9dd1, type: 2}
   popupWindow: {fileID: 1324208732}
@@ -1784,6 +1880,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a3fd0e9607ade4a88a7f95722b7b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayEffectOnStart:
+    m_PersistentCalls:
+      m_Calls: []
   popupUIType: 1
   subcribedPopupUIEventSO: {fileID: 11400000, guid: 109e8e22d25db8b49bd727a7a0fb9dd1, type: 2}
   popupWindow: {fileID: 465572473}
@@ -1870,14 +1969,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 943843933}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 325585313}
   - {fileID: 388710001}
-  m_Father: {fileID: 1481431439}
+  m_Father: {fileID: 50984316}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2555,13 +2654,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246552162}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 423288813}
-  m_Father: {fileID: 1481431439}
+  m_Father: {fileID: 50984316}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2617,6 +2716,7 @@ GameObject:
   - component: {fileID: 1324208733}
   - component: {fileID: 1324208735}
   - component: {fileID: 1324208734}
+  - component: {fileID: 1324208736}
   m_Layer: 5
   m_Name: Window
   m_TagString: Untagged
@@ -2683,6 +2783,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324208732}
   m_CullTransparentMesh: 1
+--- !u!114 &1324208736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324208732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc538f7843820d49bcf4015fc637706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _scale: 2.649272
 --- !u!1 &1352840596
 GameObject:
   m_ObjectHideFlags: 0
@@ -2745,8 +2859,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1246552163}
-  - {fileID: 943843934}
+  - {fileID: 50984316}
   m_Father: {fileID: 1245340140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
@@ -2804,6 +2917,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17895b08403714445b1115896ddd4137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayEffectOnStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 50984317}
+        m_TargetAssemblyTypeName: BottomTopPopupEffect, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _exchangeCardTxt: {fileID: 1074127095}
   _exchangeCardEventSO: {fileID: 11400000, guid: 0006c6689d07c5f4c8110786e761e44c, type: 2}
   _currencyTxt: {fileID: 1985448861}
@@ -2898,6 +3026,7 @@ GameObject:
   - component: {fileID: 1553175273}
   - component: {fileID: 1553175272}
   - component: {fileID: 1553175271}
+  - component: {fileID: 1553175274}
   m_Layer: 5
   m_Name: Home Button
   m_TagString: Untagged
@@ -2968,7 +3097,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1553175272}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1553175274}
+        m_TargetAssemblyTypeName: ShakeClickedButtonEffect, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1553175272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3007,6 +3148,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1553175268}
   m_CullTransparentMesh: 1
+--- !u!114 &1553175274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553175268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0930359cfe2e7ea44a68baa05b39f318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
 --- !u!1 &1609579500
 GameObject:
   m_ObjectHideFlags: 0

@@ -526,9 +526,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aadecfe8fdefc14391acb26e4c34ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupUIType: 3
-  subcribedPopupUIEventSO: {fileID: 11400000, guid: 109e8e22d25db8b49bd727a7a0fb9dd1, type: 2}
-  popupWindow: {fileID: 1017901397}
+  DisplayEffectOnStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1017901399}
+        m_TargetAssemblyTypeName: BottomTopPopupEffect, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _levelInfoSO: {fileID: 11400000, guid: 7977c62e8f3550347bc62ee3f57ce341, type: 2}
   _currencyInfoSO: {fileID: 11400000, guid: 0ae2e1122a247204cb2541fbf0c90b62, type: 2}
   _currencyTxt: {fileID: 1816388030}
@@ -989,9 +1001,9 @@ RectTransform:
   - {fileID: 984029713}
   m_Father: {fileID: 1033771109}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.65250003, y: 0.5}
-  m_AnchorMax: {x: 0.65250003, y: 0.5}
-  m_AnchoredPosition: {x: -1, y: -4}
+  m_AnchorMin: {x: 0.625, y: 0.5}
+  m_AnchorMax: {x: 0.625, y: 0.5}
+  m_AnchoredPosition: {x: -4, y: -4}
   m_SizeDelta: {x: 460.7341, y: 269.7506}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &816808427
@@ -1044,9 +1056,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9111e00ddf4b3a64ca3d6bc391d7bc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupUIType: 2
-  subcribedPopupUIEventSO: {fileID: 11400000, guid: 109e8e22d25db8b49bd727a7a0fb9dd1, type: 2}
-  popupWindow: {fileID: 984029712}
+  DisplayEffectOnStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 984029716}
+        m_TargetAssemblyTypeName: ScaleInPopupEffect, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _playButton: {fileID: 1478280757}
 --- !u!1 &887357370
 GameObject:
@@ -1243,6 +1267,7 @@ GameObject:
   - component: {fileID: 984029713}
   - component: {fileID: 984029715}
   - component: {fileID: 984029714}
+  - component: {fileID: 984029716}
   m_Layer: 5
   m_Name: Play Window
   m_TagString: Untagged
@@ -1308,6 +1333,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984029712}
   m_CullTransparentMesh: 1
+--- !u!114 &984029716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984029712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc538f7843820d49bcf4015fc637706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _scale: 1
 --- !u!1 &1017901397
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,6 +1356,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1017901398}
+  - component: {fileID: 1017901399}
   m_Layer: 5
   m_Name: Info Window
   m_TagString: Untagged
@@ -1347,6 +1387,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1017901399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017901397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eadbb01c5081d84e8cf3f3ca2b74175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _initPosY: -503
 --- !u!1 &1033771105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1902,6 +1956,7 @@ GameObject:
   - component: {fileID: 1478280759}
   - component: {fileID: 1478280758}
   - component: {fileID: 1478280757}
+  - component: {fileID: 1478280760}
   m_Layer: 5
   m_Name: Play Button
   m_TagString: Untagged
@@ -1972,7 +2027,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1478280758}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1478280760}
+        m_TargetAssemblyTypeName: ShakeClickedButtonEfect, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1478280758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2011,6 +2078,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478280755}
   m_CullTransparentMesh: 1
+--- !u!114 &1478280760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478280755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0930359cfe2e7ea44a68baa05b39f318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
 --- !u!1 &1514522484
 GameObject:
   m_ObjectHideFlags: 0

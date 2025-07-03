@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InfoPanelUI : PopupUIBase
+public class InfoPanelUI : UIBase
 {
     [SerializeField] private LevelInfoSO _levelInfoSO;
     [SerializeField] private CurrencyInfoSO _currencyInfoSO;
@@ -11,20 +11,22 @@ public class InfoPanelUI : PopupUIBase
     {
         base.Start();
 
-        ShowPopup();
-    }
-    public override void ShowPopup()
-    {
-        base.ShowPopup();
-        popupWindow.SetActive(true);
+        // ShowPopup();
         UpdateCurrency();
         UpdateLevel();
     }
-    public override void HidePopup()
-    {
-        base.HidePopup();
-        popupWindow.SetActive(false);
-    }
+    // public override void ShowPopup()
+    // {
+    //     base.ShowPopup();
+    //     popupWindow.SetActive(true);
+    //     UpdateCurrency();
+    //     UpdateLevel();
+    // }
+    // public override void HidePopup()
+    // {
+    //     base.HidePopup();
+    //     popupWindow.SetActive(false);
+    // }
     private void UpdateCurrency()
     {
         _currencyTxt.text = "$ " + _currencyInfoSO.GetCurrency().ToString();

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-public class InGamePanel : MonoBehaviour
+public class InGamePanel : UIBase
 {
     [SerializeField] private TextMeshProUGUI _exchangeCardTxt;
 
@@ -15,8 +15,9 @@ public class InGamePanel : MonoBehaviour
     [SerializeField] private IntEventSO _earnCurrenctEventSO;
     private int _earnedCurrency = 0;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         EarnCurrency();
     }
 

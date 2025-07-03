@@ -2,10 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayPanelUI : PopupUIBase
+public class PlayPanelUI : UIBase
 {
     [SerializeField] private Button _playButton;
-    protected override void Awake()
+    private void Awake()
     {
         _playButton.onClick.AddListener(() => LoadSceneHandler.LoadSceneByIndex(Constant.PlayScene));
     }
@@ -13,16 +13,16 @@ public class PlayPanelUI : PopupUIBase
     {
         base.Start();
 
-        ShowPopup();
+        // ShowPopup();
     }
-    public override void ShowPopup()
-    {
-        base.ShowPopup();
-        popupWindow.SetActive(true);
-    }
-    public override void HidePopup()
-    {
-        base.HidePopup();
-        popupWindow.SetActive(false);
-    }
+    // public override void ShowPopup()
+    // {
+    //     base.ShowPopup();
+    //     popupWindow.SetActive(true);
+    // }
+    // public override void HidePopup()
+    // {
+    //     base.HidePopup();
+    //     popupWindow.SetActive(false);
+    // }
 }
