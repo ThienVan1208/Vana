@@ -39,6 +39,7 @@ public class SaveLoadDataManager : MonoBehaviour
         SaveDataEvent.action -= SaveData;
         LoadDataEvent.action -= LoadData;
     }
+    #region Save
     public void SaveData(DataSaver dataSaver = null, string userID = "")
     {
         if (dataSaver == null)
@@ -63,6 +64,9 @@ public class SaveLoadDataManager : MonoBehaviour
 
         Debug.Log("Save successfully");
     }
+    #endregion
+
+    #region Load
     public async UniTask LoadData(string userID = "")
     {
         if (userID == "")
@@ -77,11 +81,11 @@ public class SaveLoadDataManager : MonoBehaviour
                 else
                 {
                     _userDataSO.SetData(
-                        userName: (string)task.Result.Child(Constant.UserName).Value,
-                        password: (string)task.Result.Child(Constant.Password).Value,
-                        currency: (int)task.Result.Child(Constant.Currency).Value,
-                        level: (int)task.Result.Child(Constant.Level).Value
-                    );
+                    userName: task.Result.Child(Constant.UserName).Value?.ToString() ?? "",
+                    password: task.Result.Child(Constant.Password).Value?.ToString() ?? "",
+                    currency: task.Result.Child(Constant.Currency).Value != null ? Convert.ToInt32(task.Result.Child(Constant.Currency).Value) : 0,
+                    level: task.Result.Child(Constant.Level).Value != null ? Convert.ToInt32(task.Result.Child(Constant.Level).Value) : 0
+                );
                 }
             });
         }
@@ -113,5 +117,5 @@ public class SaveLoadDataManager : MonoBehaviour
 
         Debug.Log("load data successfully.");
     }
-
+    #endregion
 }

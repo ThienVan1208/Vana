@@ -14,7 +14,12 @@ public class InGamePanel : MonoBehaviour
     // Unused yet.
     [SerializeField] private IntEventSO _earnCurrenctEventSO;
     private int _earnedCurrency = 0;
-    
+
+    private void Start()
+    {
+        EarnCurrency();
+    }
+
     private void OnEnable()
     {
         _exchangeCardEventSO.EventChannel += ChangeCard;
@@ -24,11 +29,17 @@ public class InGamePanel : MonoBehaviour
         _exchangeCardEventSO.EventChannel -= ChangeCard;
         _earnCurrenctEventSO.EventChannel -= EarnCurrency;
     }
-    private void Start() {
-        EarnCurrency();
-    }
+
     private void ChangeCard(int num)
     {
+        ObjectPoolManager.GetPoolingObject<ExchangeCardEffect>()?.GetEffect(0.5f
+                                                , _exchangeCardTxt.rectTransform.position
+                                                , new Vector3(80f, 80f, 0f)
+                                                , _exchangeCardTxt.text
+                                                , 40
+                                                , Color.red
+                                                , 0.7f);
+                                                
         _exchangeCardTxt.rectTransform.DOScale(2, 0.2f).SetEase(Ease.InOutSine)
         .OnComplete(() =>
         {

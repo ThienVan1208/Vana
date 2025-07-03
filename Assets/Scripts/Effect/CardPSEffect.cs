@@ -16,7 +16,8 @@ public class CardPSEffect : MonoBehaviour
         _psPool = new ObjectPooler<ParticleSystem>(_glowEffectPrefabs, transform, initNum);
         ObjectPoolManager.RegisterPool(this, _psPool);
     }
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         ObjectPoolManager.RemovePoolObject(this);
     }
     public ParticleSystem GetGlowEffect(Transform pos)
