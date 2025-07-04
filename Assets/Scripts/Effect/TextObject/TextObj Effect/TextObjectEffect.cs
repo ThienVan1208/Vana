@@ -1,6 +1,11 @@
 using System;
 using TMPro;
 using UnityEngine;
+public enum UIPositionType
+{
+    Local,
+    World
+}
 [RequireComponent(typeof(TextObject))]
 public class TextObjectEffect : MonoBehaviour
 {

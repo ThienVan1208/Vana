@@ -8,6 +8,7 @@ public class VirtualHandHolder : PlayableCardHolder
         // DisconnectCardSlot(card);
         base.AddCard(card);
         card.CanInteract(false);
+        card.GetIdleEffect();
         foreach (var keyVal in _cardsDic)
         {
             if (_cardsDic[keyVal.Key] == null)
@@ -25,7 +26,7 @@ public class VirtualHandHolder : PlayableCardHolder
     {
         List<Card> cards = new List<Card>();
         int ranNum = Mathf.Min(Random.Range(gameConfigSO.minCard2Play, gameConfigSO.maxCard2Play + 1), curCardNum);
-        
+
         for (int i = 0; i < ranNum; i++)
         {
             Card newCard = GetCard(disconnect: true);

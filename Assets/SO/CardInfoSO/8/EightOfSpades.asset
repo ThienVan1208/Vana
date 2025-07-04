@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b12ff49d30a376545b1bec2800299344, type: 3}
   m_Name: EightOfSpades
   m_EditorClassIdentifier: 
-  cardRank: 7
+  cardRank: 8
   cardSuit: 3

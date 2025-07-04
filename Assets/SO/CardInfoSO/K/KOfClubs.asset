@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b12ff49d30a376545b1bec2800299344, type: 3}
   m_Name: KOfClubs
   m_EditorClassIdentifier: 
-  cardRank: 12
+  cardRank: 13
   cardSuit: 2

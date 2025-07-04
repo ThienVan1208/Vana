@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b12ff49d30a376545b1bec2800299344, type: 3}
   m_Name: AceOfSpades
   m_EditorClassIdentifier: 
-  cardRank: 0
+  cardRank: 1
   cardSuit: 3

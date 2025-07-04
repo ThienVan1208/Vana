@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class FlipState : InteractableState
 {
+    
     public FlipState(Card card) : base(card)
     {
     }
@@ -17,10 +18,12 @@ public class FlipState : InteractableState
         {
             myCard.myRect.DOScale(myCard.myRect.localScale - scaleOff, 0.25f).SetEase(Ease.InOutSine);
         });
-        
+
         myCard.myRect.DOShakeRotation(0.5f, new Vector3(0, 0, 10)).OnComplete(() =>
         {
             CamShakeEvent.RaiseEvent(0.07f, 0.5f);
+            
+
             isComplete = true;
             myCard.stateMachine.RequestChangeState();
         });

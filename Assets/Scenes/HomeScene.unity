@@ -2086,7 +2086,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1478280760}
-        m_TargetAssemblyTypeName: ShakeClickedButtonEfect, Assembly-CSharp
+        m_TargetAssemblyTypeName: ScaleOutAndShakeEffect, Assembly-CSharp
         m_MethodName: GetEffect
         m_Mode: 1
         m_Arguments:

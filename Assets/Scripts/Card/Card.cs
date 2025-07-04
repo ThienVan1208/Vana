@@ -55,7 +55,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     }
     private void OnDestroy()
     {
-        // stateMachine.StopAllState();
+        stateMachine.StopAllState();
 
         stateMachine = null;
         _idleState = null;
@@ -269,6 +269,11 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         _canInteract = val;
     }
     public bool IsInteractable() { return _canInteract; }
+    public void GetIdleEffect(bool val = true)
+    {
+        _idleState.didIdle = val;
+
+    }
     #endregion
 }
 public enum CardSuit
@@ -280,7 +285,7 @@ public enum CardSuit
 };
 public enum CardRank
 {
-    Ace,
+    Ace = 1,
     Two,
     Three,
     Four,

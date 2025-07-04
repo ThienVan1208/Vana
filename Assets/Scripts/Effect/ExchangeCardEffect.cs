@@ -9,7 +9,7 @@ public class ExchangeCardEffect : MonoBehaviour
 
     protected virtual void Start()
     {
-        _changeCardEffectPool = new ObjectPooler<TextObject>(_textObjPrefab, MainUICanvasEvent.RaiseGetMainUICanvasEvent().transform, 10);
+        _changeCardEffectPool = new ObjectPooler<TextObject>(_textObjPrefab, MainUICanvasEvent.RaiseGetMainUICanvasEvent().transform, 3);
         ObjectPoolManager.RegisterPool(this, _changeCardEffectPool);
     }
     protected virtual void OnDestroy()

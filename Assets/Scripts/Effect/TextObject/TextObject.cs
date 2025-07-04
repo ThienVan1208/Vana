@@ -6,7 +6,7 @@ public class TextObject : MonoBehaviour
 {
     [SerializeField]private TextObjectEffect _textObjectEffect;
     [SerializeField] private TextMeshProUGUI _displayText;
-    private void Awake()
+    private void OnValidate()
     {
         _displayText = GetComponent<TextMeshProUGUI>();
     }

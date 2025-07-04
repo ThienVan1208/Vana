@@ -1,7 +1,10 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+
 using DG.Tweening;
+using Cysharp.Threading.Tasks;
+using System.Collections.Concurrent;
+
 public class InGamePanel : UIBase
 {
     [SerializeField] private TextMeshProUGUI _exchangeCardTxt;
@@ -10,11 +13,13 @@ public class InGamePanel : UIBase
     [SerializeField] private IntEventSO _exchangeCardEventSO;
 
     [SerializeField] private TextMeshProUGUI _currencyTxt;
+    [SerializeField] private UIEffectBase _currencyContainerEffect;
 
-    // Unused yet.
+    // Ref in RuleGameHandler.
     [SerializeField] private IntEventSO _earnCurrenctEventSO;
     private int _earnedCurrency = 0;
-
+    private ConcurrentQueue<int> _earnedCurrencyQueue = new ConcurrentQueue<int>();
+    private bool _earnedCurrencyQueueLock = false;
     protected override void Start()
     {
         base.Start();
@@ -26,11 +31,12 @@ public class InGamePanel : UIBase
         _exchangeCardEventSO.EventChannel += ChangeCard;
         _earnCurrenctEventSO.EventChannel += EarnCurrency;
     }
-    private void OnDisable() {
+    private void OnDisable()
+    {
         _exchangeCardEventSO.EventChannel -= ChangeCard;
         _earnCurrenctEventSO.EventChannel -= EarnCurrency;
     }
-
+    #region Exchange card
     private void ChangeCard(int num)
     {
         ObjectPoolManager.GetPoolingObject<ExchangeCardEffect>()?.GetEffect(0.5f
@@ -40,7 +46,7 @@ public class InGamePanel : UIBase
                                                 , 40
                                                 , Color.red
                                                 , 0.7f);
-                                                
+
         _exchangeCardTxt.rectTransform.DOScale(2, 0.2f).SetEase(Ease.InOutSine)
         .OnComplete(() =>
         {
@@ -49,10 +55,36 @@ public class InGamePanel : UIBase
         });
         _exchangeCardTxt.text = num.ToString();
     }
+    #endregion
+
+    #region Currency
     private void EarnCurrency(int num = 0)
     {
 
-        _earnedCurrency += num;
-        _currencyTxt.text = _earnedCurrency.ToString();
+        // _earnedCurrency += num;
+        _earnedCurrencyQueue.Enqueue(num);
+
+        if (!_earnedCurrencyQueueLock) GetEarnCurrencyEffect();
     }
+    private async void GetEarnCurrencyEffect()
+    {
+        _earnedCurrencyQueueLock = true;
+        while (_earnedCurrencyQueue.TryDequeue(out var num))
+        {
+            await HelpEarningCurrencyEffect(num);
+        }
+        _earnedCurrencyQueueLock = false;
+    }
+    private async UniTask HelpEarningCurrencyEffect(int num)
+    {
+        for (int i = 1; i <= num; i++)
+        {
+            _earnedCurrency += 1;
+            _currencyTxt.text = _earnedCurrency.ToString();
+            await UniTask.Delay(System.TimeSpan.FromSeconds(0.05f), cancellationToken: this.GetCancellationTokenOnDestroy());
+        }
+        _currencyContainerEffect.GetEffect();
+        await UniTask.Delay(System.TimeSpan.FromSeconds(0.25f), cancellationToken: this.GetCancellationTokenOnDestroy());
+    }
+    #endregion
 }

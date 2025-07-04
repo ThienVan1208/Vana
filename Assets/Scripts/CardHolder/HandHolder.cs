@@ -16,7 +16,8 @@ public class HandHolder : PlayableCardHolder
     {
         _chosenCards.Clear();
     }
-    private void OnEnable() {
+    private void OnEnable()
+    {
         _exchangeCardEventSO.RaiseEvent(_changeCardNum);
     }
 
@@ -24,7 +25,9 @@ public class HandHolder : PlayableCardHolder
     public override void AddCard(Card card)
     {
         base.AddCard(card);
+
         card.CanInteract(true);
+        card.GetIdleEffect();
         foreach (var keyVal in _cardsDic)
         {
             if (_cardsDic[keyVal.Key] == null)
@@ -83,7 +86,7 @@ public class HandHolder : PlayableCardHolder
         }
 
         AddChangeCardNum(-1);
-        
+
         ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
         // Move cards to cardSpawner.

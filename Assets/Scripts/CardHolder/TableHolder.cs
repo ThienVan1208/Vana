@@ -31,7 +31,7 @@ public class TableHolder : CardHolder
     {
         base.AddCard(card);
         card.CanInteract(false);
-
+        card.GetIdleEffect(false);
         foreach (var keyVal in _cardsDic)
         {
             if (_cardsDic[keyVal.Key] == null)

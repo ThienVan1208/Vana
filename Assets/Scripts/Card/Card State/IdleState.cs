@@ -9,12 +9,17 @@ public class IdleState : StateBase
     private float _strenght = 15f;
     private float _speed = 1.5f;
     private Vector3 _moveDir;
+    public bool didIdle = true;
     public IdleState(Card card) : base(card)
     {
     }
     public override void OnEnter()
     {
         base.OnEnter();
+        if (!didIdle)
+        {
+            myCard.myRect.localEulerAngles = Vector3.zero;
+        }
         myCard.myRect.localScale = Vector2.one;
         isComplete = true;
         if (myCard.cardSlotRect != null) myCard.myRect.position = myCard.cardSlotRect.position;
@@ -30,6 +35,7 @@ public class IdleState : StateBase
     public override void OnUpdate()
     {
         base.OnUpdate();
+        if (!didIdle) return;
         GetRotateEffect();
         GetMoveEffect();
     }
