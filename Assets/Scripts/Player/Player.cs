@@ -20,7 +20,7 @@ public class Player : PlayerBase
     protected override void Start()
     {
         base.Start();
-        // _playButtonPrefab.SetActive(false);
+
     }
 
     #region Init
@@ -109,7 +109,11 @@ public class Player : PlayerBase
         _changeButtonPrefab.SetActive(val);
 
         // If it comes to playcard state -> next state is choosing action.
-        if (val == true) curTurnState = TurnState.ChooseActionState;
+        if (val == true)
+        {
+            curTurnState = TurnState.ChooseActionState;
+            (cardHolder as HandHolder).AddChangeCardNum();
+        }
     }
     private void DisplayChooseUI(bool val = true)
     {
@@ -125,6 +129,7 @@ public class Player : PlayerBase
     public override void BeginTurn()
     {
         base.BeginTurn();
+        
         relocatePlayerCardEventSO.EventChannel += (cardHolder as HandHolder).RelocateCards;
         if (RuleGameHandler.BeginTurn)
         {
@@ -134,6 +139,7 @@ public class Player : PlayerBase
         }
         else
         {
+        
             // Choose cards to play.
             if (curTurnState == TurnState.PlayCardState)
             {

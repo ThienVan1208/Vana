@@ -11,7 +11,7 @@ public class HandHolder : PlayableCardHolder
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
-    private int _changeCardNum = 3;
+    private int _changeCardNum = 0;
     protected override void OnDestroy()
     {
         _chosenCards.Clear();
@@ -82,8 +82,7 @@ public class HandHolder : PlayableCardHolder
             curCardNum--;
         }
 
-        _changeCardNum--;
-        _exchangeCardEventSO.RaiseEvent(_changeCardNum);
+        AddChangeCardNum(-1);
         
         ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
@@ -100,6 +99,12 @@ public class HandHolder : PlayableCardHolder
 
         _chosenCards.Clear();
         return true;
+    }
+    public void AddChangeCardNum(int val = 1)
+    {
+        if (_changeCardNum >= 3 && val >= 0) return;
+        _changeCardNum += val;
+        _exchangeCardEventSO.RaiseEvent(_changeCardNum);
     }
     #endregion
 

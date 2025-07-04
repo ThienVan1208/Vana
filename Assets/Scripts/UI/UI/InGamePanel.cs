@@ -53,6 +53,6 @@ public class InGamePanel : UIBase
     {
 
         _earnedCurrency += num;
-        _currencyTxt.text = "$" + _earnedCurrency.ToString();
+        _currencyTxt.text = _earnedCurrency.ToString();
     }
 }

@@ -190,7 +190,7 @@ public class RuleGameHandler : MonoBehaviour
 
             _checkRevealEventSO.RaiseEvent(true);
 
-            GameManagerEvent.RaiseContinueTUrnEvent();
+            GameManagerEvent.RaiseContinueTurnEvent();
         }
         catch (OperationCanceledException)
         {

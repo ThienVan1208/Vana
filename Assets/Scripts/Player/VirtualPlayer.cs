@@ -110,7 +110,7 @@ public class VirtualPlayer : PlayerBase
     protected override void PlayCards()
     {
         (cardHolder as VirtualHandHolder).HelpPlayingCard();
-        // if ((cardHolder as VirtualHandHolder).GetCardNum() == 0) EndGameEvent.RaiseAction(this);
+     
     }
 
     protected override void EndGame()

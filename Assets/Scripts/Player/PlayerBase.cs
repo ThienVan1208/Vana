@@ -58,6 +58,14 @@ public class PlayerBase : MonoBehaviour, IPlayable
     {
         Debug.Log(gameObject.name + " turn");
     }
+
+    /* 
+    - EndTurn here means when opponent reveals successfully 
+    and then it comes to opponent's turn -> call EndTurn() method.
+
+    - If opponent fails in revealing, player continues to 
+    play cards -> do not call EndTurn() method.
+    */
     public virtual void EndTurn() { }
     public virtual void WinGame() { }
     public virtual void LoseGame() { }
@@ -85,7 +93,6 @@ public class PlayerBase : MonoBehaviour, IPlayable
                                     , Vector2 anchorPos
                                     , Vector2 localScale)
     {
-        Debug.Log("init");
         GameObject playerUI = Instantiate(prefab, pos, quarternion);
         playerUI.transform.SetParent(parent.transform, false);
 

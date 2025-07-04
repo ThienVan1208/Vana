@@ -19,7 +19,7 @@ public static class GameManagerEvent
     }
 
     public static Action ContinueTurnEvent;
-    public static void RaiseContinueTUrnEvent()
+    public static void RaiseContinueTurnEvent()
     {
         ContinueTurnEvent?.Invoke();
     }
@@ -57,13 +57,7 @@ public class GameManager : MonoBehaviour
     {
         _playableInfoSO.ClearPlayableList();
     }
-    // private void Start()
-    // {
-    //     HelpDrawCard();
-    // }
-    // private void Update() {
-    //     Debug.Log(endGame);
-    // }
+
     private void OnEnable()
     {
         GameManagerEvent.NextTurnEvent += NextTurn;
