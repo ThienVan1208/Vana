@@ -6,19 +6,21 @@ using UnityEngine;
 public class HandHolder : PlayableCardHolder
 {
     [SerializeField] private List<Card> _chosenCards = new List<Card>();
-    [SerializeField] private IntEventSO _exchangeCardEventSO;
+
+    // Ref in InGamePanel class.
+    [SerializeField] private IntEventSO _cardExchangeEventSO;
     private Card _srcCardPointer;
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
-    private int _changeCardNum = 0;
+    private int _cardExchangeNum = 3;
     protected override void OnDestroy()
     {
         _chosenCards.Clear();
     }
     private void OnEnable()
     {
-        _exchangeCardEventSO.RaiseEvent(_changeCardNum);
+        _cardExchangeEventSO.RaiseEvent(_cardExchangeNum);
     }
 
     #region Add card
@@ -73,7 +75,7 @@ public class HandHolder : PlayableCardHolder
     #region Change card
     public async UniTask<bool> HelpChangingCard()
     {
-        if (_changeCardNum <= 0)
+        if (_cardExchangeNum <= 0)
         {
             Debug.Log("No more exchange");
             return false;
@@ -85,7 +87,7 @@ public class HandHolder : PlayableCardHolder
             curCardNum--;
         }
 
-        AddChangeCardNum(-1);
+        AddExchangedCardNum(-1);
 
         ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
@@ -103,11 +105,11 @@ public class HandHolder : PlayableCardHolder
         _chosenCards.Clear();
         return true;
     }
-    public void AddChangeCardNum(int val = 1)
+    public void AddExchangedCardNum(int val = 1)
     {
-        if (_changeCardNum >= 3 && val >= 0) return;
-        _changeCardNum += val;
-        _exchangeCardEventSO.RaiseEvent(_changeCardNum);
+        if (_cardExchangeNum >= 3 && val >= 0) return;
+        _cardExchangeNum += val;
+        _cardExchangeEventSO.RaiseEvent(_cardExchangeNum);
     }
     #endregion
 

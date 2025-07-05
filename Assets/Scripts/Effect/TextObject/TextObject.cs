@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using DG.Tweening;
 using System;
 public class TextObject : MonoBehaviour
 {

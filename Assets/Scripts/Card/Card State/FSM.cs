@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class FSM
@@ -20,8 +19,16 @@ public class FSM
     private List<StateBase> _curTransitionList = new List<StateBase>();
     public void Update()
     {
-        if (_isStop || _curState == null) return;
-        _curState.OnUpdate();
+        try
+        {
+            if (_isStop || _curState == null) return;
+            _curState.OnUpdate();
+        }
+        catch (Exception)
+        {
+            Debug.Log("I catch gameobject destroy exception!!!");
+        }
+
     }
     public void InitFSM()
     {
@@ -29,12 +36,20 @@ public class FSM
     }
     public void ChangeState(StateBase state, bool isForce = false, bool isExit = true, bool isEnter = true)
     {
-        if(state == _curState) return;
-        if (_isStop || !isForce && !_curState.isComplete) return;
-        // if(_curState != null) Debug.Log(_curState.isComplete);
-        if (isExit) _curState.OnExit();
-        _curState = state;
-        if (isEnter) _curState.OnEnter();
+        try
+        {
+            if (state == _curState) return;
+            if (_isStop || !isForce && !_curState.isComplete) return;
+
+            if (isExit) _curState.OnExit();
+            _curState = state;
+            if (isEnter) _curState.OnEnter();
+        }
+        catch (Exception)
+        {
+            Debug.Log("I catch gameobject destroy exception!!!");
+        }
+
     }
     public void SetDefaultState(StateBase state)
     {
@@ -97,12 +112,20 @@ public class FSM
 
     public void StopAllState()
     {
-        _curState.OnExit();
-        _isStop = true;
+        try
+        {
+            _curState.OnExit();
+            _isStop = true;
+        }
+        catch (Exception)
+        {
+            Debug.Log("I catch gameobject destroy exception!!!");
+        }
+
     }
     public void ContinuePrevState()
     {
-        _isStop = false;    
+        _isStop = false;
         ChangeState(_curState, isForce: true);
     }
 }

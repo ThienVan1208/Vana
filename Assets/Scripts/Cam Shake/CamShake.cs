@@ -19,6 +19,9 @@ public class CamShake : MonoBehaviour
     {
         CamShakeEvent.CamShakeAction -= GetCamShake;
     }
+    private void OnDestroy() {
+        DOTween.Kill(this);
+    }
     private void GetCamShake(float strength, float duration)
     {
         transform.DOShakePosition(duration, strength);

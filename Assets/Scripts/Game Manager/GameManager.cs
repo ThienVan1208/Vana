@@ -38,12 +38,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AddCard2PlayerEventSO _addCard2PlayerEventSO;
     [SerializeField] private PlayableInfoSO _playableInfoSO;
 
-    // Ref in InGamePanel
+    // Ref in InGamePanel.
     [SerializeField] private IntEventSO _displayTurnUIEventSO;
     private int _curTurn = 0;
 
+
+
+
+
     [Header("Game Configuration")]
     [SerializeField] private GameConfigSO _gameConfigSO;
+
+
+
 
 
     [Header("Playable List")]
@@ -110,7 +117,7 @@ public class GameManager : MonoBehaviour
         }
         catch (OperationCanceledException)
         {
-            throw;
+            // throw;
         }
 
     }

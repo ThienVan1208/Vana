@@ -138,7 +138,7 @@ MonoBehaviour:
   gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
   _chosenCards: []
-  _exchangeCardEventSO: {fileID: 11400000, guid: 0006c6689d07c5f4c8110786e761e44c, type: 2}
+  _cardExchangeEventSO: {fileID: 11400000, guid: 0006c6689d07c5f4c8110786e761e44c, type: 2}
 --- !u!1001 &92553751181002250
 PrefabInstance:
   m_ObjectHideFlags: 0

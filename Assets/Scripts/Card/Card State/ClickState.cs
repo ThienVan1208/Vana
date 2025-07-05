@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-// using Unity.VisualScripting;
 using UnityEngine;
 
 public class ClickState : InteractableState
@@ -26,7 +25,7 @@ public class ClickState : InteractableState
         base.OnEnter();
 
         isComplete = false;
-        
+
         if (_isUp)
         {
             GetUp();
@@ -73,7 +72,7 @@ public class ClickState : InteractableState
 
         _isUp = !_isUp;
 
-        
+
 
         myCard.backImg.DOAnchorPosY(myCard.backImg.localPosition.y + _dis2Up, _time2Up)
         .SetEase(Ease.OutQuad);

@@ -12,7 +12,12 @@ public class InGamePanel : UIBase
 
     // Ref in GameManager class.
     [SerializeField] private IntEventSO _increaseTurnEventSO;
+
     [SerializeField] private ScaleOutAndShakeEffect _turnUIEffect;
+
+
+
+
 
     [Header("Exchange UI")]
     [SerializeField] private TextMeshProUGUI _exchangeCardTxt;
@@ -20,15 +25,23 @@ public class InGamePanel : UIBase
     // Ref in HandHolder class.
     [SerializeField] private IntEventSO _exchangeCardEventSO;
 
+
+
+
+
     [Header("Currency UI")]
     [SerializeField] private TextMeshProUGUI _currencyTxt;
     [SerializeField] private UIEffectBase _currencyContainerEffect;
 
-    // Ref in RuleGameHandler.
+    // Ref in RuleGameHandler class.
     [SerializeField] private IntEventSO _earnCurrenctEventSO;
+
     private int _earnedCurrency = 0;
     private ConcurrentQueue<int> _earnedCurrencyQueue = new ConcurrentQueue<int>();
     private bool _earnedCurrencyQueueLock = false;
+
+
+    
     protected override void Start()
     {
         base.Start();
@@ -47,7 +60,9 @@ public class InGamePanel : UIBase
         _earnCurrenctEventSO.EventChannel -= EarnCurrency;
         _increaseTurnEventSO.EventChannel -= IncreaseTurn;
     }
-
+    private void OnDestroy() {
+        DOTween.Kill(this);
+    }
     #region Turn
     private void IncreaseTurn(int num)
     {

@@ -8,12 +8,13 @@ public class MoveableState : InteractableState
     protected Image _cardImg;
 
 
-    public MoveableState(Card card) : base( card)
+    public MoveableState(Card card) : base(card)
     {
         _cardImg = card.GetComponent<Image>();
     }
-    
-    public override void OnEnter(){
+
+    public override void OnEnter()
+    {
         base.OnEnter();
         isComplete = false;
 
@@ -48,5 +49,5 @@ public class MoveableState : InteractableState
         else _rotateDeg.z = Mathf.Lerp(0, -deg, lerpRange);
         myCard.myRect.eulerAngles = _rotateDeg;
     }
-    
+
 }

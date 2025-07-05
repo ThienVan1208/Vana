@@ -6,6 +6,10 @@ using UnityEngine;
 public class JumpOffTextEffect : TextObjectEffect
 {
     [SerializeField] private UIPositionType _typePos;
+    private void OnDestroy()
+    {
+        DOTween.Kill(this);
+    }
     public override void GetEffect(TextMeshProUGUI displayText, Vector3 startPos, Vector3 endPos, float duration, Action callback = null)
     {
         if (_typePos == UIPositionType.World)

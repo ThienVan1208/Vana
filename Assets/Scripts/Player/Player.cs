@@ -115,7 +115,7 @@ public class Player : PlayerBase
         {
             GameManagerEvent.RaiseTurnEvent();
             curTurnState = TurnState.ChooseActionState;
-            (cardHolder as HandHolder).AddChangeCardNum();
+            // (cardHolder as HandHolder).AddChangeCardNum();
         }
     }
     private void DisplayChooseUI(bool val = true)
