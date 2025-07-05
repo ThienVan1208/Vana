@@ -113,9 +113,10 @@ public class Player : PlayerBase
         // If it comes to playcard state -> next state is choosing action.
         if (val == true)
         {
+            if (CheckEndGameConditionEvent.RaiseEvent()) return;
+            
             GameManagerEvent.RaiseTurnEvent();
             curTurnState = TurnState.ChooseActionState;
-            // (cardHolder as HandHolder).AddChangeCardNum();
         }
     }
     private void DisplayChooseUI(bool val = true)

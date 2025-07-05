@@ -80,7 +80,10 @@ public class VirtualPlayer : PlayerBase
         await UniTask.Delay(1000);
         if (RuleGameHandler.BeginTurn)
         {
+            if (CheckEndGameConditionEvent.RaiseEvent()) return;
             GameManagerEvent.RaiseTurnEvent();
+            
+
             RuleGameHandler.BeginTurn = false;
             base.BeginTurn();
             PlayCards();
@@ -105,7 +108,9 @@ public class VirtualPlayer : PlayerBase
             }
             else
             {
+                if (CheckEndGameConditionEvent.RaiseEvent()) return;
                 GameManagerEvent.RaiseTurnEvent();
+                
                 PlayCards();
                 curTurnState = TurnState.ChooseActionState;
             }

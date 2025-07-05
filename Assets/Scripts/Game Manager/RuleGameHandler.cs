@@ -18,6 +18,14 @@ public static class StartGameEvent
         EventChannel?.Invoke();
     }
 }
+public static class CheckEndGameConditionEvent
+{
+    public static Func<bool> EventChannel;
+    public static bool RaiseEvent()
+    {
+        return EventChannel?.Invoke() ?? false;
+    }
+}
 public class RuleGameHandler : MonoBehaviour
 {
     public static bool BeginTurn = true;
@@ -76,6 +84,9 @@ public class RuleGameHandler : MonoBehaviour
 
         _chosenCardEventSO.EventChannel += PlayCards;
         StartGameEvent.EventChannel += StartGame;
+
+        CheckEndGameConditionEvent.EventChannel += CheckEndGameCond;
+
     }
     private void OnDisable()
     {
@@ -84,6 +95,8 @@ public class RuleGameHandler : MonoBehaviour
 
         _chosenCardEventSO.EventChannel -= PlayCards;
         StartGameEvent.EventChannel -= StartGame;
+
+        CheckEndGameConditionEvent.EventChannel -= CheckEndGameCond;
     }
     private void Start()
     {
@@ -107,11 +120,9 @@ public class RuleGameHandler : MonoBehaviour
             await GetFlipCardWhenPlay();
 
             _relocatePlayerCardEventSO.RaiseEvent();
+                
+            GameManagerEvent.RaiseNextTurnEvent();
 
-            if (!CheckEndGameCond())
-            {
-                GameManagerEvent.RaiseNextTurnEvent();
-            }
         }
         catch (OperationCanceledException)
         {
@@ -178,7 +189,7 @@ public class RuleGameHandler : MonoBehaviour
                                                , 1);
                 effectObj.transform.SetParent(_chosenCards[i].cardSlotRect, false);
                 _earnCurrenctEventSO.RaiseEvent((int)_chosenCards[i].GetCardRank());
-            }   
+            }
 
             await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
             await FailRevealCard();
