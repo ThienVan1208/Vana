@@ -23,6 +23,12 @@ public static class GameManagerEvent
     {
         ContinueTurnEvent?.Invoke();
     }
+
+    public static Action TurnEventSO;
+    public static void RaiseTurnEvent()
+    {
+        TurnEventSO?.Invoke();
+    }
 }
 public class GameManager : MonoBehaviour
 {
@@ -32,6 +38,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AddCard2PlayerEventSO _addCard2PlayerEventSO;
     [SerializeField] private PlayableInfoSO _playableInfoSO;
 
+    // Ref in InGamePanel
+    [SerializeField] private IntEventSO _displayTurnUIEventSO;
+    private int _curTurn = 0;
 
     [Header("Game Configuration")]
     [SerializeField] private GameConfigSO _gameConfigSO;
@@ -62,6 +71,7 @@ public class GameManager : MonoBehaviour
     {
         GameManagerEvent.NextTurnEvent += NextTurn;
         GameManagerEvent.ContinueTurnEvent += ContinueTurn;
+        GameManagerEvent.TurnEventSO += IncreaseTurn;
 
         _addCard2PlayerEventSO.EventChannel += AddCards2CurPlayer;
 
@@ -72,6 +82,7 @@ public class GameManager : MonoBehaviour
     {
         GameManagerEvent.NextTurnEvent -= NextTurn;
         GameManagerEvent.ContinueTurnEvent -= ContinueTurn;
+        GameManagerEvent.TurnEventSO -= IncreaseTurn;
 
         _addCard2PlayerEventSO.EventChannel -= AddCards2CurPlayer;
 
@@ -117,6 +128,12 @@ public class GameManager : MonoBehaviour
     private void ContinueTurn()
     {
         _playableInfoSO.GetPlayerByIndex(_playableInfoSO.curPlayerIdx).BeginTurn();
+    }
+
+    private void IncreaseTurn()
+    {
+        _curTurn += 1;
+        _displayTurnUIEventSO.RaiseEvent(_curTurn);
     }
     #endregion
 

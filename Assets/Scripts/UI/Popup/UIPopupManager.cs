@@ -43,6 +43,7 @@ public class UIPopupManager : MonoBehaviour
         PopupUIEvent.displayPopupAction += DisplayPopup;
 
         _panel = GetComponent<Image>();
+        _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, 225);
         ShowPanel(false);
 
     }
@@ -81,12 +82,16 @@ public class UIPopupManager : MonoBehaviour
                 if (active)
                 {
                     popupUI.ShowPopup();
-                    if (_countPopupNum++ == 0) ShowPanel();
+
+                    if (_countPopupNum == 0) ShowPanel();
+                    _countPopupNum++;
                 }
                 else
                 {
                     popupUI.HidePopup();
-                    if (_countPopupNum-- == 0) ShowPanel(false);
+
+                    if (_countPopupNum == 0) ShowPanel(false);
+                    _countPopupNum--;
                 }
             }
             else

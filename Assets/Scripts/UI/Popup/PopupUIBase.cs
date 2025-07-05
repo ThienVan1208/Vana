@@ -1,16 +1,15 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class PopupUIBase : UIBase
+
+public class PopupUIBase : MonoBehaviour
 {
     [SerializeField] protected PopupUIType popupUIType;
     [SerializeField] protected PopupUIEventSO subcribedPopupUIEventSO;
     [SerializeField] protected GameObject popupWindow;
     protected virtual void Awake() { }
-    protected override void Start()
+    protected virtual void Start()
     {
-        base.Start();
         subcribedPopupUIEventSO.RaiseEvent(popupUIType, this);
     }
     protected virtual void OnDestroy()

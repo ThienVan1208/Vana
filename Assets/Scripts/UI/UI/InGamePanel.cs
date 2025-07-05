@@ -7,11 +7,20 @@ using System.Collections.Concurrent;
 
 public class InGamePanel : UIBase
 {
+    [Header("Turn UI")]
+    [SerializeField] private TextMeshProUGUI _turnTxt;
+
+    // Ref in GameManager class.
+    [SerializeField] private IntEventSO _increaseTurnEventSO;
+    [SerializeField] private ScaleOutAndShakeEffect _turnUIEffect;
+
+    [Header("Exchange UI")]
     [SerializeField] private TextMeshProUGUI _exchangeCardTxt;
 
     // Ref in HandHolder class.
     [SerializeField] private IntEventSO _exchangeCardEventSO;
 
+    [Header("Currency UI")]
     [SerializeField] private TextMeshProUGUI _currencyTxt;
     [SerializeField] private UIEffectBase _currencyContainerEffect;
 
@@ -23,19 +32,31 @@ public class InGamePanel : UIBase
     protected override void Start()
     {
         base.Start();
-        EarnCurrency();
+        // EarnCurrency();
     }
 
     private void OnEnable()
     {
         _exchangeCardEventSO.EventChannel += ChangeCard;
         _earnCurrenctEventSO.EventChannel += EarnCurrency;
+        _increaseTurnEventSO.EventChannel += IncreaseTurn;
     }
     private void OnDisable()
     {
         _exchangeCardEventSO.EventChannel -= ChangeCard;
         _earnCurrenctEventSO.EventChannel -= EarnCurrency;
+        _increaseTurnEventSO.EventChannel -= IncreaseTurn;
     }
+
+    #region Turn
+    private void IncreaseTurn(int num)
+    {
+        _turnTxt.text = num.ToString();
+        _turnUIEffect.GetEffect();
+    }
+    #endregion
+
+
     #region Exchange card
     private void ChangeCard(int num)
     {

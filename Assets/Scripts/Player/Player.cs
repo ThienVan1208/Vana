@@ -105,12 +105,15 @@ public class Player : PlayerBase
     #region PlayerUI
     private void DisplayPlayCardUI(bool val = true)
     {
+        
+
         _playButtonPrefab.SetActive(val);
         _changeButtonPrefab.SetActive(val);
 
         // If it comes to playcard state -> next state is choosing action.
         if (val == true)
         {
+            GameManagerEvent.RaiseTurnEvent();
             curTurnState = TurnState.ChooseActionState;
             (cardHolder as HandHolder).AddChangeCardNum();
         }

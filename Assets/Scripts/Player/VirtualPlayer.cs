@@ -6,6 +6,7 @@ public class VirtualPlayer : PlayerBase
 {
     [Header("Player UI Prefab")]
     [SerializeField] private GameObject _handHolderPrefab;
+    #region Init
     protected override void InitCardHolder()
     {
         base.InitCardHolder();
@@ -19,6 +20,9 @@ public class VirtualPlayer : PlayerBase
                                 anchorPos,
                                 Vector3.one * gameConfigSO.cardHolderSize).GetComponent<VirtualHandHolder>();
     }
+    #endregion
+
+    #region Play card
     public override void AddCards(Card card)
     {
 
@@ -26,6 +30,28 @@ public class VirtualPlayer : PlayerBase
         _ = card.FaceCardDown();
         cardHolder.AddCard(card);
         card.CanInteract(false);
+    }
+    protected override void CheckReveal(bool check)
+    {
+        base.CheckReveal(check);
+        if (check) SuccessRevealCard();
+        else FailRevealCard();
+
+    }
+    protected override void SuccessRevealCard()
+    {
+        base.SuccessRevealCard();
+        curTurnState = TurnState.PlayCardState;
+    }
+    protected override void FailRevealCard()
+    {
+        base.FailRevealCard();
+        curTurnState = TurnState.ChooseActionState;
+    }
+    protected override void PlayCards()
+    {
+        (cardHolder as VirtualHandHolder).HelpPlayingCard();
+
     }
     protected override void RevealCards()
     {
@@ -39,7 +65,9 @@ public class VirtualPlayer : PlayerBase
         curTurnState = TurnState.ChooseActionState;
         passTurnEventSO.RaiseEvent();
     }
+    #endregion
 
+    #region In turn
     public override void BeginTurn()
     {
         if (GameManager.endGame) return;
@@ -52,8 +80,8 @@ public class VirtualPlayer : PlayerBase
         await UniTask.Delay(1000);
         if (RuleGameHandler.BeginTurn)
         {
+            GameManagerEvent.RaiseTurnEvent();
             RuleGameHandler.BeginTurn = false;
-
             base.BeginTurn();
             PlayCards();
             curTurnState = TurnState.ChooseActionState;
@@ -77,6 +105,7 @@ public class VirtualPlayer : PlayerBase
             }
             else
             {
+                GameManagerEvent.RaiseTurnEvent();
                 PlayCards();
                 curTurnState = TurnState.ChooseActionState;
             }
@@ -90,32 +119,14 @@ public class VirtualPlayer : PlayerBase
         relocatePlayerCardEventSO.EventChannel -= (cardHolder as VirtualHandHolder).RelocateCards;
         checkRevealEventSO.EventChannel -= CheckReveal;
     }
-    protected override void CheckReveal(bool check)
-    {
-        base.CheckReveal(check);
-        if (check) SuccessRevealCard();
-        else FailRevealCard();
+    #endregion
 
-    }
-    protected override void SuccessRevealCard()
-    {
-        base.SuccessRevealCard();
-        curTurnState = TurnState.PlayCardState;
-    }
-    protected override void FailRevealCard()
-    {
-        base.FailRevealCard();
-        curTurnState = TurnState.ChooseActionState;
-    }
-    protected override void PlayCards()
-    {
-        (cardHolder as VirtualHandHolder).HelpPlayingCard();
-     
-    }
 
+    #region End game
     protected override void EndGame()
     {
         base.EndGame();
         EndTurn();
     }
+    #endregion
 }

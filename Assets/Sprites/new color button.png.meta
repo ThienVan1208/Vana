@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 52f48e0505c6a894ab7479613bb85288
+guid: da8efd2d5c73ef6418fa315e12b3d7da
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5000755349345963447
-    second: Big Popup panel_0
+      213: 8823972907178218808
+    second: new color button_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,23 +139,111 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Big Popup panel_0
+      name: new color button_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 36
-        width: 256
-        height: 152
+        y: 25
+        width: 128
+        height: 96
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7bd866ebe70466540800000000000000
-      internalID: 5000755349345963447
+      spriteID: 83557009b9c057a70800000000000000
+      internalID: 8823972907178218808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: new color button_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 25
+        width: 128
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86d4d678120e09c48b0577dee40752f1
+      internalID: 1616452935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: new color button_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 25
+        width: 128
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: feb4999f3b03b104ea63099d6ac79d77
+      internalID: -1766607168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: new color button_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 25
+        width: 128
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b905e76b02aab9478cdd04f5e9cf7e7
+      internalID: -1310654275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: new color button_4
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 25
+        width: 128
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f2824317b29a6a49935500e65d9a000
+      internalID: -1912910861
       vertices: []
       indices: 
       edges: []
@@ -164,7 +252,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e916878d67d0397448399686f7132b20
+    spriteID: 6ba0e6dc5a17a774fb7b5efeb5b339a2
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +262,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Big Popup panel_0: 5000755349345963447
+      new color button_0: 8823972907178218808
+      new color button_1: 1616452935
+      new color button_2: -1766607168
+      new color button_3: -1310654275
+      new color button_4: -1912910861
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -13,6 +13,10 @@ public class Test : MonoBehaviour
     {
         Time.timeScale = Time.timeScale == 0 ? 1: 0;
     }
-
+    private void Start() {
+        int a = 0;
+        bool ret = a++ == 0;
+        Debug.Log(ret);
+    }
     
 }
