@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : PlayerBase
+public class Player : PlayerBase, ICardDrawable
 {
+    // Ref in InGamePanel class.
+    [SerializeField] private IntEventSO _drawCardEventSO;
+
+
     [Header("Data Events")]
     // Ref in CurrencyManager.
     [SerializeField] private IntEventSO _increaseCurrencyEventSO;
@@ -14,13 +18,17 @@ public class Player : PlayerBase
     [SerializeField] private GameObject _handHolderPrefab;
     [SerializeField] private GameObject _playButtonPrefab;
     [SerializeField] private GameObject _changeButtonPrefab;
+    [SerializeField] private GameObject _drawCardbuttonPrefab;
     [SerializeField] private GameObject _revealButtonPrefab;
     [SerializeField] private GameObject _passButtonPrefab;
+
+    
+    private int _cardDrawNum;
 
     protected override void Start()
     {
         base.Start();
-
+        SetCardDrawNum(3);
     }
 
     #region Init
@@ -48,14 +56,24 @@ public class Player : PlayerBase
         _playButtonPrefab.GetComponent<Button>().onClick.AddListener(PlayCards);
 
         // Create change-card button.
-        _changeButtonPrefab = InitPlayerUI(_changeButtonPrefab
+        // _changeButtonPrefab = InitPlayerUI(_changeButtonPrefab
+        //                             , gameConfigSO.inGameRightButtonPos
+        //                             , Quaternion.identity
+        //                             , mainCanvas.gameObject
+        //                             , anchorPos
+        //                             , Vector2.one);
+        // _changeButtonPrefab.SetActive(false);
+        // _changeButtonPrefab.GetComponent<Button>().onClick.AddListener(ChangeCards);
+
+        // Create draw-card button.
+        _drawCardbuttonPrefab = InitPlayerUI(_drawCardbuttonPrefab
                                     , gameConfigSO.inGameRightButtonPos
                                     , Quaternion.identity
                                     , mainCanvas.gameObject
                                     , anchorPos
                                     , Vector2.one);
-        _changeButtonPrefab.SetActive(false);
-        _changeButtonPrefab.GetComponent<Button>().onClick.AddListener(ChangeCards);
+        _drawCardbuttonPrefab.SetActive(false);
+        _drawCardbuttonPrefab.GetComponent<Button>().onClick.AddListener(DrawCard);
 
         // Create choose-action button.
         _revealButtonPrefab = InitPlayerUI(_revealButtonPrefab
@@ -90,32 +108,51 @@ public class Player : PlayerBase
     {
         card.SetCardHolder(cardHolder);
         cardHolder.AddCard(card);
-        card.CanInteract(true);
     }
     #endregion
 
-    #region ChangeCards
-    protected override async void ChangeCards()
+    // #region ChangeCards
+    // protected override async void ChangeCards()
+    // {
+    //     base.ChangeCards();
+    //     if (!await (cardHolder as HandHolder).HelpChangingCard()) return;
+    // }
+    // #endregion
+
+
+    #region Draw card
+    public void DrawCard()
     {
-        base.ChangeCards();
-        if (!await (cardHolder as HandHolder).HelpChangingCard()) return;
+        AddCards(CardSpawnerEvent.RaiseGetCardEvent(isActive: true));
+        SetCardDrawNum(_cardDrawNum - 1);
+    }
+    public int GetCardDrawNum()
+    {
+        return _cardDrawNum;
+    }
+    public void SetCardDrawNum(int num)
+    {
+        if (num > 3 || num < 0) return;
+        _cardDrawNum = num;
+        _drawCardEventSO.RaiseEvent(_cardDrawNum);
     }
     #endregion
+
 
     #region PlayerUI
     private void DisplayPlayCardUI(bool val = true)
     {
-        
-
         _playButtonPrefab.SetActive(val);
         _changeButtonPrefab.SetActive(val);
+        _drawCardbuttonPrefab.SetActive(val);
 
         // If it comes to playcard state -> next state is choosing action.
         if (val == true)
         {
             if (CheckEndGameConditionEvent.RaiseEvent()) return;
-            
+
             GameManagerEvent.RaiseTurnEvent();
+            SetCardDrawNum(_cardDrawNum + 1);
             curTurnState = TurnState.ChooseActionState;
         }
     }
@@ -133,7 +170,7 @@ public class Player : PlayerBase
     public override void BeginTurn()
     {
         base.BeginTurn();
-        
+
         relocatePlayerCardEventSO.EventChannel += (cardHolder as HandHolder).RelocateCards;
         if (RuleGameHandler.BeginTurn)
         {
@@ -143,7 +180,7 @@ public class Player : PlayerBase
         }
         else
         {
-        
+
             // Choose cards to play.
             if (curTurnState == TurnState.PlayCardState)
             {
@@ -227,5 +264,9 @@ public class Player : PlayerBase
         base.EndGame();
         EndTurn();
     }
+
+
+
+
     #endregion
 }

@@ -7,20 +7,18 @@ public class HandHolder : PlayableCardHolder
 {
     [SerializeField] private List<Card> _chosenCards = new List<Card>();
 
-    // Ref in InGamePanel class.
-    [SerializeField] private IntEventSO _cardExchangeEventSO;
     private Card _srcCardPointer;
     private Card _dstCardPointer;
     private bool _isDrag = false;
     private bool _isSwap = false;
-    private int _cardExchangeNum = 3;
+
     protected override void OnDestroy()
     {
         _chosenCards.Clear();
     }
     private void OnEnable()
     {
-        _cardExchangeEventSO.RaiseEvent(_cardExchangeNum);
+        // _cardExchangeEventSO.RaiseEvent(_cardExchangeNum);
     }
 
     #region Add card
@@ -72,46 +70,48 @@ public class HandHolder : PlayableCardHolder
     }
     #endregion
 
-    #region Change card
-    public async UniTask<bool> HelpChangingCard()
-    {
-        if (_cardExchangeNum <= 0)
-        {
-            Debug.Log("No more exchange");
-            return false;
-        }
+    // #region Change card
+    // public async UniTask<bool> HelpChangingCard()
+    // {
+    //     if (_cardExchangeNum <= 0)
+    //     {
+    //         Debug.Log("No more exchange");
+    //         return false;
+    //     }
 
-        foreach (var card in _chosenCards)
-        {
-            _cardsDic[card.transform.parent as RectTransform] = null;
-            curCardNum--;
-        }
+    //     foreach (var card in _chosenCards)
+    //     {
+    //         _cardsDic[card.transform.parent as RectTransform] = null;
+    //         curCardNum--;
+    //     }
 
-        AddExchangedCardNum(-1);
+    //     AddExchangedCardNum(-1);
 
-        ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
+    //     ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
 
-        // Move cards to cardSpawner.
-        await CardSpawnerEvent.RaiseAddCardEvent(_chosenCards);
+    //     // Move cards to cardSpawner.
+    //     await CardSpawnerEvent.RaiseAddCardEvent(_chosenCards);
 
-        // Get new cards.
-        for (int i = 0; i < _chosenCards.Count; i++)
-        {
-            Card newCard = CardSpawnerEvent.GetCardEvent();
-            newCard.gameObject.SetActive(true);
-            AddCard(newCard);
-        }
+    //     // Get new cards.
+    //     for (int i = 0; i < _chosenCards.Count; i++)
+    //     {
+    //         Card newCard = CardSpawnerEvent.GetCardEvent();
+    //         newCard.gameObject.SetActive(true);
+    //         AddCard(newCard);
+    //     }
 
-        _chosenCards.Clear();
-        return true;
-    }
-    public void AddExchangedCardNum(int val = 1)
-    {
-        if (_cardExchangeNum >= 3 && val >= 0) return;
-        _cardExchangeNum += val;
-        _cardExchangeEventSO.RaiseEvent(_cardExchangeNum);
-    }
-    #endregion
+    //     _chosenCards.Clear();
+    //     return true;
+    // }
+    // public void AddExchangedCardNum(int val = 1)
+    // {
+    //     if (_cardExchangeNum >= 3 && val >= 0) return;
+    //     _cardExchangeNum += val;
+    //     _cardExchangeEventSO.RaiseEvent(_cardExchangeNum);
+    // }
+    // #endregion
+
+   
 
     #region  Swap card
     public void SetSrcCardPointer(Card card)

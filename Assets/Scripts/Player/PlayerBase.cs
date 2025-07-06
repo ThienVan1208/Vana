@@ -6,6 +6,9 @@ public enum TurnState
 }
 public class PlayerBase : MonoBehaviour, IPlayable
 {
+    [Header("Game Configuration")]
+    [SerializeField] protected GameConfigSO gameConfigSO;
+
     [Header("Playable Events")]
     // Ref in RuleGameHandler class.
     [SerializeField] protected VoidEventSO revealCardEventSO;
@@ -13,11 +16,10 @@ public class PlayerBase : MonoBehaviour, IPlayable
     [SerializeField] protected VoidEventSO relocatePlayerCardEventSO;
     [SerializeField] protected BoolEventSO checkRevealEventSO;
 
-    [Header("Game Configuration")]
-    [SerializeField] protected GameConfigSO gameConfigSO;
 
-    [SerializeField] protected Canvas mainCanvas;
-    [SerializeField] protected CardHolder cardHolder;
+
+    protected Canvas mainCanvas;
+    protected CardHolder cardHolder;
     protected TurnState curTurnState;
     protected virtual void Awake()
     {
@@ -25,7 +27,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
         InitPlayableCanvas();
         InitCardHolder();
     }
-    // protected virtual void OnValidate()0
+    // protected virtual void OnValidate()
     // {
     //     InitPlayableCanvas();
     //     InitCardHolder();

@@ -7,9 +7,11 @@ using UnityEngine;
 public static class CardSpawnerEvent
 {
     public static Func<Card> GetCardEvent;
-    public static Card RaiseGetCardEvent()
+    public static Card RaiseGetCardEvent(bool isActive = false)
     {
-        return GetCardEvent?.Invoke();
+        Card newCard = GetCardEvent?.Invoke();
+        newCard.gameObject.SetActive(isActive);
+        return newCard;
     }
 
     public static Func<List<Card>, UniTask> AddCardEvent;

@@ -17,14 +17,11 @@ public class InGamePanel : UIBase
 
 
 
+    [Header("Draw Card UI")]
+    [SerializeField] private TextMeshProUGUI _cardDrawTxt;
 
-
-    [Header("Exchange UI")]
-    [SerializeField] private TextMeshProUGUI _exchangeCardTxt;
-
-    // Ref in HandHolder class.
-    [SerializeField] private IntEventSO _exchangeCardEventSO;
-
+    // Ref in Player class.
+    [SerializeField] private IntEventSO _drawCardEventSO;
 
 
 
@@ -41,7 +38,7 @@ public class InGamePanel : UIBase
     private bool _earnedCurrencyQueueLock = false;
 
 
-    
+
     protected override void Start()
     {
         base.Start();
@@ -50,17 +47,19 @@ public class InGamePanel : UIBase
 
     private void OnEnable()
     {
-        _exchangeCardEventSO.EventChannel += ChangeCard;
         _earnCurrenctEventSO.EventChannel += EarnCurrency;
         _increaseTurnEventSO.EventChannel += IncreaseTurn;
+        _drawCardEventSO.EventChannel += DrawCard;
     }
     private void OnDisable()
     {
-        _exchangeCardEventSO.EventChannel -= ChangeCard;
+
         _earnCurrenctEventSO.EventChannel -= EarnCurrency;
         _increaseTurnEventSO.EventChannel -= IncreaseTurn;
+        _drawCardEventSO.EventChannel -= DrawCard;
     }
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         DOTween.Kill(this);
     }
     #region Turn
@@ -71,25 +70,24 @@ public class InGamePanel : UIBase
     }
     #endregion
 
-
-    #region Exchange card
-    private void ChangeCard(int num)
+    #region Draw card
+    private void DrawCard(int num)
     {
         ObjectPoolManager.GetPoolingObject<ExchangeCardEffect>()?.GetEffect(0.5f
-                                                , _exchangeCardTxt.rectTransform.position
+                                                , _cardDrawTxt.rectTransform.position
                                                 , new Vector3(80f, 80f, 0f)
-                                                , _exchangeCardTxt.text
+                                                , _cardDrawTxt.text
                                                 , 40
                                                 , Color.red
                                                 , 0.7f);
 
-        _exchangeCardTxt.rectTransform.DOScale(2, 0.2f).SetEase(Ease.InOutSine)
+        _cardDrawTxt.rectTransform.DOScale(2, 0.2f).SetEase(Ease.InOutSine)
         .OnComplete(() =>
         {
-            _exchangeCardTxt.rectTransform.DOShakeRotation(0.2f, new Vector3(0, 0, 20));
-            _exchangeCardTxt.rectTransform.DOScale(1, 0.2f).SetEase(Ease.InOutSine);
+            _cardDrawTxt.rectTransform.DOShakeRotation(0.2f, new Vector3(0, 0, 20));
+            _cardDrawTxt.rectTransform.DOScale(1, 0.2f).SetEase(Ease.InOutSine);
         });
-        _exchangeCardTxt.text = num.ToString();
+        _cardDrawTxt.text = num.ToString();
     }
     #endregion
 
