@@ -24,9 +24,9 @@ public class FSM
             if (_isStop || _curState == null) return;
             _curState.OnUpdate();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            Debug.Log("I catch gameobject destroy exception!!!");
+            Debug.Log("I catch exception " + e.Message);
         }
 
     }
@@ -45,9 +45,9 @@ public class FSM
             _curState = state;
             if (isEnter) _curState.OnEnter();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            Debug.Log("I catch gameobject destroy exception!!!");
+            Debug.Log("I catch exception " + e.Message);
         }
 
     }

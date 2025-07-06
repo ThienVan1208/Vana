@@ -6,9 +6,6 @@ public enum TurnState
 }
 public class PlayerBase : MonoBehaviour, IPlayable
 {
-    [Header("Game Configuration")]
-    [SerializeField] protected GameConfigSO gameConfigSO;
-
     [Header("Playable Events")]
     // Ref in RuleGameHandler class.
     [SerializeField] protected VoidEventSO revealCardEventSO;

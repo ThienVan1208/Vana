@@ -8,7 +8,7 @@ public enum PopupUIType
 {
     WinGame,
     LoseGame,
-    PlayPanel,
+    PlayerButtonPanel,
     InforPanel,
     Setting,
 }

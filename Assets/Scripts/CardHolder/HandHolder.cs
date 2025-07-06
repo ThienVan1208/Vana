@@ -47,9 +47,9 @@ public class HandHolder : PlayableCardHolder
     // Used thru button.
     public override bool HelpPlayingCard()
     {
-        if (_chosenCards.Count < gameConfigSO.minCard2Play)
+        if (_chosenCards.Count < GameConfiguration.minCard2Play)
         {
-            Debug.Log("Must choose at least" + gameConfigSO.minCard2Play + "cards");
+            Debug.Log("Must choose at least" + GameConfiguration.minCard2Play + "cards");
             return false;
         }
 
@@ -200,7 +200,7 @@ public class HandHolder : PlayableCardHolder
     }
     public bool CanChooseCard()
     {
-        return _chosenCards.Count < gameConfigSO.maxCard2Play;
+        return _chosenCards.Count < GameConfiguration.maxCard2Play;
     }
     #endregion
 

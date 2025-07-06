@@ -167,11 +167,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardInfoSO: {fileID: 11400000, guid: b7942163cd512244b8cbe9bf57308c59, type: 2}
-  gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   cardSlotRect: {fileID: 0}
   myRect: {fileID: 0}
   frontImg: {fileID: 4622269634128936723}
   backImg: {fileID: 3192990347998105776}
+  interactInputReaderSO: {fileID: 11400000, guid: 9954b10fda5bed94ab69891e4fa29a73, type: 2}
 --- !u!1 &3130033129120331830
 GameObject:
   m_ObjectHideFlags: 0

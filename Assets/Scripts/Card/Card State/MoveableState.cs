@@ -42,9 +42,9 @@ public class MoveableState : InteractableState
     protected void GetRotateEffect(Vector2 target)
     {
         float dis = Vector2.Distance(myCard.myRect.position, target);
-        float deg = myCard.gameConfigSO.cardRotateAngle;
+        float deg = GameConfiguration.cardRotateAngle;
 
-        float lerpRange = dis / myCard.gameConfigSO.cardRotateSpeed;
+        float lerpRange = dis / GameConfiguration.cardRotateSpeed;
         if (target.x < myCard.myRect.position.x) _rotateDeg.z = Mathf.Lerp(0, deg, lerpRange);
         else _rotateDeg.z = Mathf.Lerp(0, -deg, lerpRange);
         myCard.myRect.eulerAngles = _rotateDeg;

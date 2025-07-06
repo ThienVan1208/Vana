@@ -1,16 +1,21 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
 public class BottomTopPopupEffect : UIEffectBase
 {
-    [SerializeField] private float _initPosY;
-    public override void GetEffect()
+    public float startYPos;
+    public float endYPos = 0;
+    public override void GetEffect(Action callback = null)
     {
-        (gameObject.transform as RectTransform).localPosition = new Vector3 (0, _initPosY, 0);
-        gameObject.transform.DOLocalMoveY(0, duration).SetEase(Ease.OutQuad)
+        (gameObject.transform as RectTransform).localPosition = new Vector3(0, startYPos, 0);
+        gameObject.transform.DOLocalMoveY(endYPos, duration).SetEase(Ease.OutQuad)
         .OnComplete(() =>
         {
-            gameObject.transform.DOShakePosition(duration, strength: 15, vibrato: 5);
+            gameObject.transform.DOShakePosition(duration, strength: 15, vibrato: 5).OnComplete(()=>
+            {
+                callback?.Invoke();
+            });
         });
     }
 

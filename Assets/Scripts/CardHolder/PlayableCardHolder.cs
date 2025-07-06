@@ -29,7 +29,7 @@ public abstract class PlayableCardHolder : CardHolder, IHelpPlayingCard
         for (int i = 0; i < slots.Count; i++)
         {
             if (!slots[i].gameObject.activeSelf) break;
-            if ( i < gameConfigSO.initCardNum) continue;
+            if ( i < GameConfiguration.initCardNum) continue;
 
             if(_cardsDic[slots[i]] == null) slots[i].gameObject.SetActive(false);
         }

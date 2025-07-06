@@ -216,7 +216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.25
-  _initPosY: -503
+  startYPos: -450
+  endYPos: 0
 --- !u!1 &60038283
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,7 +453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b8ab751e3098394bb88d83d7c9a9f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   _playableCanvas: {fileID: 419142505}
 --- !u!4 &147542043
 Transform:
@@ -2685,7 +2685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddd170d211246d40b4e81b0a8791ad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   revealCardEventSO: {fileID: 11400000, guid: 9a3a57c76278a1b46abc79f342d2aa9e, type: 2}
   passTurnEventSO: {fileID: 11400000, guid: 8167e13cefa0327429f09a36b3b068c4, type: 2}
   relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
@@ -2694,11 +2693,7 @@ MonoBehaviour:
   _increaseCurrencyEventSO: {fileID: 11400000, guid: 35ce08836dfbc4d4fbd9dece1493290e, type: 2}
   _levelUpEventSO: {fileID: 11400000, guid: 521bfb9a18bb09c4081187d959c11163, type: 2}
   _handHolderPrefab: {fileID: 4083175592908992002, guid: 0d17b878497b6c8439ab0e5b40d63f16, type: 3}
-  _playButtonPrefab: {fileID: 4998945517929767177, guid: cf8d6832aa34cf54b8e3d3472c6a39bf, type: 3}
-  _changeButtonPrefab: {fileID: 8486193234022262668, guid: 998c3b89521e55645b355cab3ca0d714, type: 3}
-  _drawCardbuttonPrefab: {fileID: 8486193234022262668, guid: cf7b81da7fe8ae44e8c8cfa24015148c, type: 3}
-  _revealButtonPrefab: {fileID: 8942940341439447720, guid: a39c940a3a3a37f419aeec80d0e4a15f, type: 3}
-  _passButtonPrefab: {fileID: 4085882491416559211, guid: dfd5a91ef08ddcd4b86476e56e4be25d, type: 3}
+  _buttonPanel: {fileID: 4971666660427211524, guid: 15d92d28508cee64eac08da55d3b30bf, type: 3}
 --- !u!4 &920495731
 Transform:
   m_ObjectHideFlags: 0
@@ -2889,7 +2884,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc41a899aebf7d54492591612b69d9df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   revealCardEventSO: {fileID: 11400000, guid: 9a3a57c76278a1b46abc79f342d2aa9e, type: 2}
   passTurnEventSO: {fileID: 11400000, guid: 8167e13cefa0327429f09a36b3b068c4, type: 2}
   relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
@@ -4394,7 +4388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48da3f8924e2fa0478a83695cc0cf7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   _activeCardSlotEventSO: {fileID: 11400000, guid: 16c8e6b2e6189e049a09558afd347719, type: 2}
   _moveCardToTableEventSO: {fileID: 11400000, guid: 4eb425afeec23eb488b03994434c1ed9, type: 2}
   _refeshTableEventSO: {fileID: 11400000, guid: 9124ea1b3cdafaa4f948dcf4b8262d81, type: 2}
@@ -4574,7 +4567,6 @@ MonoBehaviour:
   _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
   _playableInfoSO: {fileID: 11400000, guid: f78e75a492e6ea449865e2e5ef6106b7, type: 2}
   _displayTurnUIEventSO: {fileID: 11400000, guid: db9cf29a490a89c4686df430a4b57b3a, type: 2}
-  _gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   player: {fileID: 920495730}
   virPlayer: {fileID: 1014271831}
 --- !u!1 &1785715909

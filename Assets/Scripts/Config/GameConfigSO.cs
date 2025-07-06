@@ -12,14 +12,12 @@ public class GameConfigSO : ScriptableObject
     public readonly float cardHolderSize = 1f;
     public readonly float cardSize = 1f;
     public readonly Vector2 handHolderPos = new Vector2(316, 85);
+    public readonly Vector2 playerButtonPanelPos = new Vector2(316, 20);
     public readonly Vector2 virtualHolderPos = new Vector2(316, -50f);
-    public readonly Vector2 inGameLeftButtonPos = new Vector2(214f, 15f);
-    public readonly Vector2 inGameRightButtonPos = new Vector2(429f, 15f);
-
-
-
-
     #endregion
+
+
+
 
     [Header("Card Configuration")]
     #region Card Infor

@@ -25,7 +25,7 @@ public class VirtualHandHolder : PlayableCardHolder
     public override bool HelpPlayingCard()
     {
         List<Card> cards = new List<Card>();
-        int ranNum = Mathf.Min(Random.Range(gameConfigSO.minCard2Play, gameConfigSO.maxCard2Play + 1), curCardNum);
+        int ranNum = Mathf.Min(Random.Range(GameConfiguration.minCard2Play, GameConfiguration.maxCard2Play + 1), curCardNum);
 
         for (int i = 0; i < ranNum; i++)
         {

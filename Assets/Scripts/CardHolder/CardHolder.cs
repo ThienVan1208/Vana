@@ -3,8 +3,6 @@ using System.Linq;
 using UnityEngine;
 public class CardHolder : MonoBehaviour
 {
-    [SerializeField] protected GameConfigSO gameConfigSO;
-
     // The key is cardSlot, value is card.
     protected Dictionary<RectTransform, Card> _cardsDic = new Dictionary<RectTransform, Card>();
 

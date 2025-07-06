@@ -8,11 +8,11 @@ public class PopupUIBase : MonoBehaviour
     [SerializeField] protected PopupUIEventSO subcribedPopupUIEventSO;
     [SerializeField] protected GameObject popupWindow;
     protected virtual void Awake() { }
-    protected virtual void Start()
+    protected virtual void OnEnable() 
     {
         subcribedPopupUIEventSO.RaiseEvent(popupUIType, this);
     }
-    protected virtual void OnDestroy()
+    protected virtual void OnDisable()
     {
         subcribedPopupUIEventSO.RaiseEvent(popupUIType, null);
     }

@@ -14,11 +14,11 @@ public class VirtualPlayer : PlayerBase
         // Create cardHolder.
         Vector2 anchorPos = new Vector2(0f, 1f);
         cardHolder = InitPlayerUI(_handHolderPrefab
-                                , gameConfigSO.virtualHolderPos
+                                , GameConfiguration.virtualHolderPos
                                 , Quaternion.identity,
                                 mainCanvas.gameObject,
                                 anchorPos,
-                                Vector3.one * gameConfigSO.cardHolderSize).GetComponent<VirtualHandHolder>();
+                                Vector3.one * GameConfiguration.cardHolderSize).GetComponent<VirtualHandHolder>();
     }
     #endregion
 

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Player : PlayerBase, ICardDrawable
 {
@@ -16,13 +15,9 @@ public class Player : PlayerBase, ICardDrawable
 
     [Header("Player UI Prefabs")]
     [SerializeField] private GameObject _handHolderPrefab;
-    [SerializeField] private GameObject _playButtonPrefab;
-    [SerializeField] private GameObject _changeButtonPrefab;
-    [SerializeField] private GameObject _drawCardbuttonPrefab;
-    [SerializeField] private GameObject _revealButtonPrefab;
-    [SerializeField] private GameObject _passButtonPrefab;
+    [SerializeField] private GameObject _buttonPanel;
+    private PlayerButtonsPanel _playerButtonPanel;
 
-    
     private int _cardDrawNum;
 
     protected override void Start()
@@ -39,60 +34,24 @@ public class Player : PlayerBase, ICardDrawable
 
         // Create cardHolder.
         cardHolder = InitPlayerUI(_handHolderPrefab
-                                , gameConfigSO.handHolderPos
+                                , GameConfiguration.handHolderPos
                                 , Quaternion.identity,
                                 mainCanvas.gameObject,
                                 anchorPos,
-                                Vector3.one * gameConfigSO.cardHolderSize).GetComponent<HandHolder>();
+                                Vector3.one * GameConfiguration.cardHolderSize).GetComponent<HandHolder>();
 
-        // Create play-card button.
-        _playButtonPrefab = InitPlayerUI(_playButtonPrefab
-                                    , gameConfigSO.inGameLeftButtonPos
-                                    , Quaternion.identity
-                                    , mainCanvas.gameObject
-                                    , anchorPos
-                                    , Vector2.one);
-        _playButtonPrefab.SetActive(false);
-        _playButtonPrefab.GetComponent<Button>().onClick.AddListener(PlayCards);
+        _playerButtonPanel = InitPlayerUI(_buttonPanel
+                                    , GameConfiguration.playerButtonPanelPos
+                                    , Quaternion.identity,
+                                    mainCanvas.gameObject,
+                                    anchorPos,
+                                    Vector3.one * GameConfiguration.cardHolderSize).GetComponent<PlayerButtonsPanel>();
+        PopupUIEvent.RaiseAction(PopupUIType.PlayerButtonPanel, active: false);
 
-        // Create change-card button.
-        // _changeButtonPrefab = InitPlayerUI(_changeButtonPrefab
-        //                             , gameConfigSO.inGameRightButtonPos
-        //                             , Quaternion.identity
-        //                             , mainCanvas.gameObject
-        //                             , anchorPos
-        //                             , Vector2.one);
-        // _changeButtonPrefab.SetActive(false);
-        // _changeButtonPrefab.GetComponent<Button>().onClick.AddListener(ChangeCards);
-
-        // Create draw-card button.
-        _drawCardbuttonPrefab = InitPlayerUI(_drawCardbuttonPrefab
-                                    , gameConfigSO.inGameRightButtonPos
-                                    , Quaternion.identity
-                                    , mainCanvas.gameObject
-                                    , anchorPos
-                                    , Vector2.one);
-        _drawCardbuttonPrefab.SetActive(false);
-        _drawCardbuttonPrefab.GetComponent<Button>().onClick.AddListener(DrawCard);
-
-        // Create choose-action button.
-        _revealButtonPrefab = InitPlayerUI(_revealButtonPrefab
-                                    , gameConfigSO.inGameLeftButtonPos
-                                    , Quaternion.identity
-                                    , mainCanvas.gameObject
-                                    , anchorPos
-                                    , Vector2.one);
-        _revealButtonPrefab.SetActive(false);
-        _revealButtonPrefab.GetComponent<Button>().onClick.AddListener(RevealCards);
-
-        _passButtonPrefab = InitPlayerUI(_passButtonPrefab
-                                    , gameConfigSO.inGameRightButtonPos
-                                    , Quaternion.identity
-                                    , mainCanvas.gameObject
-                                    , anchorPos
-                                    , Vector2.one);
-        _passButtonPrefab.SetActive(false);
-        _passButtonPrefab.GetComponent<Button>().onClick.AddListener(PassTurn);
+        _playerButtonPanel.playButtonPrefab.onClick.AddListener(PlayCards);
+        _playerButtonPanel.drawCardbuttonPrefab.onClick.AddListener(DrawCard);
+        _playerButtonPanel.revealButtonPrefab.onClick.AddListener(RevealCards);
+        _playerButtonPanel.passButtonPrefab.onClick.AddListener(PassTurn);
 
     }
     #endregion
@@ -142,27 +101,40 @@ public class Player : PlayerBase, ICardDrawable
     #region PlayerUI
     private void DisplayPlayCardUI(bool val = true)
     {
-        _playButtonPrefab.SetActive(val);
-        _changeButtonPrefab.SetActive(val);
-        _drawCardbuttonPrefab.SetActive(val);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.playButtonPrefab, isActive: val);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.drawCardbuttonPrefab, isActive: val);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.passButtonPrefab, isActive: val);
 
         // If it comes to playcard state -> next state is choosing action.
         if (val == true)
         {
             if (CheckEndGameConditionEvent.RaiseEvent()) return;
 
+            _playerButtonPanel.ShowPopup();
             GameManagerEvent.RaiseTurnEvent();
             SetCardDrawNum(_cardDrawNum + 1);
             curTurnState = TurnState.ChooseActionState;
         }
+        else
+        {
+            _playerButtonPanel.HidePopup();
+        }
     }
     private void DisplayChooseUI(bool val = true)
     {
-        _revealButtonPrefab.SetActive(val);
-        _passButtonPrefab.SetActive(val);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.revealButtonPrefab, isActive: val);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.passButtonPrefab, isActive: val);
 
         // If it comes to choose acion state -> next state is playing cards.
-        if (val == true) curTurnState = TurnState.PlayCardState;
+        if (val == true)
+        {
+            _playerButtonPanel.ShowPopup();
+            curTurnState = TurnState.PlayCardState;
+        }
+        else
+        {
+            _playerButtonPanel.HidePopup();
+        }
     }
     #endregion
 
@@ -180,7 +152,6 @@ public class Player : PlayerBase, ICardDrawable
         }
         else
         {
-
             // Choose cards to play.
             if (curTurnState == TurnState.PlayCardState)
             {
@@ -192,8 +163,8 @@ public class Player : PlayerBase, ICardDrawable
             else
             {
                 checkRevealEventSO.EventChannel += CheckReveal;
-                DisplayChooseUI();
                 DisplayPlayCardUI(false);
+                DisplayChooseUI();
             }
 
         }
@@ -206,7 +177,7 @@ public class Player : PlayerBase, ICardDrawable
     }
     #endregion
 
-    #region Reveal&Pass
+    #region RevealPass
     protected override void CheckReveal(bool check)
     {
         base.CheckReveal(check);

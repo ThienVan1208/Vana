@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 public enum EndGameType
 {
@@ -41,13 +38,6 @@ public class GameManager : MonoBehaviour
     // Ref in InGamePanel.
     [SerializeField] private IntEventSO _displayTurnUIEventSO;
     private int _curTurn = 0;
-
-
-
-
-
-    [Header("Game Configuration")]
-    [SerializeField] private GameConfigSO _gameConfigSO;
 
 
 
@@ -103,7 +93,7 @@ public class GameManager : MonoBehaviour
         try
         {
             await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
-            for (int i = 0; i < _gameConfigSO.initCardNum; i++)
+            for (int i = 0; i < GameConfiguration.initCardNum; i++)
             {
                 foreach (var playable in _playableInfoSO.GetPlayableList())
                 {

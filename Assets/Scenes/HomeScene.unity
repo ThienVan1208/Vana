@@ -1457,7 +1457,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.25
-  _initPosY: -503
+  startYPos: -500
+  endYPos: 0
 --- !u!1 &1033771105
 GameObject:
   m_ObjectHideFlags: 0
@@ -2148,6 +2149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.25
+  _extraScaleOut: {x: 1, y: 1, z: 1}
 --- !u!1 &1514522484
 GameObject:
   m_ObjectHideFlags: 0
