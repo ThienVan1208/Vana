@@ -216,6 +216,8 @@ public class RuleGameHandler : MonoBehaviour
             _checkRevealEventSO.RaiseEvent(true);
 
             GameManagerEvent.RaiseContinueTurnEvent();
+
+            _chosenCards.Clear();
         }
         catch (OperationCanceledException)
         {
@@ -241,6 +243,8 @@ public class RuleGameHandler : MonoBehaviour
             _checkRevealEventSO.RaiseEvent(false);
 
             GameManagerEvent.RaiseNextTurnEvent();
+
+            _chosenCards.Clear();
         }
         catch (OperationCanceledException)
         {
