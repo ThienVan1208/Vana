@@ -82,6 +82,11 @@ public class Player : PlayerBase, ICardDrawable
     #region Draw card
     public void DrawCard()
     {
+        if (_cardDrawNum <= 0)
+        {
+            Debug.Log("No more draw card.");
+            return;
+        }
         AddCards(CardSpawnerEvent.RaiseGetCardEvent(isActive: true));
         SetCardDrawNum(_cardDrawNum - 1);
     }

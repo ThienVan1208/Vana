@@ -68,36 +68,36 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         myRect = null;
     }
 
-        private void OnValidate()
-        {
-            // Only run if _gameConfigSO is not already assigned
-            if (interactInputReaderSO == null)
-            {
-                // Find the ScriptableObject in the asset database
-                string[] guids = AssetDatabase.FindAssets($"t:{typeof(InteractInputReaderSO).Name}");
-                if (guids.Length > 0)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                    interactInputReaderSO = AssetDatabase.LoadAssetAtPath<InteractInputReaderSO>(path);
-                    if (interactInputReaderSO != null)
-                    {
-                        Debug.Log($"Assigned ScriptableObject: {interactInputReaderSO.name}");
-    #if UNITY_EDITOR
-                        // Mark the object as dirty to ensure the change is saved
-                        EditorUtility.SetDirty(this);
-    #endif
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"No GameConfigSO found in the project.");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning($"No GameConfigSO found in the project.");
-                }
-            }
-        }
+    //     private void OnValidate()
+    //     {
+    //         // Only run if _gameConfigSO is not already assigned
+    //         if (interactInputReaderSO == null)
+    //         {
+    //             // Find the ScriptableObject in the asset database
+    //             string[] guids = AssetDatabase.FindAssets($"t:{typeof(InteractInputReaderSO).Name}");
+    //             if (guids.Length > 0)
+    //             {
+    //                 string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+    //                 interactInputReaderSO = AssetDatabase.LoadAssetAtPath<InteractInputReaderSO>(path);
+    //                 if (interactInputReaderSO != null)
+    //                 {
+    //                     Debug.Log($"Assigned ScriptableObject: {interactInputReaderSO.name}");
+    // #if UNITY_EDITOR
+    //                     // Mark the object as dirty to ensure the change is saved
+    //                     EditorUtility.SetDirty(this);
+    // #endif
+    //                 }
+    //                 else
+    //                 {
+    //                     Debug.LogWarning($"No GameConfigSO found in the project.");
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 Debug.LogWarning($"No GameConfigSO found in the project.");
+    //             }
+    //         }
+    //     }
 
 
 
