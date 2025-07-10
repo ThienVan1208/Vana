@@ -129,7 +129,7 @@ public class HandHolder : PlayableCardHolder
 
     public void SwapCard()
     {
-        if (_isSwap) return;
+        if (_isSwap || _srcCardPointer == null || _dstCardPointer == null) return;
 
         _isSwap = true;
         int srcIndex = GetIndexOfCardSlot(_srcCardPointer.cardSlotRect);
