@@ -5,7 +5,6 @@ public class VirtualHandHolder : PlayableCardHolder
 {
     public override void AddCard(Card card)
     {
-        // DisconnectCardSlot(card);
         base.AddCard(card);
         card.CanInteract(false);
         card.GetIdleEffect();
@@ -20,6 +19,7 @@ public class VirtualHandHolder : PlayableCardHolder
                 return;
             }
         }
+
         CheckEndGameConditionEvent.RaiseEvent();
     }
 
@@ -39,10 +39,6 @@ public class VirtualHandHolder : PlayableCardHolder
             }
             cards.Add(newCard);
             curCardNum--;
-            // if (curCardNum > gameConfigSO.initCardNum)
-            // {
-            //     newCard.cardSlotRect?.gameObject.SetActive(false);
-            // }
         }
         chosenCardEventSO.RaiseEvent(cards);
 

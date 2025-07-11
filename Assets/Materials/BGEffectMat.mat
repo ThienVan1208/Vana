@@ -92,7 +92,7 @@ Material:
     - _SrcBlend: 1
     - _ZWrite: 0
     - _scale: 1
-    - _strengh: 0.3
+    - _strengh: 0.05
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1825.214, g: 1825.214, b: 1825.214, a: 1}

@@ -19,6 +19,7 @@ public class LoginHandler : MonoBehaviour
     private void Awake()
     {
         _dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+        _pwInput.contentType = TMP_InputField.ContentType.Password;
     }
 
     // Used thru button.
