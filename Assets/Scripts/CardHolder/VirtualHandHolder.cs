@@ -20,6 +20,7 @@ public class VirtualHandHolder : PlayableCardHolder
                 return;
             }
         }
+        CheckEndGameConditionEvent.RaiseEvent();
     }
 
     public override bool HelpPlayingCard()

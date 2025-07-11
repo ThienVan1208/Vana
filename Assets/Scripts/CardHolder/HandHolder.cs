@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 
 public class HandHolder : PlayableCardHolder
@@ -40,6 +38,8 @@ public class HandHolder : PlayableCardHolder
                 return;
             }
         }
+        
+        CheckEndGameConditionEvent.RaiseEvent();
     }
     #endregion
 
@@ -111,7 +111,7 @@ public class HandHolder : PlayableCardHolder
     // }
     // #endregion
 
-   
+
 
     #region  Swap card
     public void SetSrcCardPointer(Card card)

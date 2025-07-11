@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,15 +11,16 @@ public class LoseGamePopupUI : PopupUIBase
         _homeButton.onClick.AddListener(() => LoadSceneHandler.LoadSceneByIndex(Constant.HomeScene));
         _uiEffect = popupWindow.GetComponent<UIEffectBase>();
     }
-    public override void ShowPopup()
+    public override void ShowPopup(Action callback = null)
     {
         base.ShowPopup();
         popupWindow.SetActive(true);
-        _uiEffect.GetEffect();
+        _uiEffect.GetEffect(()=>callback?.Invoke());
     }
-    public override void HidePopup()
+    public override void HidePopup(Action callback = null)
     {
         base.HidePopup();
         popupWindow.SetActive(false);
+        callback?.Invoke();
     }
 }

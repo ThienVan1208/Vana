@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5524522399368232422}
   - component: {fileID: 3665669633601315602}
   - component: {fileID: 2476711257656911204}
+  - component: {fileID: 430275017338420031}
   m_Layer: 5
   m_Name: PassTurn Button(Clone)
   m_TagString: Untagged
@@ -120,7 +121,33 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3665669633601315602}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 430275017338420031}
+        m_TargetAssemblyTypeName: UIEffectBase, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &430275017338420031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555235998968920153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0930359cfe2e7ea44a68baa05b39f318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _extraScaleOut: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!1 &583177402160993547
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,6 +640,7 @@ GameObject:
   - component: {fileID: 1407000311437983278}
   - component: {fileID: 3473353454140242160}
   - component: {fileID: 8907385604852812752}
+  - component: {fileID: 8600030738980353868}
   m_Layer: 5
   m_Name: ChosenCard Button(Clone)
   m_TagString: Untagged
@@ -721,7 +749,33 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3473353454140242160}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8600030738980353868}
+        m_TargetAssemblyTypeName: UIEffectBase, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8600030738980353868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542934013777762293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0930359cfe2e7ea44a68baa05b39f318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _extraScaleOut: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!1 &1554771598088139570
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,6 +1127,7 @@ MonoBehaviour:
   duration: 0.25
   startYPos: 0
   endYPos: 0
+  shakeAtEnd: 0
 --- !u!1 &7594746350123290104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,6 +1176,7 @@ GameObject:
   - component: {fileID: 2516411677084396303}
   - component: {fileID: 4881588605458193738}
   - component: {fileID: 5618503344756502373}
+  - component: {fileID: 7819375737687271673}
   m_Layer: 5
   m_Name: DrawCard Button(Clone)
   m_TagString: Untagged
@@ -1229,7 +1285,33 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4881588605458193738}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7819375737687271673}
+        m_TargetAssemblyTypeName: UIEffectBase, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7819375737687271673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058976952527684873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0930359cfe2e7ea44a68baa05b39f318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _extraScaleOut: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!1 &9102454679708242621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1242,6 +1324,7 @@ GameObject:
   - component: {fileID: 4480656410402164678}
   - component: {fileID: 7392751721459010904}
   - component: {fileID: 7183594925179045129}
+  - component: {fileID: 5106782404705929034}
   m_Layer: 5
   m_Name: RevealCard Button(Clone)
   m_TagString: Untagged
@@ -1350,4 +1433,30 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7392751721459010904}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5106782404705929034}
+        m_TargetAssemblyTypeName: UIEffectBase, Assembly-CSharp
+        m_MethodName: GetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5106782404705929034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9102454679708242621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0930359cfe2e7ea44a68baa05b39f318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.25
+  _extraScaleOut: {x: 0.5, y: 0.5, z: 0.5}

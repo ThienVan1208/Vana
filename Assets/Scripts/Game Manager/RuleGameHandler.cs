@@ -71,7 +71,7 @@ public class RuleGameHandler : MonoBehaviour
     [SerializeField] private VoidEventSO _relocatePlayerCardEventSO;
 
     [Header("related UI Event")]
-    // Ref in InGamePanle class.
+    // Ref in InGamePanel class.
     [SerializeField] private IntEventSO _earnCurrenctEventSO;
 
     private Vector3 _offset = new Vector3(0, 40, 0);
@@ -285,15 +285,16 @@ public class RuleGameHandler : MonoBehaviour
     {
         for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
         {
-            if (_playableInfoSO.GetPlayerByIndex(i).GetCardNum() == 0)
+            var player = _playableInfoSO.GetPlayerByIndex(i);
+            if (player.GetCardNum() == 0 || player.GetCardNum() >= GameConfiguration.CardCountThreshold)
             {
-                _ = EndGame(i);
+                EndGame(i);
                 return true;
             }
         }
         return false;
     }
-    private async UniTask EndGame(int playerIndex)
+    private async void EndGame(int playerIndex)
     {
         try
         {

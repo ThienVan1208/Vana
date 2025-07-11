@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,19 +9,27 @@ public class PlayerButtonsPanel : PopupUIBase
     public Button revealButtonPrefab;
     public Button passButtonPrefab;
     [SerializeField] private BottomTopPopupEffect _uiEffect;
-    public override void ShowPopup()
+    public override void ShowPopup(Action callback = null)
     {
         base.ShowPopup();
         SetEffectInfo(initYPos: -50, finalYPos: 0);
         popupWindow.SetActive(true);
-        _uiEffect.GetEffect(callback: () => popupWindow.SetActive(true));
+        _uiEffect.GetEffect(callback: () =>
+        {
+            popupWindow.SetActive(true);
+            callback?.Invoke();
+        });
         
     }
-    public override void HidePopup()
+    public override void HidePopup(Action callback = null)
     {
         base.HidePopup();
         SetEffectInfo(initYPos: 0, finalYPos: -50);
-        _uiEffect.GetEffect(callback: () => popupWindow.SetActive(false));
+        _uiEffect.GetEffect(callback: () =>
+        {
+            popupWindow.SetActive(false);
+            callback?.Invoke();
+        });
     }
     public void ActiveButton(Button button, bool isActive = true)
     {

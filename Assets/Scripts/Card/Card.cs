@@ -57,6 +57,14 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         stateMachine.StopAllState();
 
+        _idleState.DestroyState();
+        _dragState.DestroyState();
+        _moveState.DestroyState();
+        _hoverState.DestroyState();
+        _clickState.DestroyState();
+        _flipState.DestroyState();
+
+
         stateMachine = null;
         _idleState = null;
         _dragState = null;

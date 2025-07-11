@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 
 public class InGamePanel : UIBase
 {
-    [Header("Turn UI")]
+    [Header("Turn")]
     [SerializeField] private TextMeshProUGUI _turnTxt;
 
     // Ref in GameManager class.
@@ -17,7 +17,7 @@ public class InGamePanel : UIBase
 
 
 
-    [Header("Draw Card UI")]
+    [Header("Draw Card")]
     [SerializeField] private TextMeshProUGUI _cardDrawTxt;
 
     // Ref in Player class.
@@ -26,12 +26,32 @@ public class InGamePanel : UIBase
 
 
 
-    [Header("Currency UI")]
+    [Header("Currency")]
     [SerializeField] private TextMeshProUGUI _currencyTxt;
     [SerializeField] private UIEffectBase _currencyContainerEffect;
 
     // Ref in RuleGameHandler class.
     [SerializeField] private IntEventSO _earnCurrenctEventSO;
+
+    /* 
+    - Ref in Player class.
+    - Player uses this event to inform InGamePanel class 
+        whether player or opponent is playing cards
+        in order to update or stop update in-game UI. 
+    */
+    [SerializeField] private BoolEventSO _subcribeCurrencyUIEventSO;
+
+    /* 
+    - Used to check whether _subcribeCurrencyUIEventSO is called 
+        with the same argument continuously. 
+    - Ex: can not:
+            SubscribeCurrencyUI(true); 
+            SubscribeCurrencyUI(true);
+        or:
+            SubscribeCurrencyUI(false); 
+            SubscribeCurrencyUI(false);
+    */
+    private bool _checkSubcribeDuplicate = false;
 
     private int _earnedCurrency = 0;
     private ConcurrentQueue<int> _earnedCurrencyQueue = new ConcurrentQueue<int>();
@@ -47,16 +67,19 @@ public class InGamePanel : UIBase
 
     private void OnEnable()
     {
-        _earnCurrenctEventSO.EventChannel += EarnCurrency;
         _increaseTurnEventSO.EventChannel += IncreaseTurn;
         _drawCardEventSO.EventChannel += DrawCard;
+        _subcribeCurrencyUIEventSO.EventChannel += SubscribeCurrencyUI;
+
+        SubscribeCurrencyUI(true);
     }
     private void OnDisable()
     {
-
-        _earnCurrenctEventSO.EventChannel -= EarnCurrency;
         _increaseTurnEventSO.EventChannel -= IncreaseTurn;
         _drawCardEventSO.EventChannel -= DrawCard;
+        _subcribeCurrencyUIEventSO.EventChannel -= SubscribeCurrencyUI;
+
+        SubscribeCurrencyUI(false);
     }
     private void OnDestroy()
     {
@@ -92,6 +115,14 @@ public class InGamePanel : UIBase
     #endregion
 
     #region Currency
+    private void SubscribeCurrencyUI(bool val)
+    {
+        if (val == _checkSubcribeDuplicate) return;
+
+        _checkSubcribeDuplicate = val;
+        if (val) _earnCurrenctEventSO.EventChannel += EarnCurrency;
+        else _earnCurrenctEventSO.EventChannel -= EarnCurrency;
+    }
     private void EarnCurrency(int num = 0)
     {
 

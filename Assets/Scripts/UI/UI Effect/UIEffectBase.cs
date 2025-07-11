@@ -6,10 +6,10 @@ using UnityEngine;
 public abstract class UIEffectBase : MonoBehaviour
 {
     public float duration;
-    public abstract void GetEffect(Action calback = null);
+    public abstract void GetEffect(Action callback = null);
     public virtual void GetEffect()
     {
-        GetEffect(calback: null);
+        GetEffect(callback: null);
     }
     protected virtual void OnDestroy()
     {

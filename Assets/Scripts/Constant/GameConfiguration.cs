@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class GameConfiguration 
+public static class GameConfiguration
 {
     #region Init Game
     public static readonly int initCardNum = 10;
@@ -27,5 +27,7 @@ public static class GameConfiguration
     {
         cardRotateSpeed = speed;
     }
+
+    public static int CardCountThreshold = 21;
     #endregion
 }

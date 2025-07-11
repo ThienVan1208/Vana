@@ -16,6 +16,6 @@ public class PopupUIBase : MonoBehaviour
     {
         subcribedPopupUIEventSO.RaiseEvent(popupUIType, null);
     }
-    public virtual void ShowPopup() { }
-    public virtual void HidePopup() { }
+    public virtual void ShowPopup(Action callback = null) { }
+    public virtual void HidePopup(Action callback = null) { }
 }

@@ -5,6 +5,13 @@ public class Player : PlayerBase, ICardDrawable
     // Ref in InGamePanel class.
     [SerializeField] private IntEventSO _drawCardEventSO;
 
+    /* 
+    - Ref in InGamePanel class.
+    - Used to inform InGamePanel class whether player or opponent is playing cards display
+        in order to update or stop update in-game UI. 
+    */
+    [SerializeField] private BoolEventSO _subcribeCurrencyUIEventSO;
+
 
     [Header("Data Events")]
     // Ref in CurrencyManager.
@@ -40,12 +47,14 @@ public class Player : PlayerBase, ICardDrawable
                                 anchorPos,
                                 Vector3.one * GameConfiguration.cardHolderSize).GetComponent<HandHolder>();
 
+        // Create Button Panel.
         _playerButtonPanel = InitPlayerUI(_buttonPanel
                                     , GameConfiguration.playerButtonPanelPos
                                     , Quaternion.identity,
                                     mainCanvas.gameObject,
                                     anchorPos,
                                     Vector3.one * GameConfiguration.cardHolderSize).GetComponent<PlayerButtonsPanel>();
+
         PopupUIEvent.RaiseAction(PopupUIType.PlayerButtonPanel, active: false);
 
         _playerButtonPanel.playButtonPrefab.onClick.AddListener(PlayCards);
@@ -61,7 +70,8 @@ public class Player : PlayerBase, ICardDrawable
     {
         if (!(cardHolder as HandHolder).HelpPlayingCard()) return;
 
-        DisplayPlayCardUI(false);
+        // DisplayPlayCardUI(false);
+        TurnOffPlayUI();
     }
     public override void AddCards(Card card)
     {
@@ -104,42 +114,55 @@ public class Player : PlayerBase, ICardDrawable
 
 
     #region PlayerUI
-    private void DisplayPlayCardUI(bool val = true)
+    private void DisplayPlayCardUI()
     {
-        _playerButtonPanel.ActiveButton(_playerButtonPanel.playButtonPrefab, isActive: val);
-        _playerButtonPanel.ActiveButton(_playerButtonPanel.drawCardbuttonPrefab, isActive: val);
-        _playerButtonPanel.ActiveButton(_playerButtonPanel.passButtonPrefab, isActive: val);
 
         // If it comes to playcard state -> next state is choosing action.
-        if (val == true)
-        {
-            if (CheckEndGameConditionEvent.RaiseEvent()) return;
+        if (CheckEndGameConditionEvent.RaiseEvent()) return;
 
-            _playerButtonPanel.ShowPopup();
-            GameManagerEvent.RaiseTurnEvent();
-            SetCardDrawNum(_cardDrawNum + 1);
-            curTurnState = TurnState.ChooseActionState;
-        }
-        else
-        {
-            _playerButtonPanel.HidePopup();
-        }
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.playButtonPrefab, isActive: true);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.drawCardbuttonPrefab, isActive: true);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.passButtonPrefab, isActive: true);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.revealButtonPrefab, isActive: false);
+
+        _playerButtonPanel.ShowPopup();
+        GameManagerEvent.RaiseTurnEvent();
+        SetCardDrawNum(_cardDrawNum + 1);
+        curTurnState = TurnState.ChooseActionState;
     }
-    private void DisplayChooseUI(bool val = true)
+    private void DisplayChooseUI()
     {
-        _playerButtonPanel.ActiveButton(_playerButtonPanel.revealButtonPrefab, isActive: val);
-        _playerButtonPanel.ActiveButton(_playerButtonPanel.passButtonPrefab, isActive: val);
 
         // If it comes to choose acion state -> next state is playing cards.
-        if (val == true)
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.playButtonPrefab, isActive: false);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.drawCardbuttonPrefab, isActive: false);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.passButtonPrefab, isActive: true);
+        _playerButtonPanel.ActiveButton(_playerButtonPanel.revealButtonPrefab, isActive: true);
+
+        _playerButtonPanel.ShowPopup();
+        curTurnState = TurnState.PlayCardState;
+    }
+
+    private void TurnOnPlayUI(TurnState turnState)
+    {
+        switch (turnState)
         {
-            _playerButtonPanel.ShowPopup();
-            curTurnState = TurnState.PlayCardState;
+            case TurnState.PlayCardState:
+                _subcribeCurrencyUIEventSO.RaiseEvent(true);
+                DisplayPlayCardUI();
+                break;
+            case TurnState.ChooseActionState:
+                _subcribeCurrencyUIEventSO.RaiseEvent(false);
+                checkRevealEventSO.EventChannel += CheckReveal;
+                DisplayChooseUI();
+                break;
+            default:
+                break;
         }
-        else
-        {
-            _playerButtonPanel.HidePopup();
-        }
+    }
+    private void TurnOffPlayUI()
+    {
+        _playerButtonPanel.HidePopup();
     }
     #endregion
 
@@ -152,26 +175,12 @@ public class Player : PlayerBase, ICardDrawable
         if (RuleGameHandler.BeginTurn)
         {
             RuleGameHandler.BeginTurn = false;
-            DisplayChooseUI(false);
+            // DisplayChooseUI(false);
             DisplayPlayCardUI();
         }
         else
         {
-            // Choose cards to play.
-            if (curTurnState == TurnState.PlayCardState)
-            {
-                DisplayChooseUI(false);
-                DisplayPlayCardUI();
-            }
-
-            // Choose action.
-            else
-            {
-                checkRevealEventSO.EventChannel += CheckReveal;
-                DisplayPlayCardUI(false);
-                DisplayChooseUI();
-            }
-
+            TurnOnPlayUI(curTurnState);
         }
     }
     public override void EndTurn()
@@ -193,7 +202,8 @@ public class Player : PlayerBase, ICardDrawable
     protected override void RevealCards()
     {
         base.RevealCards();
-        DisplayChooseUI(false);
+        // DisplayChooseUI(false);
+        TurnOffPlayUI();
         revealCardEventSO.RaiseEvent();
     }
     protected override void SuccessRevealCard()
@@ -210,7 +220,8 @@ public class Player : PlayerBase, ICardDrawable
     protected override void PassTurn()
     {
         base.PassTurn();
-        DisplayChooseUI(false);
+        // DisplayChooseUI(false);
+        TurnOffPlayUI();
         curTurnState = TurnState.ChooseActionState;
         passTurnEventSO.RaiseEvent();
     }
