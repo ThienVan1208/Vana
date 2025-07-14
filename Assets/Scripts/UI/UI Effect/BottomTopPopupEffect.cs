@@ -7,7 +7,7 @@ public class BottomTopPopupEffect : UIEffectBase
     public float startYPos;
     public float endYPos = 0;
     public bool shakeAtEnd = true;
-    public override void GetEffect(Action callback = null)
+    public override void GetEffect(Action callback = null, bool reverse = false)
     {
         (gameObject.transform as RectTransform).localPosition = new Vector3(0, startYPos, 0);
         gameObject.transform.DOLocalMoveY(endYPos, duration).SetEase(Ease.OutQuad)

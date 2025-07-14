@@ -7,7 +7,7 @@ using UnityEngine;
 public class UpDownLoopEffect : UIEffectBase
 {
     [SerializeField] private float _distance;
-    public async override void GetEffect(Action callback = null)
+    public async override void GetEffect(Action callback = null, bool reverse = false)
     {
         await UniTask.Delay(TimeSpan.FromSeconds(UnityEngine.Random.Range(0, 1.5f)));
         transform.DOLocalMoveY((transform as RectTransform).localPosition.y + _distance / 2, duration)

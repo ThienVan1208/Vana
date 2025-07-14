@@ -13,13 +13,13 @@ public class LoseGamePopupUI : PopupUIBase
     }
     public override void ShowPopup(Action callback = null)
     {
-        base.ShowPopup();
+        base.ShowPopup(callback);
         popupWindow.SetActive(true);
         _uiEffect.GetEffect(()=>callback?.Invoke());
     }
     public override void HidePopup(Action callback = null)
     {
-        base.HidePopup();
+        base.HidePopup(callback);
         popupWindow.SetActive(false);
         callback?.Invoke();
     }

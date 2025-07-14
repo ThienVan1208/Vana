@@ -1,9 +1,24 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Firebase.Database;
 using Firebase.Extensions;
-using TMPro;
 using UnityEngine;
+
+public static class LoginEvent
+{
+    public static Action<string, string> LoginAction;
+    public static void RaiseLoginAction(string arg1, string arg2)
+    {
+        LoginAction?.Invoke(arg1, arg2);
+    }
+
+    public static Action<string, string> RegisterAction;
+    public static void RaiseRegisterAction(string arg1, string arg2)
+    {
+        RegisterAction?.Invoke(arg1, arg2);
+    }
+}
 public enum LoginState
 {
     Success, // userName and password are all correct.
@@ -12,22 +27,33 @@ public enum LoginState
 }
 public class LoginHandler : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField _accInput, _pwInput;
+
     private DatabaseReference _dbRef;
-    public string _userID = "";
+    private string _userID = "";
 
     private void Awake()
     {
         _dbRef = FirebaseDatabase.DefaultInstance.RootReference;
-        _pwInput.contentType = TMP_InputField.ContentType.Password;
     }
 
-    // Used thru button.
-    public async void Login()
+    private void OnEnable()
     {
+        LoginEvent.LoginAction += Login;
+        LoginEvent.RegisterAction += CreateNewAccount;
+    }
+    private void OnDisable()
+    {
+        LoginEvent.LoginAction -= Login;
+        LoginEvent.RegisterAction -= CreateNewAccount;
+    }
+    public async void Login(string accText, string pwText)
+    {
+        ////////////////////////////////////
         // Can get some effects here.
+        ///////////////////////////////////
+
         await UniTask.WaitForEndOfFrame();
-        if (string.IsNullOrEmpty(_accInput.text) || string.IsNullOrEmpty(_pwInput.text))
+        if (string.IsNullOrEmpty(accText) || string.IsNullOrEmpty(pwText))
         {
             Debug.Log("Please login your account.");
             return;
@@ -42,10 +68,11 @@ public class LoginHandler : MonoBehaviour
             }
             else
             {
-                switch (CheckLoginState(task.Result.Children))
+                switch (CheckLoginState(task.Result.Children, accText, pwText))
                 {
                     case LoginState.NotFound:
-                        CreateNewAccount(task.Result.ChildrenCount);
+                        // CreateNewAccount(task.Result.ChildrenCount, accText, pwText);
+                        Debug.LogWarning("Account do not exist, please register.");
                         break;
                     case LoginState.Success:
                         await LoadDataEvent.RaiseAction(_userID);
@@ -58,15 +85,15 @@ public class LoginHandler : MonoBehaviour
         });
     }
 
-    private LoginState CheckLoginState(IEnumerable<DataSnapshot> task)
+    private LoginState CheckLoginState(IEnumerable<DataSnapshot> task, string accText, string pwText)
     {
         foreach (DataSnapshot data in task)
         {
             // If userName is incorrect.
-            if (_accInput.text != data.Child(Constant.UserName).Value?.ToString()) continue;
+            if (accText != data.Child(Constant.UserName).Value?.ToString()) continue;
 
             // If password is incorrect.
-            if (_pwInput.text != data.Child(Constant.Password).Value?.ToString())
+            if (pwText != data.Child(Constant.Password).Value?.ToString())
             {
                 Debug.Log("Password is incorrect.");
                 return LoginState.Fail;
@@ -82,24 +109,34 @@ public class LoginHandler : MonoBehaviour
         return LoginState.NotFound;
     }
 
-    private async void CreateNewAccount(long childCount)
+    private async void CreateNewAccount(string accText, string pwText)
     {
-        // Create new object for saving.
-        DataSaver dataSaver = new DataSaver
+        await _dbRef.Child(Constant.UsersNode).GetValueAsync().ContinueWithOnMainThread(async task =>
         {
-            userName = _accInput.text,
-            password = _pwInput.text,
-            currency = 0,
-            level = 1
-        };
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.LogError("Error to query users");
+                return;
+            }
 
-        // Turn saving object to json and then add it to database.
-        SaveDataEvent.RaiseAction(dataSaver, "user" + childCount.ToString());
+            // Create new object for saving.
+            DataSaver dataSaver = new DataSaver
+            {
+                userName = accText,
+                password = pwText,
+                currency = 0,
+                level = 1
+            };
+            _userID = "user" + task.Result.ChildrenCount.ToString();
+            // Turn saving object to json and then add it to database.
+            SaveDataEvent.RaiseAction(dataSaver, _userID);
 
-        Debug.Log("Create new account");
+            Debug.Log("Create new account");
 
-        // Load data and enter game.
-        await LoadDataEvent.RaiseAction();
-        LoadSceneHandler.LoadSceneByIndex(1);
+            // Load data and enter game.
+            await LoadDataEvent.RaiseAction(_userID);
+            LoadSceneHandler.LoadSceneByIndex(Constant.HomeScene);
+        });
+
     }
 }

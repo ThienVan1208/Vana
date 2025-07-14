@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class PlayPanelUI : UIBase
 {
     [SerializeField] private Button _playButton;
-    private void Awake()
+    protected override void Awake()
     {
         _playButton.onClick.AddListener(() => LoadSceneHandler.LoadSceneByIndex(Constant.PlayScene));
     }

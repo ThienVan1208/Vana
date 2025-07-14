@@ -65,7 +65,7 @@ public class InGamePanel : UIBase
         // EarnCurrency();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         _increaseTurnEventSO.EventChannel += IncreaseTurn;
         _drawCardEventSO.EventChannel += DrawCard;
@@ -73,7 +73,7 @@ public class InGamePanel : UIBase
 
         SubscribeCurrencyUI(true);
     }
-    private void OnDisable()
+    protected override void OnDisable()
     {
         _increaseTurnEventSO.EventChannel -= IncreaseTurn;
         _drawCardEventSO.EventChannel -= DrawCard;
@@ -89,7 +89,7 @@ public class InGamePanel : UIBase
     private void IncreaseTurn(int num)
     {
         _turnTxt.text = num.ToString();
-        _turnUIEffect.GetEffect();
+        _turnUIEffect.GetEffect(callback: null);
     }
     #endregion
 
@@ -148,7 +148,7 @@ public class InGamePanel : UIBase
             _currencyTxt.text = _earnedCurrency.ToString();
             await UniTask.Delay(System.TimeSpan.FromSeconds(0.05f), cancellationToken: this.GetCancellationTokenOnDestroy());
         }
-        _currencyContainerEffect.GetEffect();
+        _currencyContainerEffect.GetEffect(callback: null);
         await UniTask.Delay(System.TimeSpan.FromSeconds(0.25f), cancellationToken: this.GetCancellationTokenOnDestroy());
     }
     #endregion

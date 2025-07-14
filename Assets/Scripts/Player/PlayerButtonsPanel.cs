@@ -11,7 +11,7 @@ public class PlayerButtonsPanel : PopupUIBase
     [SerializeField] private BottomTopPopupEffect _uiEffect;
     public override void ShowPopup(Action callback = null)
     {
-        base.ShowPopup();
+        base.ShowPopup(callback);
         SetEffectInfo(initYPos: -50, finalYPos: 0);
         popupWindow.SetActive(true);
         _uiEffect.GetEffect(callback: () =>
@@ -23,7 +23,7 @@ public class PlayerButtonsPanel : PopupUIBase
     }
     public override void HidePopup(Action callback = null)
     {
-        base.HidePopup();
+        base.HidePopup(callback);
         SetEffectInfo(initYPos: 0, finalYPos: -50);
         _uiEffect.GetEffect(callback: () =>
         {

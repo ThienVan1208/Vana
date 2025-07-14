@@ -6,19 +6,31 @@ using UnityEngine;
 public class ScaleInPopupEffect : UIEffectBase
 {
     [SerializeField] private float _scale = 1f;
-    
-    public override void GetEffect(Action callback = null)
+
+    public override void GetEffect(Action callback = null, bool reverse = false)
     {
-        gameObject.transform.localScale = Vector3.zero;
-        gameObject.transform.DOScale(_scale, duration).SetEase(Ease.OutQuad)
-        .OnComplete(() =>
+        if (reverse)
         {
-            gameObject.transform.DOShakePosition(duration, strength: 15, vibrato: 5).OnComplete(()=>
+            gameObject.transform.DOScale(0.001f, duration).SetEase(Ease.OutQuad)
+            .OnComplete(() =>
             {
                 callback?.Invoke();
             });
-        });
+        }
+        else
+        {
+            gameObject.transform.localScale = Vector3.zero;
+            gameObject.transform.DOScale(_scale, duration).SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                gameObject.transform.DOShakePosition(duration, strength: 15, vibrato: 5).OnComplete(() =>
+                {
+                    callback?.Invoke();
+                });
+            });
+        }
+
     }
 
-    
+
 }

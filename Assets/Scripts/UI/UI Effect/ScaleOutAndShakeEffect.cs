@@ -6,8 +6,12 @@ using UnityEngine;
 public class ScaleOutAndShakeEffect : UIEffectBase
 {
     [SerializeField] private Vector3 _extraScaleOut = Vector3.one;
-    public override void GetEffect(Action callback = null)
+    private bool _lockEffect = false;
+    public override void GetEffect(Action callback = null, bool reverse = false)
     {
+        if (_lockEffect) return;
+
+        _lockEffect = true;
         transform.DOScale(transform.localScale + _extraScaleOut, duration).SetEase(Ease.InOutSine)
         .OnComplete(() =>
         {
@@ -18,6 +22,7 @@ public class ScaleOutAndShakeEffect : UIEffectBase
         .OnComplete(() =>
         {
             callback?.Invoke();
+            _lockEffect = false; 
         });
     }
 

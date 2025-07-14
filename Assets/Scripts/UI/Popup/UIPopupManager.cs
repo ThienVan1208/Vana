@@ -11,6 +11,7 @@ public enum PopupUIType
     PlayerButtonPanel,
     InforPanel,
     Setting,
+    RegisterPanel,
 }
 public static class PopupUIEvent
 {
@@ -18,7 +19,7 @@ public static class PopupUIEvent
     public static void RaiseAction(PopupUIType type, bool active = true)
     {
         displayPopupAction?.Invoke(type, active);
-    } 
+    }
 }
 public class UIPopupManager : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class UIPopupManager : MonoBehaviour
     // Used to count the number of popup UI which is active.
     private int _countPopupNum = 0;
     private Image _panel;
-    
+
     private void Awake()
     {
         _subcribedPopupUIEventSO.EventChannel += SubcribePopupUI;
@@ -52,10 +53,19 @@ public class UIPopupManager : MonoBehaviour
         _subcribedPopupUIEventSO.EventChannel -= SubcribePopupUI;
         PopupUIEvent.displayPopupAction -= DisplayPopup;
     }
-    
+
     private void SubcribePopupUI(PopupUIType type, PopupUIBase popupUI)
     {
-        if (popupUI != null) popupUI.HidePopup();
+        if (popupUI == null)
+        {
+            Debug.LogWarning(type + " unregisters");
+        }
+        else
+        {
+            Debug.LogWarning(type + " registers");
+            popupUI.HidePopup();
+        }
+
         _popupUIDics[type] = popupUI;
     }
 
