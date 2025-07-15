@@ -28,10 +28,15 @@ public class CardHolder : MonoBehaviour
     }
 
     #region Get card
-    // public int GetCardNum()
-    // {
-    //     return curCardNum;
-    // }
+    public virtual List<Card> GetCardList()
+    {
+        List<Card> cards = new List<Card>();
+        foreach (var keyval in _cardsDic)
+        {
+            cards.Add(keyval.Value);
+        }
+        return cards;
+    }
 
     public virtual RectTransform GetCardSlot(int index = 0)
     {

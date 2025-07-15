@@ -2,6 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using System;
+public enum PlayerEndGameType
+{
+    Win,
+    Lose
+};
 public static class EndGameEvent
 {
     public static Action EventChannel;
@@ -120,7 +125,7 @@ public class RuleGameHandler : MonoBehaviour
             await GetFlipCardWhenPlay();
 
             _relocatePlayerCardEventSO.RaiseEvent();
-                
+
             GameManagerEvent.RaiseNextTurnEvent();
 
         }
@@ -286,32 +291,64 @@ public class RuleGameHandler : MonoBehaviour
         for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
         {
             var player = _playableInfoSO.GetPlayerByIndex(i);
-            if (player.GetCardNum() == 0 || player.GetCardNum() >= GameConfiguration.CardCountThreshold)
+
+            // Check player's win condition.
+            bool winCondition = player.GetCardNum() == 0;
+            if (winCondition)
             {
-                EndGame(i);
+                EndGame(i, PlayerEndGameType.Win);
+                return true;
+            }
+
+            // Check player's lose condition.
+            bool LoseCondition = player.GetCardNum() == GameConfiguration.CardCountMaxThreshold
+                                || player.GetCardNum() == GameConfiguration.CardCountMinThreshold;
+            if (LoseCondition)
+            {
+                EndGame(i, PlayerEndGameType.Lose);
                 return true;
             }
         }
         return false;
     }
-    private async void EndGame(int playerIndex)
+    private async void EndGame(int playerIndex, PlayerEndGameType type = PlayerEndGameType.Win)
     {
         try
         {
-            for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
+            switch (type)
             {
-                await UniTask.Delay(200, cancellationToken: this.GetCancellationTokenOnDestroy());
-                if (playerIndex == i)
-                {
-                    _playableInfoSO.GetPlayerByIndex(i).WinGame();
-                }
-                else
-                {
-                    _playableInfoSO.GetPlayerByIndex(i).LoseGame();
-                }
-            }
-            EndGameEvent.RaiseEvent();
+                case PlayerEndGameType.Win:
+                    for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
+                    {
+                        await UniTask.Delay(200, cancellationToken: this.GetCancellationTokenOnDestroy());
+                        if (playerIndex == i)
+                        {
+                            _playableInfoSO.GetPlayerByIndex(i).WinGame();
+                        }
+                        else
+                        {
+                            _playableInfoSO.GetPlayerByIndex(i).LoseGame();
+                        }
+                    }
+                    break;
 
+                case PlayerEndGameType.Lose:
+                    for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
+                    {
+                        await UniTask.Delay(200, cancellationToken: this.GetCancellationTokenOnDestroy());
+                        if (playerIndex == i)
+                        {
+                            _playableInfoSO.GetPlayerByIndex(i).LoseGame();
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+
+            EndGameEvent.RaiseEvent();
         }
         catch (OperationCanceledException)
         {

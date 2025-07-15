@@ -9,6 +9,8 @@ public static class GameConfiguration
     public static readonly float cardHolderSize = 1f;
     public static readonly float cardSize = 1f;
     public static readonly int maxCardDrawNum = 3;
+    public const int CardCountMaxThreshold = 21;
+    public const int CardCountMinThreshold = 1;
     public static readonly Vector2 handHolderPos = new Vector2(316, 85);
     public static readonly Vector2 playerButtonPanelPos = new Vector2(316, 20);
     public static readonly Vector2 virtualHolderPos = new Vector2(316, -50f);
@@ -29,6 +31,6 @@ public static class GameConfiguration
         cardRotateSpeed = speed;
     }
 
-    public static int CardCountThreshold = 21;
+    
     #endregion
 }
