@@ -104,9 +104,9 @@ public class Player : PlayerBase, ICardDrawable
     {
         return _cardDrawNum;
     }
-    public void SetCardDrawNum(int num)
+    public void SetCardDrawNum(int num = 1)
     {
-        if (num > 3 || num < 0) return;
+        if (num > GameConfiguration.maxCardDrawNum || num < 0) return;
         _cardDrawNum = num;
         _drawCardEventSO.RaiseEvent(_cardDrawNum);
     }

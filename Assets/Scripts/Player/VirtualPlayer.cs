@@ -2,10 +2,19 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class VirtualPlayer : PlayerBase
+public class VirtualPlayer : PlayerBase, ICardDrawable
 {
     [Header("Player UI Prefab")]
     [SerializeField] private GameObject _handHolderPrefab;
+
+    private int _cardDrawNum;
+
+    protected override void Start()
+    {
+        base.Start();
+        SetCardDrawNum(3);
+    }
+
     #region Init
     protected override void InitCardHolder()
     {
@@ -50,6 +59,8 @@ public class VirtualPlayer : PlayerBase
     }
     protected override void PlayCards()
     {
+        SetCardDrawNum(_cardDrawNum + 1);
+        
         (cardHolder as VirtualHandHolder).HelpPlayingCard();
 
     }
@@ -64,6 +75,31 @@ public class VirtualPlayer : PlayerBase
         base.PassTurn();
         curTurnState = TurnState.ChooseActionState;
         passTurnEventSO.RaiseEvent();
+    }
+    #endregion
+
+    #region Draw card
+    public void DrawCard()
+    {
+        if (_cardDrawNum <= 0)
+        {
+            Debug.Log("No more draw card.");
+            return;
+        }
+        AddCards(CardSpawnerEvent.RaiseGetCardEvent(isActive: true));
+        SetCardDrawNum(_cardDrawNum - 1);
+    }
+
+    public int GetCardDrawNum()
+    {
+        return _cardDrawNum;
+    }
+
+    public void SetCardDrawNum(int num = 1)
+    {
+        if (num > GameConfiguration.maxCardDrawNum || num < 0) return;
+        _cardDrawNum = num;
+        // _drawCardEventSO.RaiseEvent(_cardDrawNum);
     }
     #endregion
 
@@ -133,5 +169,7 @@ public class VirtualPlayer : PlayerBase
         base.EndGame();
         EndTurn();
     }
+
+    
     #endregion
 }

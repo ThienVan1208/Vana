@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 17584365121981428}
   - component: {fileID: 5426673864542063112}
   - component: {fileID: 2259788397129568551}
+  - component: {fileID: 5223136131103020757}
   m_Layer: 5
   m_Name: Virtual HandPanel
   m_TagString: Untagged
@@ -360,29 +361,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734c0d9f7421bf44ab3df7b156355285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
-  _cardSlots:
-  - {fileID: 4437178137248365029}
-  - {fileID: 5636450048778778686}
-  - {fileID: 5984400617836078004}
-  - {fileID: 4377701652496418784}
-  - {fileID: 5731912391878730153}
-  - {fileID: 4648035897132007230}
-  - {fileID: 3760385077708333705}
-  - {fileID: 5499162132994235557}
-  - {fileID: 751505578864945788}
-  - {fileID: 2337904654667204615}
-  - {fileID: 1968672163978322459}
-  - {fileID: 4072813898178991780}
-  - {fileID: 2053700775083875282}
-  - {fileID: 3015035521043997694}
-  - {fileID: 126999843949615349}
-  - {fileID: 304037833581029017}
-  - {fileID: 907701934718283192}
-  - {fileID: 3585424152228135057}
-  - {fileID: 146723494239995989}
-  - {fileID: 2066068144877284495}
   chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
+--- !u!114 &5223136131103020757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663651151614908859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8690d0d55417f648a3446f6a6268676, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1697540895973527416
 GameObject:
   m_ObjectHideFlags: 0

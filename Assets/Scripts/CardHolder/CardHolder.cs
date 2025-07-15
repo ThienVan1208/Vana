@@ -6,7 +6,7 @@ public class CardHolder : MonoBehaviour
     // The key is cardSlot, value is card.
     protected Dictionary<RectTransform, Card> _cardsDic = new Dictionary<RectTransform, Card>();
 
-    public int curCardNum { get;  protected set; }
+    public int curCardNum { get;  set; }
 
     protected virtual void Awake()
     {
