@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 17584365121981428}
   - component: {fileID: 5426673864542063112}
   - component: {fileID: 2259788397129568551}
-  - component: {fileID: 5223136131103020757}
+  - component: {fileID: -3435643380001628582}
   m_Layer: 5
   m_Name: Virtual HandPanel
   m_TagString: Untagged
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
---- !u!114 &5223136131103020757
+--- !u!114 &-3435643380001628582
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -371,9 +371,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1663651151614908859}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8690d0d55417f648a3446f6a6268676, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c38564601f8e6c448492d1713cd1be1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawCardPercent: 25
 --- !u!1 &1697540895973527416
 GameObject:
   m_ObjectHideFlags: 0

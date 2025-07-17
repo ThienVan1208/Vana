@@ -33,6 +33,8 @@ public class CardHolder : MonoBehaviour
         List<Card> cards = new List<Card>();
         foreach (var keyval in _cardsDic)
         {
+            if (keyval.Value == null) continue;
+
             cards.Add(keyval.Value);
         }
         return cards;

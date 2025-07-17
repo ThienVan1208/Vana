@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class VirtualHandHolder : PlayableCardHolder
 {
-    private CardPlayAI _cardPlayingAI;
+    public CardPlayAI _cardPlayingAI;
     protected override void Awake()
     {
         base.Awake();
@@ -37,7 +37,8 @@ public class VirtualHandHolder : PlayableCardHolder
     public override bool HelpPlayingCard()
     {
         var cards = _cardPlayingAI.GetCardPlayingAI();
-        if(cards.Count == 0) return false;
+        Debug.Log("" + cards.Count);
+        if (cards.Count == 0) return false;
 
         chosenCardEventSO.RaiseEvent(cards);
         return true;
