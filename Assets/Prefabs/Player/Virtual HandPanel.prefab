@@ -237,8 +237,7 @@ GameObject:
   - component: {fileID: 7288042290610601479}
   - component: {fileID: 17584365121981428}
   - component: {fileID: 5426673864542063112}
-  - component: {fileID: 2259788397129568551}
-  - component: {fileID: -3435643380001628582}
+  - component: {fileID: 2901622447444747633}
   m_Layer: 5
   m_Name: Virtual HandPanel
   m_TagString: Untagged
@@ -349,7 +348,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2259788397129568551
+--- !u!114 &2901622447444747633
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,23 +357,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1663651151614908859}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 734c0d9f7421bf44ab3df7b156355285, type: 3}
+  m_Script: {fileID: 11500000, guid: 5843384770ecd4c45aa5820577baa412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
---- !u!114 &-3435643380001628582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1663651151614908859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c38564601f8e6c448492d1713cd1be1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drawCardPercent: 25
+  playExtraCardPercent: 55
 --- !u!1 &1697540895973527416
 GameObject:
   m_ObjectHideFlags: 0

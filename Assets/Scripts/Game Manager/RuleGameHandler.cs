@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using System;
+
+#region Action
 public enum PlayerEndGameType
 {
     Win,
@@ -31,6 +33,9 @@ public static class CheckEndGameConditionEvent
         return EventChannel?.Invoke() ?? false;
     }
 }
+#endregion
+
+#region Rule
 public class RuleGameHandler : MonoBehaviour
 {
     public static bool BeginTurn = true;
@@ -185,13 +190,13 @@ public class RuleGameHandler : MonoBehaviour
                     return;
                 }
                 var effectObj = ObjectPoolManager.GetPoolingObject<AddCurrencyWhenFlipCardEffect>()?
-                                               .GetEffect(1f
-                                               , _chosenCards[i].cardSlotRect.position + _offset,
-                                               _offset
-                                               , "+" + ((int)_chosenCards[i].GetCardRank()).ToString()
-                                               , 25
-                                               , Color.white
-                                               , 1);
+                                               .GetEffect(timeDisplay: 1f
+                                               , startPos: _chosenCards[i].cardSlotRect.position + _offset
+                                               , endPos: _offset
+                                               , content: "+" + ((int)_chosenCards[i].GetCardRank()).ToString()
+                                               , fontSize: 35
+                                               , color: Color.white
+                                               , alpha: 1);
                 effectObj.transform.SetParent(_chosenCards[i].cardSlotRect, false);
                 _earnCurrenctEventSO.RaiseEvent((int)_chosenCards[i].GetCardRank());
             }
@@ -364,3 +369,4 @@ public class RuleGameHandler : MonoBehaviour
     }
     #endregion
 }
+#endregion

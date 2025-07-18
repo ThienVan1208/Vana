@@ -1,18 +1,7 @@
-using UnityEngine;
 
-public class VirtualHandHolder : PlayableCardHolder
+
+public abstract class VirtualHandHolder : PlayableCardHolder
 {
-    public CardPlayAI _cardPlayingAI;
-    protected override void Awake()
-    {
-        base.Awake();
-        _cardPlayingAI = GetComponent<CardPlayAI>();
-        if (_cardPlayingAI == null)
-        {
-            Debug.LogError("Card Playing AI is null.");
-        }
-        _cardPlayingAI.SetVirtualHandHolder(this);
-    }
 
     public override void AddCard(Card card)
     {
@@ -34,13 +23,7 @@ public class VirtualHandHolder : PlayableCardHolder
         CheckEndGameConditionEvent.RaiseEvent();
     }
 
-    public override bool HelpPlayingCard()
-    {
-        var cards = _cardPlayingAI.GetCardPlayingAI();
-        Debug.Log("" + cards.Count);
-        if (cards.Count == 0) return false;
+    public abstract override bool HelpPlayingCard();
 
-        chosenCardEventSO.RaiseEvent(cards);
-        return true;
-    }
+    
 }

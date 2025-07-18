@@ -96,7 +96,7 @@ public class InGamePanel : UIBase
     #region Draw card
     private void DrawCard(int num)
     {
-        ObjectPoolManager.GetPoolingObject<ExchangeCardEffect>()?.GetEffect(0.5f
+        ObjectPoolManager.GetPoolingObject<DrawCardEffect>()?.GetEffect(0.5f
                                                 , _cardDrawTxt.rectTransform.position
                                                 , new Vector3(80f, 80f, 0f)
                                                 , _cardDrawTxt.text
