@@ -13,16 +13,13 @@ public enum PopupUIType
     Setting,
     RegisterPanel,
 }
-public static class PopupUIEvent
-{
-    public static Action<PopupUIType, bool> displayPopupAction;
-    public static void RaiseAction(PopupUIType type, bool active = true)
-    {
-        displayPopupAction?.Invoke(type, active);
-    }
-}
+
 public class UIPopupManager : MonoBehaviour
 {
+    // Ref in Player class.
+    [SerializeField] private ActivePopupEventSO _activePopupEventSO;
+
+
     /*
     - Ref in PopupUIBase class.
     - Used to store popup UI which is present in the current scene.
@@ -41,7 +38,8 @@ public class UIPopupManager : MonoBehaviour
     private void Awake()
     {
         _subcribedPopupUIEventSO.EventChannel += SubcribePopupUI;
-        PopupUIEvent.displayPopupAction += DisplayPopup;
+        // PopupUIEvent.displayPopupAction += DisplayPopup;
+        _activePopupEventSO.EventChannel += DisplayPopup;
 
         _panel = GetComponent<Image>();
         _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, 225);
@@ -51,7 +49,8 @@ public class UIPopupManager : MonoBehaviour
     private void OnDestroy()
     {
         _subcribedPopupUIEventSO.EventChannel -= SubcribePopupUI;
-        PopupUIEvent.displayPopupAction -= DisplayPopup;
+        // PopupUIEvent.displayPopupAction -= DisplayPopup;
+        _activePopupEventSO.EventChannel -= DisplayPopup;
     }
 
     private void SubcribePopupUI(PopupUIType type, PopupUIBase popupUI)

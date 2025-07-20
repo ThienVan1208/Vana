@@ -6,6 +6,16 @@ public enum TurnState
 }
 public class PlayerBase : MonoBehaviour, IPlayable
 {
+    [Header("In-Game Events")]
+    // Ref in RuleGameHandler, GameManager classes.
+    [SerializeField] protected VoidEventSO startTurnEventSO; 
+
+
+    [Header("Game State Events")]
+    // Ref in GameManager, RuleGameHandler classes.
+    [SerializeField] protected VoidEventSO endGameEventSO;
+
+
     [Header("Playable Events")]
     // Ref in RuleGameHandler class.
     [SerializeField] protected VoidEventSO revealCardEventSO;
@@ -13,6 +23,8 @@ public class PlayerBase : MonoBehaviour, IPlayable
     [SerializeField] protected VoidEventSO relocatePlayerCardEventSO;
     [SerializeField] protected BoolEventSO checkRevealEventSO;
 
+    // Ref in RuleGameHandler, PlayerBase.
+    [SerializeField] protected RetBoolEventSO checkEndGameEventSO;
 
 
     protected Canvas mainCanvas;
@@ -31,11 +43,11 @@ public class PlayerBase : MonoBehaviour, IPlayable
     // }
     protected virtual void OnEnable()
     {
-        EndGameEvent.EventChannel += EndGame;
+        endGameEventSO.EventChannel += EndGame;
     }
     protected virtual void OnDisable()
     {
-        EndGameEvent.EventChannel -= EndGame;
+        endGameEventSO.EventChannel -= EndGame;
     }
     protected virtual void Start()
     {

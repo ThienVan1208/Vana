@@ -20,10 +20,16 @@ public class InGamePanel : UIBase
     [Header("Draw Card")]
     [SerializeField] private TextMeshProUGUI _cardDrawTxt;
 
-    // Ref in Player class.
+    /* 
+    - Ref in Player class.
+    - Used to display drawCard num UI of player.
+    */
     [SerializeField] private IntEventSO _drawCardEventSO;
 
-    // Ref in InGamePanel class.
+    /* 
+    - Ref in DrawCardEffect class.
+    - Used to get effect when displaying drawCard num UI.
+    */
     [SerializeField] private DrawCardEffectEventSO _drawCardEffectEventSO;
 
 

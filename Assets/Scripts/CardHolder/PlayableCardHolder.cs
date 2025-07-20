@@ -8,6 +8,9 @@ public abstract class PlayableCardHolder : CardHolder, IHelpPlayingCard
     // Used to assign chosen card list in RuleGameHandle.
     [SerializeField] protected ChosenCardEventSO chosenCardEventSO;
 
+    // Ref in RuleGameHandler, PlayerBase.
+    [SerializeField] protected RetBoolEventSO checkEndGameEventSO;
+
     public abstract bool HelpPlayingCard();
     public virtual void RelocateCards()
     {

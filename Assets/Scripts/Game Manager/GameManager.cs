@@ -7,44 +7,35 @@ public enum EndGameType
     Win,
     Lose,
 }
-public static class GameManagerEvent
-{
-    public static Action NextTurnEvent;
-    public static void RaiseNextTurnEvent()
-    {
-        NextTurnEvent?.Invoke();
-    }
 
-    public static Action ContinueTurnEvent;
-    public static void RaiseContinueTurnEvent()
-    {
-        ContinueTurnEvent?.Invoke();
-    }
-
-    public static Action TurnEventSO;
-    public static void RaiseTurnEvent()
-    {
-        TurnEventSO?.Invoke();
-    }
-}
 public class GameManager : MonoBehaviour
 {
     [Header("In-Game Events")]
+    // Ref in RuleGameHandler, PlayerBase classes.
+    [SerializeField] private VoidEventSO _nextTurnEventSO;
+    [SerializeField] private VoidEventSO _continueTurnEventSO;
+    [SerializeField] private VoidEventSO _startTurnEventSO; 
+
     // Ref in RuleGameHandler class. 
     // When player reveals cards, raise this event to add used cards for current player if revealing fails or for the opponent if revealing successes.
     [SerializeField] private AddCard2PlayerEventSO _addCard2PlayerEventSO;
     [SerializeField] private PlayableInfoSO _playableInfoSO;
+
 
     // Ref in InGamePanel.
     [SerializeField] private IntEventSO _displayTurnUIEventSO;
     private int _curTurn = 0;
 
 
-
+    [Header("Game State Events")]
+    // Ref in GameManager, PlayerBase classes.
+    [SerializeField] private VoidEventSO _endGameEventSO;
+    [SerializeField] private VoidEventSO _startGameEventSO;
 
 
     [Header("Playable List")]
-    public PlayerBase player, virPlayer;
+    public PlayerBase player;
+    public PlayerBase virPlayer;
 
     public static bool endGame { get; private set; }
 
@@ -66,25 +57,26 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManagerEvent.NextTurnEvent += NextTurn;
-        GameManagerEvent.ContinueTurnEvent += ContinueTurn;
-        GameManagerEvent.TurnEventSO += IncreaseTurn;
+
+        _nextTurnEventSO.EventChannel += NextTurn;
+        _continueTurnEventSO.EventChannel += ContinueTurn;
+        _startTurnEventSO.EventChannel += IncreaseTurn;
 
         _addCard2PlayerEventSO.EventChannel += AddCards2CurPlayer;
 
-        EndGameEvent.EventChannel += EndGame;
-        StartGameEvent.EventChannel += HelpDrawCard;
+        _endGameEventSO.EventChannel += EndGame;
+        _startGameEventSO.EventChannel += HelpDrawCard;
     }
     private void OnDisable()
     {
-        GameManagerEvent.NextTurnEvent -= NextTurn;
-        GameManagerEvent.ContinueTurnEvent -= ContinueTurn;
-        GameManagerEvent.TurnEventSO -= IncreaseTurn;
+        _nextTurnEventSO.EventChannel -= NextTurn;
+        _continueTurnEventSO.EventChannel -= ContinueTurn;
+        _startTurnEventSO.EventChannel -= IncreaseTurn;
 
         _addCard2PlayerEventSO.EventChannel -= AddCards2CurPlayer;
 
-        EndGameEvent.EventChannel -= EndGame;
-        StartGameEvent.EventChannel -= HelpDrawCard;
+        _endGameEventSO.EventChannel -= EndGame;
+        _startGameEventSO.EventChannel -= HelpDrawCard;
     }
 
     #region Init

@@ -361,6 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
+  checkEndGameEventSO: {fileID: 11400000, guid: 64ad77d5e906fd3478124ff7fbc3da3c, type: 2}
   playExtraCardPercent: 55
 --- !u!1 &1697540895973527416
 GameObject:

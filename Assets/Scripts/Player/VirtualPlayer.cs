@@ -117,10 +117,10 @@ public class VirtualPlayer : PlayerBase, ICardDrawable
         await UniTask.Delay(1000);
         if (RuleGameHandler.BeginTurn)
         {
-            if (CheckEndGameConditionEvent.RaiseEvent()) return;
+            if (checkEndGameEventSO.RaiseEvent()) return;
 
             // Increase turn UI.
-            GameManagerEvent.RaiseTurnEvent();
+            startTurnEventSO.RaiseEvent();
             
             RuleGameHandler.BeginTurn = false;
             base.BeginTurn();
@@ -145,9 +145,10 @@ public class VirtualPlayer : PlayerBase, ICardDrawable
             }
             else
             {
-                if (CheckEndGameConditionEvent.RaiseEvent()) return;
+                if (checkEndGameEventSO.RaiseEvent()) return;
+
                 // Increase turn UI.   
-                GameManagerEvent.RaiseTurnEvent();
+                startTurnEventSO.RaiseEvent();
                 
                 PlayCards();
                 curTurnState = TurnState.ChooseActionState;

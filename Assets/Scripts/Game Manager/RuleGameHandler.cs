@@ -3,51 +3,48 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using System;
 
-#region Action
 public enum PlayerEndGameType
 {
     Win,
     Lose
 };
-public static class EndGameEvent
-{
-    public static Action EventChannel;
-    public static void RaiseEvent()
-    {
-        EventChannel?.Invoke();
-    }
-}
-public static class StartGameEvent
-{
-    public static Action EventChannel;
-    public static void RaiseEvent()
-    {
-        EventChannel?.Invoke();
-    }
-}
-public static class CheckEndGameConditionEvent
-{
-    public static Func<bool> EventChannel;
-    public static bool RaiseEvent()
-    {
-        return EventChannel?.Invoke() ?? false;
-    }
-}
-#endregion
 
-#region Rule
+// public static class CheckEndGameConditionEvent
+// {
+//     public static Func<bool> EventChannel;
+//     public static bool RaiseEvent()
+//     {
+//         return EventChannel?.Invoke() ?? false;
+//     }
+// }
+
+
 public class RuleGameHandler : MonoBehaviour
 {
     public static bool BeginTurn = true;
 
+    [Header("In-Game Events")]
+    // Ref in GameManager, PlayerBase classes.
+    [SerializeField] private VoidEventSO _nextTurnEventSO;
+    [SerializeField] private VoidEventSO _continueTurnEventSO;
+
+
+    [Header("Game State Events")]
+    // Ref in GameManager, PlayerBase classes.
+    [SerializeField] private VoidEventSO _endGameEventSO;
+    [SerializeField] private VoidEventSO _startGameEventSO;
+
+
     [Header("Playable Informations")]
     [SerializeField] private PlayableInfoSO _playableInfoSO;
+
 
     [Header("Card Holder Events")]
     // Ref in TableHolder class.
     [SerializeField] private IntEventSO _activeCardSlotEventSO;
     [SerializeField] private CardEventSO _moveCardToTableEventSO;
     [SerializeField] private VoidEventSO _refeshTableEventSO;
+
 
     [Header("Playable Events")]
     // Used in class PlayerBase.
@@ -80,6 +77,10 @@ public class RuleGameHandler : MonoBehaviour
     */
     [SerializeField] private VoidEventSO _relocatePlayerCardEventSO;
 
+    // Ref in PlayableCardHolder, PlayerBase class.
+    [SerializeField] private RetBoolEventSO _checkEndGameEventSO;
+
+
     [Header("Related UI Event")]
     // Ref in InGamePanel class.
     [SerializeField] private IntEventSO _earnCurrenctEventSO;
@@ -94,26 +95,23 @@ public class RuleGameHandler : MonoBehaviour
     {
         _revealCardEventSO.EventChannel += RevealCard;
         _passTurnEventSO.EventChannel += PassTurn;
-
         _chosenCardEventSO.EventChannel += PlayCards;
-        StartGameEvent.EventChannel += StartGame;
-
-        CheckEndGameConditionEvent.EventChannel += CheckEndGameCond;
+        _startGameEventSO.EventChannel += StartGame;
+        _checkEndGameEventSO.EventChannel += CheckEndGameCond;
 
     }
     private void OnDisable()
     {
         _revealCardEventSO.EventChannel -= RevealCard;
         _passTurnEventSO.EventChannel -= PassTurn;
-
         _chosenCardEventSO.EventChannel -= PlayCards;
-        StartGameEvent.EventChannel -= StartGame;
-
-        CheckEndGameConditionEvent.EventChannel -= CheckEndGameCond;
+        _startGameEventSO.EventChannel -= StartGame;
+        _checkEndGameEventSO.EventChannel -= CheckEndGameCond;
     }
     private void Start()
     {
-        StartGameEvent.RaiseEvent();
+        // StartGameEvent.RaiseEvent();
+        _startGameEventSO.RaiseEvent();
     }
     #region Play card
     /*
@@ -134,7 +132,8 @@ public class RuleGameHandler : MonoBehaviour
 
             _relocatePlayerCardEventSO.RaiseEvent();
 
-            GameManagerEvent.RaiseNextTurnEvent();
+            // GameManagerEvent.RaiseNextTurnEvent();
+            _nextTurnEventSO.RaiseEvent();
 
         }
         catch (OperationCanceledException)
@@ -229,7 +228,8 @@ public class RuleGameHandler : MonoBehaviour
 
             _checkRevealEventSO.RaiseEvent(true);
 
-            GameManagerEvent.RaiseContinueTurnEvent();
+            // GameManagerEvent.RaiseContinueTurnEvent();
+            _continueTurnEventSO.RaiseEvent();
 
             _chosenCards.Clear();
         }
@@ -256,7 +256,8 @@ public class RuleGameHandler : MonoBehaviour
             BeginTurn = true;
             _checkRevealEventSO.RaiseEvent(false);
 
-            GameManagerEvent.RaiseNextTurnEvent();
+            // GameManagerEvent.RaiseNextTurnEvent();
+            _nextTurnEventSO.RaiseEvent();
 
             _chosenCards.Clear();
         }
@@ -285,7 +286,7 @@ public class RuleGameHandler : MonoBehaviour
 
             _refeshTableEventSO.RaiseEvent();
 
-            GameManagerEvent.RaiseNextTurnEvent();
+            _nextTurnEventSO.RaiseEvent();
         }
         catch (OperationCanceledException)
         {
@@ -294,7 +295,7 @@ public class RuleGameHandler : MonoBehaviour
     }
     #endregion
 
-    #region EndGame
+    #region CheckEndGame
     private bool CheckEndGameCond()
     {
         for (int i = 0; i < _playableInfoSO.GetTotalPlayerNum(); i++)
@@ -305,7 +306,7 @@ public class RuleGameHandler : MonoBehaviour
             bool winCondition = player.GetCardNum() == 0;
             if (winCondition)
             {
-                EndGame(i, PlayerEndGameType.Win);
+                DefinePlayerEndGame(i, PlayerEndGameType.Win);
                 return true;
             }
 
@@ -314,13 +315,13 @@ public class RuleGameHandler : MonoBehaviour
                                 || player.GetCardNum() == GameConfiguration.CardCountMinThreshold;
             if (LoseCondition)
             {
-                EndGame(i, PlayerEndGameType.Lose);
+                DefinePlayerEndGame(i, PlayerEndGameType.Lose);
                 return true;
             }
         }
         return false;
     }
-    private async void EndGame(int playerIndex, PlayerEndGameType type = PlayerEndGameType.Win)
+    private async void DefinePlayerEndGame(int playerIndex, PlayerEndGameType type = PlayerEndGameType.Win)
     {
         try
         {
@@ -357,7 +358,8 @@ public class RuleGameHandler : MonoBehaviour
             }
 
 
-            EndGameEvent.RaiseEvent();
+            // EndGameEvent.RaiseEvent();
+            _endGameEventSO.RaiseEvent();
         }
         catch (OperationCanceledException)
         {
@@ -373,4 +375,3 @@ public class RuleGameHandler : MonoBehaviour
     }
     #endregion
 }
-#endregion

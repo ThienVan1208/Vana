@@ -249,6 +249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a676ff7ba613642bed1d82d8bd7ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _nextTurnEventSO: {fileID: 11400000, guid: 3a378c3dbd3e6be428b1c3b53ef1a164, type: 2}
+  _continueTurnEventSO: {fileID: 11400000, guid: 0dc02cf7b57039649a2cd53b49a5c424, type: 2}
+  _endGameEventSO: {fileID: 11400000, guid: 3abc5c147b868d446914fad4d2597f8e, type: 2}
+  _startGameEventSO: {fileID: 11400000, guid: 30d5ca70e98d4d24b971a8b68628b292, type: 2}
   _playableInfoSO: {fileID: 11400000, guid: f78e75a492e6ea449865e2e5ef6106b7, type: 2}
   _activeCardSlotEventSO: {fileID: 11400000, guid: 16c8e6b2e6189e049a09558afd347719, type: 2}
   _moveCardToTableEventSO: {fileID: 11400000, guid: 4eb425afeec23eb488b03994434c1ed9, type: 2}
@@ -259,6 +263,7 @@ MonoBehaviour:
   _chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
   _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
   _relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
+  _checkEndGameEventSO: {fileID: 11400000, guid: 64ad77d5e906fd3478124ff7fbc3da3c, type: 2}
   _earnCurrenctEventSO: {fileID: 11400000, guid: d713080eb8108b44eaab43ae11bbdb95, type: 2}
   _currencyFlipCardEffectEventSO: {fileID: 11400000, guid: df0b219625bd97b4283eaf90dfc9c945, type: 2}
 --- !u!4 &60038285
@@ -2690,14 +2695,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddd170d211246d40b4e81b0a8791ad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startTurnEventSO: {fileID: 11400000, guid: 13b8800f7aff2da4681c8875668a49ad, type: 2}
+  endGameEventSO: {fileID: 11400000, guid: 3abc5c147b868d446914fad4d2597f8e, type: 2}
   revealCardEventSO: {fileID: 11400000, guid: 9a3a57c76278a1b46abc79f342d2aa9e, type: 2}
   passTurnEventSO: {fileID: 11400000, guid: 8167e13cefa0327429f09a36b3b068c4, type: 2}
   relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
   checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
+  checkEndGameEventSO: {fileID: 11400000, guid: 64ad77d5e906fd3478124ff7fbc3da3c, type: 2}
   _drawCardEventSO: {fileID: 11400000, guid: 63800739cc412424c8aa56d2deae1dab, type: 2}
   _subcribeCurrencyUIEventSO: {fileID: 11400000, guid: c4d38708b87280444b60ed84d67bec77, type: 2}
   _increaseCurrencyEventSO: {fileID: 11400000, guid: 35ce08836dfbc4d4fbd9dece1493290e, type: 2}
   _levelUpEventSO: {fileID: 11400000, guid: 521bfb9a18bb09c4081187d959c11163, type: 2}
+  _activePopupEventSO: {fileID: 11400000, guid: 9050964656a0a5946bf2dc0168bb92cd, type: 2}
   _handHolderPrefab: {fileID: 4083175592908992002, guid: 0d17b878497b6c8439ab0e5b40d63f16, type: 3}
   _buttonPanel: {fileID: 4971666660427211524, guid: 15d92d28508cee64eac08da55d3b30bf, type: 3}
 --- !u!4 &920495731
@@ -2890,10 +2899,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc41a899aebf7d54492591612b69d9df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startTurnEventSO: {fileID: 11400000, guid: 13b8800f7aff2da4681c8875668a49ad, type: 2}
+  endGameEventSO: {fileID: 11400000, guid: 3abc5c147b868d446914fad4d2597f8e, type: 2}
   revealCardEventSO: {fileID: 11400000, guid: 9a3a57c76278a1b46abc79f342d2aa9e, type: 2}
   passTurnEventSO: {fileID: 11400000, guid: 8167e13cefa0327429f09a36b3b068c4, type: 2}
   relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
   checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
+  checkEndGameEventSO: {fileID: 11400000, guid: 64ad77d5e906fd3478124ff7fbc3da3c, type: 2}
   _handHolderPrefab: {fileID: 1663651151614908859, guid: 4a319bf33f60d7f4a98db8621f5c0ac0, type: 3}
 --- !u!4 &1014271832
 Transform:
@@ -4576,9 +4588,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdac2a02ebd350146a075a0f3bc14c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _nextTurnEventSO: {fileID: 11400000, guid: 3a378c3dbd3e6be428b1c3b53ef1a164, type: 2}
+  _continueTurnEventSO: {fileID: 11400000, guid: 0dc02cf7b57039649a2cd53b49a5c424, type: 2}
+  _startTurnEventSO: {fileID: 11400000, guid: 13b8800f7aff2da4681c8875668a49ad, type: 2}
   _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
   _playableInfoSO: {fileID: 11400000, guid: f78e75a492e6ea449865e2e5ef6106b7, type: 2}
   _displayTurnUIEventSO: {fileID: 11400000, guid: db9cf29a490a89c4686df430a4b57b3a, type: 2}
+  _endGameEventSO: {fileID: 11400000, guid: 3abc5c147b868d446914fad4d2597f8e, type: 2}
+  _startGameEventSO: {fileID: 11400000, guid: 30d5ca70e98d4d24b971a8b68628b292, type: 2}
   player: {fileID: 920495730}
   virPlayer: {fileID: 1014271831}
 --- !u!1 &1785715909
@@ -5516,6 +5533,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1245340140}
     m_Modifications:
+    - target: {fileID: 4037151031354235446, guid: 66c84560a00c21d45b9a7eacc15b5067, type: 3}
+      propertyPath: _activePopupEventSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 9050964656a0a5946bf2dc0168bb92cd, type: 2}
     - target: {fileID: 4093530059814984599, guid: 66c84560a00c21d45b9a7eacc15b5067, type: 3}
       propertyPath: m_Name
       value: Popup UI Manager

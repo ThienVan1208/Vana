@@ -20,6 +20,10 @@ public class Player : PlayerBase, ICardDrawable
     // Ref in LevelManager.
     [SerializeField] private VoidEventSO _levelUpEventSO;
 
+    [Header("Popup UI Events")]
+      // Ref in UIPopupManager class.
+    [SerializeField] private ActivePopupEventSO _activePopupEventSO;
+
     [Header("Player UI Prefabs")]
     [SerializeField] private GameObject _handHolderPrefab;
     [SerializeField] private GameObject _buttonPanel;
@@ -55,7 +59,7 @@ public class Player : PlayerBase, ICardDrawable
                                     anchorPos,
                                     Vector3.one * GameConfiguration.cardHolderSize).GetComponent<PlayerButtonsPanel>();
 
-        PopupUIEvent.RaiseAction(PopupUIType.PlayerButtonPanel, active: false);
+        _activePopupEventSO.RaiseEvent(PopupUIType.PlayerButtonPanel, active: false);
 
         _playerButtonPanel.playButtonPrefab.onClick.AddListener(PlayCards);
         _playerButtonPanel.drawCardbuttonPrefab.onClick.AddListener(DrawCard);
@@ -118,7 +122,7 @@ public class Player : PlayerBase, ICardDrawable
     {
 
         // If it comes to playcard state -> next state is choosing action.
-        if (CheckEndGameConditionEvent.RaiseEvent()) return;
+        if (checkEndGameEventSO.RaiseEvent()) return;
 
         _playerButtonPanel.ActiveButton(_playerButtonPanel.playButtonPrefab, isActive: true);
         _playerButtonPanel.ActiveButton(_playerButtonPanel.drawCardbuttonPrefab, isActive: true);
@@ -126,7 +130,7 @@ public class Player : PlayerBase, ICardDrawable
         _playerButtonPanel.ActiveButton(_playerButtonPanel.revealButtonPrefab, isActive: false);
 
         _playerButtonPanel.ShowPopup();
-        GameManagerEvent.RaiseTurnEvent();
+        startTurnEventSO.RaiseEvent();
         SetCardDrawNum(_cardDrawNum + 1);
         curTurnState = TurnState.ChooseActionState;
     }
@@ -170,7 +174,7 @@ public class Player : PlayerBase, ICardDrawable
     public override void BeginTurn()
     {
         base.BeginTurn();
-        if (CheckEndGameConditionEvent.RaiseEvent()) return;
+        if (checkEndGameEventSO.RaiseEvent()) return;
         
         relocatePlayerCardEventSO.EventChannel += (cardHolder as HandHolder).RelocateCards;
         if (RuleGameHandler.BeginTurn)
@@ -233,7 +237,7 @@ public class Player : PlayerBase, ICardDrawable
     public override void WinGame()
     {
         base.WinGame();
-        PopupUIEvent.RaiseAction(PopupUIType.WinGame);
+        _activePopupEventSO.RaiseEvent(PopupUIType.WinGame);
         _increaseCurrencyEventSO.RaiseEvent(5);
         _levelUpEventSO.RaiseEvent();
         SaveDataEvent.RaiseAction();
@@ -241,7 +245,7 @@ public class Player : PlayerBase, ICardDrawable
     public override void LoseGame()
     {
         base.LoseGame();
-        PopupUIEvent.RaiseAction(PopupUIType.LoseGame);
+        _activePopupEventSO.RaiseEvent(PopupUIType.LoseGame);
         _increaseCurrencyEventSO.RaiseEvent(-5);
         SaveDataEvent.RaiseAction();
     }

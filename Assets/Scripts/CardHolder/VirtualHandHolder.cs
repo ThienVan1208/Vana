@@ -20,7 +20,7 @@ public abstract class VirtualHandHolder : PlayableCardHolder
             }
         }
 
-        CheckEndGameConditionEvent.RaiseEvent();
+        checkEndGameEventSO.RaiseEvent();
     }
 
     public abstract override bool HelpPlayingCard();

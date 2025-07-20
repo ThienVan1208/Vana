@@ -18,10 +18,7 @@ public class HandHolder : PlayableCardHolder
     {
         _chosenCards.Clear();
     }
-    private void OnEnable()
-    {
-        // _cardExchangeEventSO.RaiseEvent(_cardExchangeNum);
-    }
+
 
     #region Add card
     public override void AddCard(Card card)
@@ -42,8 +39,9 @@ public class HandHolder : PlayableCardHolder
                 return;
             }
         }
-        
-        CheckEndGameConditionEvent.RaiseEvent();
+
+        // CheckEndGameConditionEvent.RaiseEvent();
+        checkEndGameEventSO.RaiseEvent();
     }
     #endregion
 
