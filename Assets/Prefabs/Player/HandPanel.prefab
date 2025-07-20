@@ -139,6 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
   _chosenCards: []
+  _getGlowEventSO: {fileID: 11400000, guid: c2faeeeea7421a44eab0c911bffb6041, type: 2}
+  _stopGlowEventSO: {fileID: 11400000, guid: a3ba03ac9aa03b149982a0ba6a06b0c0, type: 2}
 --- !u!1001 &92553751181002250
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
+// AI can just play random cards.
 public class Ver0VirtualHandHolder : VirtualHandHolder
 {
     protected List<Card> playCards = new List<Card>();

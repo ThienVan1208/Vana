@@ -148,7 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d683a930c56afd489e4fa3413bc74fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textObjPrefab: {fileID: 5674307291271802928, guid: 8622cbc0e5a0b734ba3fce2743ce5104, type: 3}
+  textObjPrefab: {fileID: 5674307291271802928, guid: 8622cbc0e5a0b734ba3fce2743ce5104, type: 3}
+  drawCardEffectEventSO: {fileID: 11400000, guid: 4a5a3d8c5bcd9c44fbb6ca4a975aca98, type: 2}
 --- !u!4 &41528144
 Transform:
   m_ObjectHideFlags: 0
@@ -259,6 +260,7 @@ MonoBehaviour:
   _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
   _relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
   _earnCurrenctEventSO: {fileID: 11400000, guid: d713080eb8108b44eaab43ae11bbdb95, type: 2}
+  _currencyFlipCardEffectEventSO: {fileID: 11400000, guid: df0b219625bd97b4283eaf90dfc9c945, type: 2}
 --- !u!4 &60038285
 Transform:
   m_ObjectHideFlags: 0
@@ -2543,6 +2545,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _glowEffectPrefabs: {fileID: 9080344875561541144, guid: ed6701f58a480304ab78d7f81f8fc36c, type: 3}
+  _getGlowEventSO: {fileID: 11400000, guid: c2faeeeea7421a44eab0c911bffb6041, type: 2}
+  _stopGlowEventSO: {fileID: 11400000, guid: a3ba03ac9aa03b149982a0ba6a06b0c0, type: 2}
 --- !u!4 &660636596
 Transform:
   m_ObjectHideFlags: 0
@@ -3971,6 +3975,7 @@ MonoBehaviour:
   _turnUIEffect: {fileID: 1123038305}
   _cardDrawTxt: {fileID: 140631749}
   _drawCardEventSO: {fileID: 11400000, guid: 63800739cc412424c8aa56d2deae1dab, type: 2}
+  _drawCardEffectEventSO: {fileID: 11400000, guid: 4a5a3d8c5bcd9c44fbb6ca4a975aca98, type: 2}
   _currencyTxt: {fileID: 1985448861}
   _currencyContainerEffect: {fileID: 1686566631}
   _earnCurrenctEventSO: {fileID: 11400000, guid: d713080eb8108b44eaab43ae11bbdb95, type: 2}
@@ -4798,7 +4803,7 @@ GameObject:
   - component: {fileID: 1910351626}
   - component: {fileID: 1910351625}
   m_Layer: 0
-  m_Name: Display Plus Currency Text When Flip Cards Effect
+  m_Name: Add Plus Currency Text When Flip Cards Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4817,6 +4822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 7589152306146399953, guid: 8079b3fcb2e402a4db1bd158b920494c, type: 3}
+  _currencyFlipCardEffectEventSO: {fileID: 11400000, guid: df0b219625bd97b4283eaf90dfc9c945, type: 2}
 --- !u!4 &1910351626
 Transform:
   m_ObjectHideFlags: 0

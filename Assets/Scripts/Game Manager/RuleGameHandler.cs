@@ -80,9 +80,12 @@ public class RuleGameHandler : MonoBehaviour
     */
     [SerializeField] private VoidEventSO _relocatePlayerCardEventSO;
 
-    [Header("related UI Event")]
+    [Header("Related UI Event")]
     // Ref in InGamePanel class.
     [SerializeField] private IntEventSO _earnCurrenctEventSO;
+
+    // Ref in AddCurrencyWhenFlipCardEffect class.
+    [SerializeField] private CurrencyFlipCardEffectEventSO _currencyFlipCardEffectEventSO;
 
     private Vector3 _offset = new Vector3(0, 40, 0);
     private List<Card> _chosenCards = new List<Card>();
@@ -189,15 +192,16 @@ public class RuleGameHandler : MonoBehaviour
                     await SuccessRevealCard();
                     return;
                 }
-                var effectObj = ObjectPoolManager.GetPoolingObject<AddCurrencyWhenFlipCardEffect>()?
-                                               .GetEffect(timeDisplay: 1f
+
+                _currencyFlipCardEffectEventSO.RaiseEvent(timeDisplay: 1f
                                                , startPos: _chosenCards[i].cardSlotRect.position + _offset
                                                , endPos: _offset
                                                , content: "+" + ((int)_chosenCards[i].GetCardRank()).ToString()
                                                , fontSize: 35
                                                , color: Color.white
+                                               , parent: _chosenCards[i].cardSlotRect
                                                , alpha: 1);
-                effectObj.transform.SetParent(_chosenCards[i].cardSlotRect, false);
+
                 _earnCurrenctEventSO.RaiseEvent((int)_chosenCards[i].GetCardRank());
             }
 

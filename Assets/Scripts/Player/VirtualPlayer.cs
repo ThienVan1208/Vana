@@ -39,6 +39,7 @@ public class VirtualPlayer : PlayerBase, ICardDrawable
         _ = card.FaceCardDown();
         cardHolder.AddCard(card);
         card.CanInteract(false);
+        // if (CheckEndGameConditionEvent.RaiseEvent()) return;
     }
     protected override void CheckReveal(bool check)
     {
@@ -117,9 +118,10 @@ public class VirtualPlayer : PlayerBase, ICardDrawable
         if (RuleGameHandler.BeginTurn)
         {
             if (CheckEndGameConditionEvent.RaiseEvent()) return;
+
+            // Increase turn UI.
             GameManagerEvent.RaiseTurnEvent();
             
-
             RuleGameHandler.BeginTurn = false;
             base.BeginTurn();
             PlayCards();
@@ -140,11 +142,11 @@ public class VirtualPlayer : PlayerBase, ICardDrawable
                 {
                     RevealCards();
                 }
-
             }
             else
             {
                 if (CheckEndGameConditionEvent.RaiseEvent()) return;
+                // Increase turn UI.   
                 GameManagerEvent.RaiseTurnEvent();
                 
                 PlayCards();

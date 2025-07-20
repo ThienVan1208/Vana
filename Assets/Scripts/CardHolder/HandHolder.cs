@@ -5,6 +5,10 @@ public class HandHolder : PlayableCardHolder
 {
     [SerializeField] private List<Card> _chosenCards = new List<Card>();
 
+    // Ref in CardPSEffect class.
+    [SerializeField] private TransformEventSO _getGlowEventSO;
+    [SerializeField] private BoolEventSO _stopGlowEventSO;
+
     private Card _srcCardPointer;
     private Card _dstCardPointer;
     private bool _isDrag = false;
@@ -61,7 +65,8 @@ public class HandHolder : PlayableCardHolder
 
         chosenCardEventSO.RaiseEvent(_chosenCards);
 
-        ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
+        // ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
+        _stopGlowEventSO.RaiseEvent(true);
 
         // Clear chosen card list for the next choosing turn.
         _chosenCards.Clear();
@@ -196,7 +201,12 @@ public class HandHolder : PlayableCardHolder
             return;
         }
         _chosenCards.Add(card);
-        if (_chosenCards.Count == 1) ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[0].frontImg.transform);
+        if (_chosenCards.Count == 1)
+        {
+            // ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[0].frontImg.transform);
+            _getGlowEventSO.RaiseEvent(_chosenCards[0].frontImg.transform);
+        }  
+            
     }
     public bool CanChooseCard()
     {
@@ -213,11 +223,11 @@ public class HandHolder : PlayableCardHolder
             {
                 if (i == 0)
                 {
-                    ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);
+                    
+                    _stopGlowEventSO.RaiseEvent(true);
                     if (_chosenCards.Count > 1)
                     {
-                        ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.GetGlowEffect(_chosenCards[1].frontImg.transform);
-
+                        _getGlowEventSO.RaiseEvent(_chosenCards[1].frontImg.transform);
                     }
                 }
                 _chosenCards.RemoveAt(i);

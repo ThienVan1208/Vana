@@ -7,27 +7,38 @@ public class CardPSEffect : MonoBehaviour
     private int initNum = 3;
     [SerializeField] private GameObject _glowEffectPrefabs;
 
+    // Ref in HandHolder class.
+    [SerializeField] private TransformEventSO _getGlowEventSO;
+    [SerializeField] private BoolEventSO _stopGlowEventSO;
+
     private void Start()
     {
         _psPool = new ObjectPooler<ParticleSystem>(_glowEffectPrefabs, transform, initNum);
-        ObjectPoolManager.RegisterPool(this, _psPool);
+
     }
-    private void OnDestroy()
+    private void OnEnable()
     {
-        ObjectPoolManager.RemovePoolObject(this);
+        _getGlowEventSO.EventChannel += GetGlowEffect;
+        _stopGlowEventSO.EventChannel += StopGlowEffect;
     }
-    public ParticleSystem GetGlowEffect(Transform pos)
+    private void OnDisable()
+    {
+        _getGlowEventSO.EventChannel -= GetGlowEffect;
+        _stopGlowEventSO.EventChannel -= StopGlowEffect;
+    }
+
+    private void GetGlowEffect(Transform pos)
     {
         _curPSEffect = _psPool.GetElem();
-        if (_curPSEffect == null) return null;
-        
+        if (_curPSEffect == null) return;
+
         _curPSEffect.gameObject.SetActive(true);
         _curPSEffect.transform.SetParent(pos, false);
         _curPSEffect.transform.localPosition = new Vector3(-2.5f, 0f, 0f);
         _curPSEffect.transform.localScale = new Vector3(3.5f, 2.8f, 3.5f);
-        return _curPSEffect;
+
     }
-    public void StopGlowEffect(bool isInactive = false)
+    private void StopGlowEffect(bool isInactive)
     {
         _curPSEffect.Stop();
         if (isInactive) _curPSEffect.gameObject.SetActive(false);

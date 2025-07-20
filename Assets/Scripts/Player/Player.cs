@@ -170,12 +170,13 @@ public class Player : PlayerBase, ICardDrawable
     public override void BeginTurn()
     {
         base.BeginTurn();
-
+        if (CheckEndGameConditionEvent.RaiseEvent()) return;
+        
         relocatePlayerCardEventSO.EventChannel += (cardHolder as HandHolder).RelocateCards;
         if (RuleGameHandler.BeginTurn)
         {
+            // if (CheckEndGameConditionEvent.RaiseEvent()) return;
             RuleGameHandler.BeginTurn = false;
-            // DisplayChooseUI(false);
             DisplayPlayCardUI();
         }
         else

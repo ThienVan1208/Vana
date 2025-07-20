@@ -23,6 +23,9 @@ public class InGamePanel : UIBase
     // Ref in Player class.
     [SerializeField] private IntEventSO _drawCardEventSO;
 
+    // Ref in InGamePanel class.
+    [SerializeField] private DrawCardEffectEventSO _drawCardEffectEventSO;
+
 
 
 
@@ -96,13 +99,13 @@ public class InGamePanel : UIBase
     #region Draw card
     private void DrawCard(int num)
     {
-        ObjectPoolManager.GetPoolingObject<DrawCardEffect>()?.GetEffect(0.5f
-                                                , _cardDrawTxt.rectTransform.position
-                                                , new Vector3(80f, 80f, 0f)
-                                                , _cardDrawTxt.text
-                                                , 40
-                                                , Color.red
-                                                , 0.7f);
+        _drawCardEffectEventSO.RaiseEvent(0.5f
+                                        , _cardDrawTxt.rectTransform.position
+                                        , new Vector3(80f, 80f, 0f)
+                                        , _cardDrawTxt.text
+                                        , 40
+                                        , Color.red
+                                        , 0.7f);
 
         _cardDrawTxt.rectTransform.DOScale(2, 0.2f).SetEase(Ease.InOutSine)
         .OnComplete(() =>

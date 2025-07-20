@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Burst;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public enum TestType
 {
@@ -44,7 +45,7 @@ public class Test : MonoBehaviour
     private JobHandle jobHandle;
     private bool isInitialized;
     private NativeArray<long> temp; // Moved temp here for clarity
-    private Action testAction;
+    private UnityEvent testAction;
 
     private void Awake()
     {
@@ -53,6 +54,7 @@ public class Test : MonoBehaviour
         // temp = new NativeArray<long>(threshold, Allocator.TempJob);
         // isInitialized = true;
         // Debug.Log($"Test instance created on {gameObject.name}.");
+        
     }
 
     private void Update()
@@ -103,15 +105,17 @@ public class Test : MonoBehaviour
     }
     public void SubcribeAction()
     {
-        testAction += hehe;
+        // testAction += hehe;
+        testAction.AddListener(hehe);
     }
     public void UnsubcribeAction()
     {
-        testAction -= hehe;
+        // testAction -= hehe;
+        testAction.RemoveListener(hehe);
     }
     public void RaiseAction()
     {
-        testAction?.Invoke();
+        testAction.Invoke();
     }
 
     private void OnDestroy()

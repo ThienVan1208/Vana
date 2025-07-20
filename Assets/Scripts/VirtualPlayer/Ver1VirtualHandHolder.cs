@@ -5,6 +5,7 @@ using UnityEngine;
 using Unity.Collections;
 using System.Collections.Generic;
 
+// AI can choose the same rank cards to play.
 [BurstCompile]
 struct FindSameRankCardJob : IJob
 {
@@ -31,76 +32,75 @@ public class Ver1VirtualHandHolder : Ver0VirtualHandHolder
 {
     [Range(0, 100)]
     public float playExtraCardPercent;
-    private List<Card> _cards = new List<Card>();
-    private List<Card> _playCards = new List<Card>();
-    private NativeList<int> _cardRankList;
-    private NativeList<int> _idxList;
+    protected List<Card> cards = new List<Card>();
+    protected NativeList<int> cardRankList;
+    protected NativeList<int> idxList;
     JobHandle jobHandle;
 
     protected override void Awake()
     {
         base.Awake();
-        _cardRankList = new NativeList<int>(allocator: Allocator.Persistent);
-        _idxList = new NativeList<int>(allocator: Allocator.Persistent);
+        cardRankList = new NativeList<int>(allocator: Allocator.Persistent);
+        idxList = new NativeList<int>(allocator: Allocator.Persistent);
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        _cardRankList.Dispose();
-        _idxList.Dispose();
+        cardRankList.Dispose();
+        idxList.Dispose();
     }
 
     protected override async void GetCardPlayingAI()
     {
-        _cardRankList.Clear();
-        _idxList.Clear();
-        _cards.Clear();
-        _playCards.Clear();
+        cardRankList.Clear();
+        idxList.Clear();
+        cards.Clear();
+        playCards.Clear();
 
-        _cards = GetCardList();
-        foreach (var card in _cards)
+        cards = GetCardList();
+        foreach (var card in cards)
         {
             await UniTask.WaitForEndOfFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
-            _cardRankList.Add((int)card.GetCardRank());
+            cardRankList.Add((int)card.GetCardRank());
         }
         FindSameRankCardJob rankJob = new FindSameRankCardJob
         {
-            cardRankList = _cardRankList,
-            idxList = _idxList
+            cardRankList = cardRankList,
+            idxList = idxList
         };
         jobHandle = rankJob.Schedule();
         jobHandle.Complete();
 
-        if (_idxList.Length == 0)
+        if (idxList.Length == 0)
         {
             await PlayRandom();
         }
         else
         {
-            if (_idxList.Length != GameConfiguration.maxCard2Play && Utils.GetPercent(playExtraCardPercent))
+            if (idxList.Length != GameConfiguration.maxCard2Play && Utils.GetPercent(playExtraCardPercent))
             {
                 // Play extra cards.
-                int extraNum = Random.Range(1, GameConfiguration.maxCard2Play - _idxList.Length + 1);
+                int extraNum = Random.Range(1, GameConfiguration.maxCard2Play - idxList.Length + 1);
                 var randomIdxList = await GetRandomCardIndex(num: extraNum, hasExceptList: true);
                 foreach (var idx in randomIdxList)
                 {
-                    _idxList.Add(idx);
+                    idxList.Add(idx);
                 }
             }
 
-            foreach (var idx in _idxList)
+            foreach (var idx in idxList)
             {
                 await UniTask.WaitForEndOfFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
-                _playCards.Add(_cards[idx]);
+                playCards.Add(cards[idx]);
             }
 
         }
 
-        if (_playCards.Count == 0)
+        if (playCards.Count == 0)
         {
             await PlayRandom();
         }
-        chosenCardEventSO.RaiseEvent(_playCards);
+        chosenCardEventSO.RaiseEvent(playCards);
     }
  
     protected async UniTask<List<int>> GetRandomCardIndex(int num = 1, bool hasExceptList = false)
@@ -119,11 +119,11 @@ public class Ver1VirtualHandHolder : Ver0VirtualHandHolder
         }
         else
         {
-            for (int i = 0; i < _cards.Count; i++)
+            for (int i = 0; i < cards.Count; i++)
             {
                 bool isDuplicated = false;
                 await UniTask.WaitForEndOfFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
-                for (int j = 0; j < _idxList.Length; j++)
+                for (int j = 0; j < idxList.Length; j++)
                 {
                     await UniTask.WaitForEndOfFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
                     if (i == j)
