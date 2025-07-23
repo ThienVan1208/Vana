@@ -37,16 +37,18 @@ public class UIPopupManager : MonoBehaviour
 
     private void Awake()
     {
-        _subcribedPopupUIEventSO.EventChannel += SubcribePopupUI;
-        // PopupUIEvent.displayPopupAction += DisplayPopup;
-        _activePopupEventSO.EventChannel += DisplayPopup;
-
         _panel = GetComponent<Image>();
         _panel.color = new Color(_panel.color.r, _panel.color.g, _panel.color.b, 225);
         ShowPanel(false);
 
     }
-    private void OnDestroy()
+    private void OnEnable() {
+        _subcribedPopupUIEventSO.EventChannel += SubcribePopupUI;
+        // PopupUIEvent.displayPopupAction += DisplayPopup;
+        _activePopupEventSO.EventChannel += DisplayPopup;
+    }
+
+    private void OnDisable()
     {
         _subcribedPopupUIEventSO.EventChannel -= SubcribePopupUI;
         // PopupUIEvent.displayPopupAction -= DisplayPopup;

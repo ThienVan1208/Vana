@@ -28,6 +28,7 @@ public class ClickState : InteractableState
 
         if (_isUp)
         {
+            myCard.playAudioEventSO.RaiseEvent(myCard.choseCardAudioClipSO);
             GetUp();
         }
         else

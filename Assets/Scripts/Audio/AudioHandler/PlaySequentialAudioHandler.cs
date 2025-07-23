@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine;
 
 
 public class PlaySequentialAudioHandler : AudioSourceHandler
@@ -21,12 +22,19 @@ public class PlaySequentialAudioHandler : AudioSourceHandler
     }
     protected override async void OnDisable()
     {
-        base.OnDisable();
+        try
+        {
+            base.OnDisable();
 
-        DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0f, _fadeOutWhenDisableDuration);
-        await UniTask.Delay(TimeSpan.FromSeconds(_fadeOutWhenDisableDuration), cancellationToken: this.GetCancellationTokenOnDestroy());
-        _playAudioLock = false;
-        audioSource.Stop();
+            DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0f, _fadeOutWhenDisableDuration);
+            await UniTask.Delay(TimeSpan.FromSeconds(_fadeOutWhenDisableDuration), cancellationToken: this.GetCancellationTokenOnDestroy());
+            _playAudioLock = false;
+            audioSource.Stop();
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.LogWarning("PlaySequentialAudioHandler OnDisable was cancelled.");
+        }
     }
 
     protected override void PlayAudio(AudioClipSO audioClipSO)
@@ -39,13 +47,21 @@ public class PlaySequentialAudioHandler : AudioSourceHandler
     }
     private async void PlaySequence(AudioClipSO audioClipSO)
     {
-        while (_playAudioLock)
+        try
         {
-            var clip = audioClipSO.GetAudioClip();
-            _curClipLength = clip.length;
-            audioSource.PlayOneShot(clip);
-            await UniTask.Delay(TimeSpan.FromSeconds(_curClipLength), cancellationToken: this.GetCancellationTokenOnDestroy());
+            while (_playAudioLock)
+            {
+                var clip = audioClipSO.GetAudioClip();
+                _curClipLength = clip.length;
+                audioSource.PlayOneShot(clip);
+                await UniTask.Delay(TimeSpan.FromSeconds(_curClipLength), cancellationToken: this.GetCancellationTokenOnDestroy());
+            }
         }
+        catch (OperationCanceledException)
+        {
+            Debug.LogWarning("hehe");
+        }
+
 
     }
 }

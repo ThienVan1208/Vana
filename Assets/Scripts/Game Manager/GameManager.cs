@@ -28,9 +28,9 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Game State Events")]
-    // Ref in GameManager, PlayerBase classes.
+    // Ref in RuleGameHandler, PlayerBase classes.
     [SerializeField] private VoidEventSO _endGameEventSO;
-    [SerializeField] private VoidEventSO _startGameEventSO;
+
 
 
     [Header("Playable List")]
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         _addCard2PlayerEventSO.EventChannel += AddCards2CurPlayer;
 
         _endGameEventSO.EventChannel += EndGame;
-        _startGameEventSO.EventChannel += HelpDrawCard;
+
     }
     private void OnDisable()
     {
@@ -76,34 +76,10 @@ public class GameManager : MonoBehaviour
         _addCard2PlayerEventSO.EventChannel -= AddCards2CurPlayer;
 
         _endGameEventSO.EventChannel -= EndGame;
-        _startGameEventSO.EventChannel -= HelpDrawCard;
-    }
-
-    #region Init
-    private async void HelpDrawCard()
-    {
-        try
-        {
-            await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
-            for (int i = 0; i < GameConfiguration.initCardNum; i++)
-            {
-                foreach (var playable in _playableInfoSO.GetPlayableList())
-                {
-                    Card newCard = CardSpawnerEvent.RaiseGetCardEvent();
-                    newCard.gameObject.SetActive(true);
-                    playable.AddCards(newCard);
-                    await UniTask.Delay(200, cancellationToken: this.GetCancellationTokenOnDestroy());
-                }
-            }
-            _playableInfoSO.GetPlayerByIndex(_playableInfoSO.curPlayerIdx).BeginTurn();
-        }
-        catch (OperationCanceledException)
-        {
-            // throw;
-        }
 
     }
-    #endregion
+
+    
 
     #region Turn API
     private void NextTurn()

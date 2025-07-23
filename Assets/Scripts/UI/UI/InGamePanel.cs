@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using System.Collections.Concurrent;
+using System;
 
 public class InGamePanel : UIBase
 {
@@ -67,6 +68,9 @@ public class InGamePanel : UIBase
     private bool _earnedCurrencyQueueLock = false;
 
 
+    [Header("Audio")]
+    [SerializeField] private AudioClipSO _currencyAudioClipSO;
+    [SerializeField] private PlayAudioEventSO _playAudioEventSO;
 
     protected override void Start()
     {
@@ -124,6 +128,7 @@ public class InGamePanel : UIBase
     #endregion
 
     #region Currency
+    // Subcribe event used to update currency UI.
     private void SubscribeCurrencyUI(bool val)
     {
         if (val == _checkSubcribeDuplicate) return;
@@ -134,8 +139,6 @@ public class InGamePanel : UIBase
     }
     private void EarnCurrency(int num = 0)
     {
-
-        // _earnedCurrency += num;
         _earnedCurrencyQueue.Enqueue(num);
 
         if (!_earnedCurrencyQueueLock) GetEarnCurrencyEffect();
@@ -147,18 +150,30 @@ public class InGamePanel : UIBase
         {
             await HelpEarningCurrencyEffect(num);
         }
+
+        _currencyContainerEffect.GetEffect(callback: null);
+        _playAudioEventSO.RaiseEvent(_currencyAudioClipSO);
+        await UniTask.Delay(System.TimeSpan.FromSeconds(0.25f), cancellationToken: this.GetCancellationTokenOnDestroy());
+
         _earnedCurrencyQueueLock = false;
     }
     private async UniTask HelpEarningCurrencyEffect(int num)
     {
-        for (int i = 1; i <= num; i++)
+        try
         {
-            _earnedCurrency += 1;
-            _currencyTxt.text = _earnedCurrency.ToString();
-            await UniTask.Delay(System.TimeSpan.FromSeconds(0.05f), cancellationToken: this.GetCancellationTokenOnDestroy());
+            for (int i = 1; i <= num; i++)
+            {
+                _earnedCurrency += 1;
+                _currencyTxt.text = _earnedCurrency.ToString();
+                await UniTask.Delay(System.TimeSpan.FromSeconds(0.05f), cancellationToken: this.GetCancellationTokenOnDestroy());
+            }
+
         }
-        _currencyContainerEffect.GetEffect(callback: null);
-        await UniTask.Delay(System.TimeSpan.FromSeconds(0.25f), cancellationToken: this.GetCancellationTokenOnDestroy());
+        catch (OperationCanceledException)
+        {
+
+        }
+
     }
     #endregion
 }

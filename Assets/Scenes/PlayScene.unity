@@ -2456,7 +2456,7 @@ GameObject:
   - component: {fileID: 623028241}
   - component: {fileID: 623028240}
   - component: {fileID: 623028239}
-  - component: {fileID: 623028238}
+  - component: {fileID: 623028242}
   m_Layer: 0
   m_Name: BG Audio Handler
   m_TagString: Untagged
@@ -2464,20 +2464,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &623028238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623028237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a78c529f73386942a6b66882bab1696, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sequentialAudioClipSO: {fileID: 11400000, guid: 6ab748225e450ac488d03067e10c037a, type: 2}
-  playSeqAuEventSO: {fileID: 11400000, guid: 9a0aea3f5d60afa4fb540f02e49f40d4, type: 2}
 --- !u!114 &623028239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2604,6 +2590,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &623028242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623028237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6fcae61b8e78844af10561fe7be8c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioClipSO: {fileID: 11400000, guid: 6ab748225e450ac488d03067e10c037a, type: 2}
+  _playAudioEventSO: {fileID: 11400000, guid: 9a0aea3f5d60afa4fb540f02e49f40d4, type: 2}
+  triggerOnStart: 1
+  triggerOnEnable: 0
+  triggerOnDisable: 0
+  triggerOnDestroy: 0
 --- !u!1 &654302995
 GameObject:
   m_ObjectHideFlags: 0
@@ -4182,6 +4186,8 @@ MonoBehaviour:
   _currencyContainerEffect: {fileID: 1686566631}
   _earnCurrenctEventSO: {fileID: 11400000, guid: d713080eb8108b44eaab43ae11bbdb95, type: 2}
   _subcribeCurrencyUIEventSO: {fileID: 11400000, guid: c4d38708b87280444b60ed84d67bec77, type: 2}
+  _currencyAudioClipSO: {fileID: 11400000, guid: bea0e9bcb9ed95e48aa326f2cb3b8944, type: 2}
+  _playAudioEventSO: {fileID: 11400000, guid: 83de0fbc1607cad499f0d006f236f8f7, type: 2}
 --- !u!1 &1547787883
 GameObject:
   m_ObjectHideFlags: 0
@@ -4929,7 +4935,6 @@ MonoBehaviour:
   _playableInfoSO: {fileID: 11400000, guid: f78e75a492e6ea449865e2e5ef6106b7, type: 2}
   _displayTurnUIEventSO: {fileID: 11400000, guid: db9cf29a490a89c4686df430a4b57b3a, type: 2}
   _endGameEventSO: {fileID: 11400000, guid: 3abc5c147b868d446914fad4d2597f8e, type: 2}
-  _startGameEventSO: {fileID: 11400000, guid: 30d5ca70e98d4d24b971a8b68628b292, type: 2}
   player: {fileID: 920495730}
   virPlayer: {fileID: 1014271831}
 --- !u!1 &1785715909

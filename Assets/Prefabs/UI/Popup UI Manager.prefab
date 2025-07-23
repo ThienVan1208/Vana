@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d4658b4eb8adcd40ba5bf60aed0f36b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _activePopupEventSO: {fileID: 11400000, guid: 9050964656a0a5946bf2dc0168bb92cd, type: 2}
   _subcribedPopupUIEventSO: {fileID: 11400000, guid: 109e8e22d25db8b49bd727a7a0fb9dd1, type: 2}
 --- !u!114 &6055386452703428999
 MonoBehaviour:

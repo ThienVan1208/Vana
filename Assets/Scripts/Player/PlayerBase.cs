@@ -28,7 +28,7 @@ public class PlayerBase : MonoBehaviour, IPlayable
 
 
     protected Canvas mainCanvas;
-    protected CardHolder cardHolder;
+    protected PlayableCardHolder cardHolder;
     protected TurnState curTurnState;
     protected virtual void Awake()
     {

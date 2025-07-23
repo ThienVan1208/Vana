@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,22 +19,28 @@ public class MoveableState : InteractableState
     {
         base.OnEnter();
         isComplete = false;
-
         _cardImg.raycastTarget = false;
         myCard.myRect.SetParent(myCard.cardSlotRect.root);
-        myCard.myRect.SetAsLastSibling();
+        myCard.myRect.SetAsFirstSibling();
     }
     public override void OnExit()
     {
-        base.OnExit();
+        try
+        {
+            base.OnExit();
 
 
-        wait4Transit = false;
-        // myCard.myRect.position = myCard.cardSlotRect.position;
+            wait4Transit = false;
+            // myCard.myRect.position = myCard.cardSlotRect.position;
 
-        _cardImg.raycastTarget = true;
-        myCard.myRect.SetParent(myCard.cardSlotRect);
-        isComplete = true;
+            _cardImg.raycastTarget = true;
+            if(!myCard.isDestroy) myCard.myRect.SetParent(myCard.cardSlotRect);
+            isComplete = true;
+        }
+        catch (Exception)
+        {
+        }
+
     }
     protected void GetMoveEffect(Vector2 target)
     {

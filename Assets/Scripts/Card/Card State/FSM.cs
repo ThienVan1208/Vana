@@ -24,9 +24,8 @@ public class FSM
             if (_isStop || _curState == null) return;
             _curState.OnUpdate();
         }
-        catch (Exception e)
+        catch (OperationCanceledException)
         {
-            Debug.Log("I catch exception " + e.Message);
         }
 
     }
@@ -45,9 +44,8 @@ public class FSM
             _curState = state;
             if (isEnter) _curState.OnEnter();
         }
-        catch (Exception e)
+        catch (OperationCanceledException)
         {
-            Debug.Log("I catch exception " + e.Message);
         }
 
     }
@@ -117,7 +115,7 @@ public class FSM
             _curState.OnExit();
             _isStop = true;
         }
-        catch (Exception)
+        catch (OperationCanceledException)
         {
             Debug.Log("I catch gameobject destroy exception!!!");
         }

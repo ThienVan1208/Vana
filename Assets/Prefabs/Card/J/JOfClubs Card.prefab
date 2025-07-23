@@ -321,4 +321,7 @@ MonoBehaviour:
   myRect: {fileID: 0}
   frontImg: {fileID: 5179698994863098352}
   backImg: {fileID: 967760147852131449}
+  choseCardAudioClipSO: {fileID: 11400000, guid: 0ac52f68a2a5b004790a0b7a092b130e, type: 2}
+  flipCardAudioClipSO: {fileID: 11400000, guid: 38f65fde691d14448a2f76aecf82b521, type: 2}
+  playAudioEventSO: {fileID: 11400000, guid: 83de0fbc1607cad499f0d006f236f8f7, type: 2}
   interactInputReaderSO: {fileID: 11400000, guid: 9954b10fda5bed94ab69891e4fa29a73, type: 2}

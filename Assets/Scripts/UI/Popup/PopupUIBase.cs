@@ -7,6 +7,8 @@ public class PopupUIBase : MonoBehaviour
     [SerializeField] protected PopupUIType popupUIType;
     [SerializeField] protected PopupUIEventSO subcribedPopupUIEventSO;
     [SerializeField] protected GameObject popupWindow;
+    // [SerializeField] protected AudioClipSO _popupAudioClipSO;
+    // [SerializeField] protected PlayAudioEventSO _playAudioEventSO;
     protected virtual void Awake() { }
     protected virtual void OnEnable()
     {
@@ -16,8 +18,14 @@ public class PopupUIBase : MonoBehaviour
     {
         subcribedPopupUIEventSO.RaiseEvent(popupUIType, null);
     }
-    public virtual void ShowPopup(Action callback = null) { }
-    public virtual void HidePopup(Action callback = null) { }
+    public virtual void ShowPopup(Action callback = null)
+    {
+        // _playAudioEventSO.RaiseEvent(_popupAudioClipSO);
+     }
+    public virtual void HidePopup(Action callback = null)
+    {
+        // _playAudioEventSO.RaiseEvent(_popupAudioClipSO);
+     }
     public virtual void ShowPopup()
     {
         ShowPopup(null);

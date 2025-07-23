@@ -92,11 +92,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardInfoSO: {fileID: 11400000, guid: cdc6cb9c7e321d2459890d5826399f11, type: 2}
-  gameConfigSO: {fileID: 11400000, guid: 8f5f61dc1b95a33418c4a7da728df2cf, type: 2}
   cardSlotRect: {fileID: 0}
   myRect: {fileID: 0}
   frontImg: {fileID: 3059400648538070753}
   backImg: {fileID: 2377092455780947831}
+  choseCardAudioClipSO: {fileID: 11400000, guid: 0ac52f68a2a5b004790a0b7a092b130e, type: 2}
+  flipCardAudioClipSO: {fileID: 11400000, guid: 38f65fde691d14448a2f76aecf82b521, type: 2}
+  playAudioEventSO: {fileID: 11400000, guid: 83de0fbc1607cad499f0d006f236f8f7, type: 2}
   interactInputReaderSO: {fileID: 11400000, guid: 9954b10fda5bed94ab69891e4fa29a73, type: 2}
 --- !u!1 &4250745383417547319
 GameObject:

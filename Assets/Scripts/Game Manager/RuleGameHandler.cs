@@ -88,6 +88,12 @@ public class RuleGameHandler : MonoBehaviour
     // Ref in AddCurrencyWhenFlipCardEffect class.
     [SerializeField] private CurrencyFlipCardEffectEventSO _currencyFlipCardEffectEventSO;
 
+
+
+    [Header("Audio")]
+    // [SerializeField] private AudioClipSO _flipCardAudioClipSO;
+    // [SerializeField] private PlayAudioEventSO _playAudioEventO;
+
     private Vector3 _offset = new Vector3(0, 40, 0);
     private List<Card> _chosenCards = new List<Card>();
 
@@ -98,6 +104,7 @@ public class RuleGameHandler : MonoBehaviour
         _chosenCardEventSO.EventChannel += PlayCards;
         _startGameEventSO.EventChannel += StartGame;
         _checkEndGameEventSO.EventChannel += CheckEndGameCond;
+        _startGameEventSO.EventChannel += HelpDrawCard;
 
     }
     private void OnDisable()
@@ -107,12 +114,41 @@ public class RuleGameHandler : MonoBehaviour
         _chosenCardEventSO.EventChannel -= PlayCards;
         _startGameEventSO.EventChannel -= StartGame;
         _checkEndGameEventSO.EventChannel -= CheckEndGameCond;
+        _startGameEventSO.EventChannel -= HelpDrawCard;
     }
     private void Start()
     {
         // StartGameEvent.RaiseEvent();
         _startGameEventSO.RaiseEvent();
     }
+
+    #region Init
+    private async void HelpDrawCard()
+    {
+        try
+        {
+            await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
+            for (int i = 0; i < GameConfiguration.initCardNum; i++)
+            {
+                foreach (var playable in _playableInfoSO.GetPlayableList())
+                {
+                    Card newCard = CardSpawnerEvent.RaiseGetCardEvent();
+                    newCard.gameObject.SetActive(true);
+                    playable.AddCards(newCard);
+                    // _playAudioEventO.RaiseEvent(_flipCardAudioClipSO);
+                    await UniTask.Delay(200, cancellationToken: this.GetCancellationTokenOnDestroy());
+                }
+            }
+            _playableInfoSO.GetPlayerByIndex(_playableInfoSO.curPlayerIdx).BeginTurn();
+        }
+        catch (OperationCanceledException)
+        {
+            // throw;
+        }
+
+    }
+    #endregion
+
     #region Play card
     /*
     - This func means when playable one plays cards and ends turn
@@ -149,7 +185,7 @@ public class RuleGameHandler : MonoBehaviour
         {
             _activeCardSlotEventSO.RaiseEvent(_chosenCards.Count);
 
-            _ = _chosenCards[0].FaceCardUp();
+            await _chosenCards[0].FaceCardUp();
 
             _moveCardToTableEventSO.RaiseEvent(_chosenCards[0]);
 

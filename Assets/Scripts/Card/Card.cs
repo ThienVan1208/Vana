@@ -8,13 +8,24 @@ using System;
 public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                     , IPointerClickHandler, IDragHandler, IPointerEnterHandler
 {
-    [SerializeField] private CardInfoSO _cardInfoSO;
-
 
     [HideInInspector]
     public RectTransform cardSlotRect, myRect;
 
+
+
+    [Header("Card Info")]
+    [SerializeField] private CardInfoSO _cardInfoSO;
     public RectTransform frontImg, backImg;
+
+    
+
+    [Header("Audio")]
+    public AudioClipSO choseCardAudioClipSO;
+    public AudioClipSO flipCardAudioClipSO;
+    public PlayAudioEventSO playAudioEventSO;
+
+
     public FSM stateMachine { get; private set; }
     private IdleState _idleState;
     private DragState _dragState;
@@ -23,8 +34,18 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     private ClickState _clickState;
     private FlipState _flipState;
     private bool _canInteract = true;
+
+
+
+    [Header("Input")]
     public InteractInputReaderSO interactInputReaderSO;
+
+
+
+
+
     public CardHolder cardHolder { get; private set; }
+    public bool isDestroy { get; private set; } = false;
 
     // 2 * _time2HaflRotate is the total time for card to rotate (used to flip card).
     private float _time2HaflRotate = 0.3f;
@@ -55,57 +76,114 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     }
     private void OnDestroy()
     {
-        stateMachine.StopAllState();
+        try
+        {
+            isDestroy = true;
+            stateMachine.StopAllState();
 
-        _idleState.DestroyState();
-        _dragState.DestroyState();
-        _moveState.DestroyState();
-        _hoverState.DestroyState();
-        _clickState.DestroyState();
-        _flipState.DestroyState();
+            _idleState.DestroyState();
+            _dragState.DestroyState();
+            _moveState.DestroyState();
+            _hoverState.DestroyState();
+            _clickState.DestroyState();
+            _flipState.DestroyState();
 
 
-        stateMachine = null;
-        _idleState = null;
-        _dragState = null;
-        _moveState = null;
-        _hoverState = null;
-        _clickState = null;
-        _flipState = null;
-        cardSlotRect = null;
-        myRect = null;
+            stateMachine = null;
+            _idleState = null;
+            _dragState = null;
+            _moveState = null;
+            _hoverState = null;
+            _clickState = null;
+            _flipState = null;
+            cardSlotRect = null;
+            myRect = null;
+        }
+        catch (Exception)
+        {
+            Debug.LogWarning("Card OnDestroy was cancelled.");
+        }
+
     }
 
-    //     private void OnValidate()
-    //     {
-    //         // Only run if _gameConfigSO is not already assigned
-    //         if (interactInputReaderSO == null)
-    //         {
-    //             // Find the ScriptableObject in the asset database
-    //             string[] guids = AssetDatabase.FindAssets($"t:{typeof(InteractInputReaderSO).Name}");
-    //             if (guids.Length > 0)
-    //             {
-    //                 string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-    //                 interactInputReaderSO = AssetDatabase.LoadAssetAtPath<InteractInputReaderSO>(path);
-    //                 if (interactInputReaderSO != null)
-    //                 {
-    //                     Debug.Log($"Assigned ScriptableObject: {interactInputReaderSO.name}");
-    // #if UNITY_EDITOR
-    //                     // Mark the object as dirty to ensure the change is saved
-    //                     EditorUtility.SetDirty(this);
-    // #endif
-    //                 }
-    //                 else
-    //                 {
-    //                     Debug.LogWarning($"No GameConfigSO found in the project.");
-    //                 }
-    //             }
-    //             else
-    //             {
-    //                 Debug.LogWarning($"No GameConfigSO found in the project.");
-    //             }
-    //         }
-    //     }
+// #if UNITY_EDITOR
+//     private void OnValidate()
+//     {
+//         bool changed = false;
+
+//         // Assign ChoseCardAudioClipSO
+//         if (choseCardAudioClipSO == null)
+//         {
+//             choseCardAudioClipSO = FindAssetByName<AudioClipSO>("ChoseCardAudioClipSO");
+//             if (choseCardAudioClipSO != null)
+//             {
+//                 Debug.Log($"Automatically assigned AudioClipSO: {choseCardAudioClipSO.name}", this);
+//                 changed = true;
+//             }
+//         }
+
+//         // Assign PlayOneShotAudioEventSO
+//         if (playAudioEventSO == null)
+//         {
+//             playAudioEventSO = FindAssetByName<PlayAudioEventSO>("PlayOneShotAudioEventSO");
+//             if (playAudioEventSO != null)
+//             {
+//                 Debug.Log($"Automatically assigned PlayAudioEventSO: {playAudioEventSO.name}", this);
+//                 changed = true;
+//             }
+//         }
+
+//         // Assign FlipCardAudioClipSO
+//         if (flipCardAudioClipSO == null)
+//         {
+//             flipCardAudioClipSO = FindAssetByName<AudioClipSO>("FlipCardAudioClipSO");
+//             if (flipCardAudioClipSO != null)
+//             {
+//                 Debug.Log($"Automatically assigned AudioClipSO: {flipCardAudioClipSO.name}", this);
+//                 changed = true;
+//             }
+//             else
+//             {
+//                 Debug.LogWarning("Could not find FlipCardAudioClipSO. Please ensure it exists in the project.");
+//             }
+//         }
+
+//         // If we made any changes, mark the component as 'dirty' so Unity saves them.
+//         if (changed)
+//         {
+//             EditorUtility.SetDirty(this);
+//         }
+//     }
+
+//     /// <summary>
+//     /// Finds the first ScriptableObject asset of a given type and name in the project.
+//     /// </summary>
+//     /// <typeparam name="T">The type of ScriptableObject to find.</typeparam>
+//     /// <param name="assetName">The exact filename (without extension) of the asset.</param>
+//     /// <returns>The found asset, or null if it doesn't exist.</returns>
+//     private T FindAssetByName<T>(string assetName) where T : UnityEngine.Object
+//     {
+//         // Construct the search filter for AssetDatabase
+//         // "t:TypeName assetName" finds assets of TypeName with the exact name.
+//         string searchFilter = $"t:{typeof(T).Name} {assetName}";
+//         string[] guids = AssetDatabase.FindAssets(searchFilter);
+
+//         if (guids.Length == 0)
+//         {
+//             Debug.LogWarning($"Could not find an asset of type '{typeof(T).Name}' with the name '{assetName}'.");
+//             return null;
+//         }
+
+//         if (guids.Length > 1)
+//         {
+//             Debug.LogWarning($"Found multiple assets named '{assetName}'. Loading the first one. Please ensure asset names are unique if this is not intended.");
+//         }
+        
+//         string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+//         return AssetDatabase.LoadAssetAtPath<T>(path);
+//     }
+// #endif
+
 
 
 
@@ -138,8 +216,13 @@ public class Card : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     #region Move state
     // Set @_cardSlot to target and then move it to target.
-    public void GetMove(RectTransform target)
+    public void GetMove(RectTransform target, bool getAudio = true)
     {
+        if(getAudio)
+        {
+            playAudioEventSO.RaiseEvent(flipCardAudioClipSO);
+        }
+    
 
         // Check card is up.
         if (!_clickState.IsClick())
