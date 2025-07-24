@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5f62e4a5489e147b5cad24e10f8ce7, type: 3}
   m_Name: FailRevealCardAudioClipSO
   m_EditorClassIdentifier: 
-  vol: 0.45
+  vol: 0.3
   _audioClip: {fileID: 8300000, guid: eb4c7fed1e0ec184f9cc8fbc68e270d3, type: 3}

@@ -20,21 +20,28 @@ public class PlaySequentialAudioHandler : AudioSourceHandler
         _playAudioLock = false;
         audioSource.volume = audioVolume;
     }
-    protected override async void OnDisable()
+    protected override void OnDisable()
     {
         try
         {
             base.OnDisable();
 
-            DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0f, _fadeOutWhenDisableDuration);
-            await UniTask.Delay(TimeSpan.FromSeconds(_fadeOutWhenDisableDuration), cancellationToken: this.GetCancellationTokenOnDestroy());
-            _playAudioLock = false;
-            audioSource.Stop();
+            DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0f, _fadeOutWhenDisableDuration)
+            .OnComplete(() =>
+            {
+                audioSource.volume = audioVolume; // Reset volume after fade out
+                _playAudioLock = false;
+                audioSource.Stop();
+            });
         }
         catch (OperationCanceledException)
         {
             Debug.LogWarning("PlaySequentialAudioHandler OnDisable was cancelled.");
         }
+    }
+    private void OnDestroy()
+    {
+        DOTween.Kill(this);
     }
 
     protected override void PlayAudio(AudioClipSO audioClipSO)
@@ -59,7 +66,6 @@ public class PlaySequentialAudioHandler : AudioSourceHandler
         }
         catch (OperationCanceledException)
         {
-            Debug.LogWarning("hehe");
         }
 
 

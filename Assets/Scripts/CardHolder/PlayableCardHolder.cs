@@ -10,7 +10,6 @@ public abstract class PlayableCardHolder : CardHolder, IHelpPlayingCard
 
     // Ref in RuleGameHandler, PlayerBase.
     [SerializeField] protected RetBoolEventSO checkEndGameEventSO;
-    public bool relocateCardsLock{ get; protected set; } = false;
 
     public abstract bool HelpPlayingCard();
     public virtual void RelocateCards()
@@ -24,8 +23,6 @@ public abstract class PlayableCardHolder : CardHolder, IHelpPlayingCard
         {
             if (slot.gameObject.activeSelf && _cardsDic[slot] != null) cards.Add(_cardsDic[slot]);
         }
-
-        relocateCardsLock = true;
 
         // Relocate cards to the slots.
         for (int i = 0; i < cards.Count; i++)
@@ -45,6 +42,5 @@ public abstract class PlayableCardHolder : CardHolder, IHelpPlayingCard
 
             if (_cardsDic[slots[i]] == null) slots[i].gameObject.SetActive(false);
         }
-        relocateCardsLock = false;
     }
 }
