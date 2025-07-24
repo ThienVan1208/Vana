@@ -9,16 +9,6 @@ public enum PlayerEndGameType
     Lose
 };
 
-// public static class CheckEndGameConditionEvent
-// {
-//     public static Func<bool> EventChannel;
-//     public static bool RaiseEvent()
-//     {
-//         return EventChannel?.Invoke() ?? false;
-//     }
-// }
-
-
 public class RuleGameHandler : MonoBehaviour
 {
     public static bool BeginTurn = true;
@@ -91,8 +81,9 @@ public class RuleGameHandler : MonoBehaviour
 
 
     [Header("Audio")]
-    // [SerializeField] private AudioClipSO _flipCardAudioClipSO;
-    // [SerializeField] private PlayAudioEventSO _playAudioEventO;
+    [SerializeField] private AudioClipSO _successRevealCardAudioClipSO;
+    [SerializeField] private AudioClipSO _failRevealCardAudioClipSO;
+    [SerializeField] private PlayAudioEventSO _playAudioEventO;
 
     private Vector3 _offset = new Vector3(0, 40, 0);
     private List<Card> _chosenCards = new List<Card>();
@@ -220,14 +211,15 @@ public class RuleGameHandler : MonoBehaviour
                 await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
 
                 bool revealCondition = _chosenCards[0].GetCardRank() != _chosenCards[i].GetCardRank();
-
                 if (revealCondition)
                 {
+                    _playAudioEventO.RaiseEvent(_successRevealCardAudioClipSO);
                     await UniTask.Delay(1000, cancellationToken: this.GetCancellationTokenOnDestroy());
                     await SuccessRevealCard();
                     return;
                 }
 
+                _playAudioEventO.RaiseEvent(_failRevealCardAudioClipSO);
                 _currencyFlipCardEffectEventSO.RaiseEvent(timeDisplay: 1f
                                                , startPos: _chosenCards[i].cardSlotRect.position + _offset
                                                , endPos: _offset

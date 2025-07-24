@@ -266,6 +266,9 @@ MonoBehaviour:
   _checkEndGameEventSO: {fileID: 11400000, guid: 64ad77d5e906fd3478124ff7fbc3da3c, type: 2}
   _earnCurrenctEventSO: {fileID: 11400000, guid: d713080eb8108b44eaab43ae11bbdb95, type: 2}
   _currencyFlipCardEffectEventSO: {fileID: 11400000, guid: df0b219625bd97b4283eaf90dfc9c945, type: 2}
+  _successRevealCardAudioClipSO: {fileID: 11400000, guid: b38ef96973bf5e846961ed7b0e1c3c0f, type: 2}
+  _failRevealCardAudioClipSO: {fileID: 11400000, guid: 6b8dc114e81db7a48a1fd51c16e4d524, type: 2}
+  _playAudioEventO: {fileID: 11400000, guid: 83de0fbc1607cad499f0d006f236f8f7, type: 2}
 --- !u!4 &60038285
 Transform:
   m_ObjectHideFlags: 0

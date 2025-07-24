@@ -33,5 +33,8 @@ public class AudioSourceHandler : MonoBehaviour
             audioSource.volume = audioVolume;
         }
     }
-    protected virtual void PlayAudio(AudioClipSO audioClipSO) { }
+    protected virtual void PlayAudio(AudioClipSO audioClipSO)
+    {
+        audioSource.volume = audioClipSO.vol * audioVolume;
+    }
 }
