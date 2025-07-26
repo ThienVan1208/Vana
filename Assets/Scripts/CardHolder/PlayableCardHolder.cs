@@ -11,6 +11,9 @@ public abstract class PlayableCardHolder : CardHolder, IHelpPlayingCard
     // Ref in RuleGameHandler, PlayerBase.
     [SerializeField] protected RetBoolEventSO checkEndGameEventSO;
 
+    // Ref in InGamePanel.
+    [SerializeField] protected IntEventSO currentCardNumEventSO;
+
     public abstract bool HelpPlayingCard();
     public virtual void RelocateCards()
     {

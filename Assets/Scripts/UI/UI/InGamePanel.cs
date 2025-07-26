@@ -68,6 +68,23 @@ public class InGamePanel : UIBase
     private bool _earnedCurrencyQueueLock = false;
 
 
+
+
+    [Header("Current Card Num")]
+    [SerializeField] private TextMeshProUGUI _playerCurrentCardNumTxt;
+    [SerializeField] private TextMeshProUGUI _opponentCurrentCardNumTxt;
+
+    [SerializeField] private TextMeshProUGUI _playerMaxCardNumTxt;
+    [SerializeField] private TextMeshProUGUI _opponentMaxCardNumTxt;
+
+    // Ref in PlayableCardHolder class.
+    [SerializeField] private IntEventSO _playerCurrentCardNumEventSO;
+    [SerializeField] private IntEventSO _opponentCurrentCardNumEventSO;
+
+
+
+
+
     [Header("Audio")]
     [SerializeField] private AudioClipSO _currencyAudioClipSO;
     [SerializeField] private PlayAudioEventSO _playAudioEventSO;
@@ -75,7 +92,7 @@ public class InGamePanel : UIBase
     protected override void Start()
     {
         base.Start();
-        // EarnCurrency();
+        InitMaxCardNum();
     }
 
     protected override void OnEnable()
@@ -83,6 +100,8 @@ public class InGamePanel : UIBase
         _increaseTurnEventSO.EventChannel += IncreaseTurn;
         _drawCardEventSO.EventChannel += DrawCard;
         _subcribeCurrencyUIEventSO.EventChannel += SubscribeCurrencyUI;
+        _playerCurrentCardNumEventSO.EventChannel += UpdatePlayerCurrentCardNum;
+        _opponentCurrentCardNumEventSO.EventChannel += UpdateOpponentCurrentCardNum;
 
         SubscribeCurrencyUI(true);
     }
@@ -91,6 +110,8 @@ public class InGamePanel : UIBase
         _increaseTurnEventSO.EventChannel -= IncreaseTurn;
         _drawCardEventSO.EventChannel -= DrawCard;
         _subcribeCurrencyUIEventSO.EventChannel -= SubscribeCurrencyUI;
+        _playerCurrentCardNumEventSO.EventChannel -= UpdatePlayerCurrentCardNum;
+        _opponentCurrentCardNumEventSO.EventChannel -= UpdateOpponentCurrentCardNum;
 
         SubscribeCurrencyUI(false);
     }
@@ -174,6 +195,36 @@ public class InGamePanel : UIBase
 
         }
 
+    }
+    #endregion
+
+    #region Current Card Num
+    private void InitMaxCardNum()
+    {
+        _playerMaxCardNumTxt.text = "/" + (GameConfiguration.CardCountMaxThreshold - 1).ToString();
+        _opponentMaxCardNumTxt.text = "/" + (GameConfiguration.CardCountMaxThreshold - 1).ToString();
+    }
+    private void UpdatePlayerCurrentCardNum(int num)
+    {
+        Debug.Log("UpdateOpponentCurrentCardNum: " + num);
+        _playerCurrentCardNumTxt.rectTransform.DOScale(2, 0.2f).SetEase(Ease.InOutSine)
+        .OnComplete(() =>
+        {
+            _playerCurrentCardNumTxt.rectTransform.DOShakeRotation(0.2f, new Vector3(0, 0, 20));
+            _playerCurrentCardNumTxt.rectTransform.DOScale(1, 0.2f).SetEase(Ease.InOutSine);
+        });
+        _playerCurrentCardNumTxt.text = num.ToString();
+    }
+    private void UpdateOpponentCurrentCardNum(int num)
+    {
+        Debug.Log("UpdateOpponentCurrentCardNum: " + num);
+        _opponentCurrentCardNumTxt.rectTransform.DOScale(2, 0.2f).SetEase(Ease.InOutSine)
+        .OnComplete(() =>
+        {
+            _opponentCurrentCardNumTxt.rectTransform.DOShakeRotation(0.2f, new Vector3(0, 0, 20));
+            _opponentCurrentCardNumTxt.rectTransform.DOScale(1, 0.2f).SetEase(Ease.InOutSine);
+        });
+        _opponentCurrentCardNumTxt.text = num.ToString();
     }
     #endregion
 }

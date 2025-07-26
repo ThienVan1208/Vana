@@ -34,13 +34,13 @@ public class HandHolder : PlayableCardHolder
                 keyVal.Key.gameObject.SetActive(true);
                 _cardsDic[keyVal.Key] = card;
                 curCardNum++;
+                currentCardNumEventSO.RaiseEvent(curCardNum);
                 card.GetMove(keyVal.Key);
                 _ = card.FaceCardUp();
                 return;
             }
         }
 
-        // CheckEndGameConditionEvent.RaiseEvent();
         checkEndGameEventSO.RaiseEvent();
     }
     #endregion
@@ -60,7 +60,7 @@ public class HandHolder : PlayableCardHolder
             _cardsDic[card.transform.parent as RectTransform] = null;
             curCardNum--;
         }
-
+        currentCardNumEventSO.RaiseEvent(curCardNum);
         chosenCardEventSO.RaiseEvent(_chosenCards);
 
         // ObjectPoolManager.GetPoolingObject<CardPSEffect>()?.StopGlowEffect(isInactive: true);

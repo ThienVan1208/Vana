@@ -13,6 +13,7 @@ public abstract class VirtualHandHolder : PlayableCardHolder
             if (_cardsDic[keyVal.Key] == null)
             {
                 curCardNum++;
+                currentCardNumEventSO.RaiseEvent(curCardNum);
                 keyVal.Key.gameObject.SetActive(true);
                 _cardsDic[keyVal.Key] = card;
                 card.GetMove(keyVal.Key);
@@ -20,6 +21,7 @@ public abstract class VirtualHandHolder : PlayableCardHolder
             }
         }
 
+        
         checkEndGameEventSO.RaiseEvent();
     }
 

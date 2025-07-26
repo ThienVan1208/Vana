@@ -100,6 +100,9 @@ public class Ver1VirtualHandHolder : Ver0VirtualHandHolder
         {
             await PlayRandom();
         }
+        
+        curCardNum -= playCards.Count;
+        currentCardNumEventSO.RaiseEvent(curCardNum);
         chosenCardEventSO.RaiseEvent(playCards);
     }
  

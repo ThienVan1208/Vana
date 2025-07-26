@@ -26,16 +26,13 @@ public class IdleState : StateBase
         _ranDir = Random.Range(-4f, 5f);
     }
 
-    public override void OnExit()
-    {
-        base.OnExit();
-        // if (myCard.cardSlotRect != null) myCard.myRect.position = myCard.cardSlotRect.position;
-    }
+
 
     public override void OnUpdate()
     {
         base.OnUpdate();
         if (!didIdle) return;
+
         GetRotateEffect();
         GetMoveEffect();
     }

@@ -377,7 +377,10 @@ public class RuleGameHandler : MonoBehaviour
                         if (playerIndex == i)
                         {
                             _playableInfoSO.GetPlayerByIndex(i).LoseGame();
-                            break;
+                        }
+                        else
+                        {
+                            _playableInfoSO.GetPlayerByIndex(i).WinGame();
                         }
                     }
                     break;
