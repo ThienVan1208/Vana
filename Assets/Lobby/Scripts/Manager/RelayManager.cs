@@ -6,6 +6,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using UnityEngine;
+using Unity.Networking.Transport.Relay;
 public class RelayManager : MonoBehaviour
 {
     public static RelayManager Instance;
@@ -48,7 +49,9 @@ public class RelayManager : MonoBehaviour
                                             (ushort)allocation.RelayServer.Port,
                                             allocation.AllocationIdBytes,
                                             allocation.Key,
-                                            allocation.ConnectionData);
+                                            allocation.ConnectionData
+                                            );
+
             NetworkManager.Singleton.StartHost();
 
             lobby = await LobbyService.Instance.GetLobbyAsync(lobby.Id);
@@ -76,7 +79,10 @@ public class RelayManager : MonoBehaviour
                                             (ushort)joinCodeAllocation.RelayServer.Port,
                                             joinCodeAllocation.AllocationIdBytes,
                                             joinCodeAllocation.Key,
-                                            joinCodeAllocation.ConnectionData);
+                                            joinCodeAllocation.ConnectionData,
+                                            joinCodeAllocation.HostConnectionData
+                                            );
+
             NetworkManager.Singleton.StartClient();
 
         }

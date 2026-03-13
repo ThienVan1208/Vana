@@ -11,7 +11,7 @@ public class MyLobbyUI : MonoBehaviour
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI lobbyNameTxt;
     [SerializeField] private TextMeshProUGUI curPlayerNumTxt;
-    
+
     [Header("Buttons")]
     [SerializeField] private Button reloadButton;
     [SerializeField] private Button startGameButton;
@@ -24,12 +24,19 @@ public class MyLobbyUI : MonoBehaviour
     {
         LobbyManager.Instance.OnJoinedLobby -= OpenPage;
         LobbyManager.Instance.OnLobbyCreated -= OpenPage;
+        LobbyManager.Instance.OnLobbyUpdated -= UpdateLobby;
+
+
     }
     public void Init()
     {
         LobbyManager.Instance.OnJoinedLobby += OpenPage;
         LobbyManager.Instance.OnLobbyCreated += OpenPage;
-        for(int i = 0; i < LobbyManager.MAX_PLAYERS; i++)
+        LobbyManager.Instance.OnLobbyUpdated += UpdateLobby;
+
+        reloadButton.onClick.AddListener(RefreshMembers);
+        startGameButton.onClick.AddListener(LobbyManager.Instance.StartGame);
+        for (int i = 0; i < LobbyManager.MAX_PLAYERS; i++)
         {
             GameObject memberUiObj = Instantiate(memberUiPrefab, memberUiContainer);
             LobbyMemberUI lobbyMemberUI = memberUiObj.GetComponent<LobbyMemberUI>();
@@ -39,15 +46,21 @@ public class MyLobbyUI : MonoBehaviour
     }
     public void RefreshMembers()
     {
-        if(isMemListRefreshed) return;
+        if (isMemListRefreshed) return;
 
         isMemListRefreshed = true;
-        for(int i = 0; i < myLobby.Players.Count; i++)
+        for (int i = 0; i < LobbyManager.MAX_PLAYERS; i++)
         {
+            if (i >= myLobby.Players.Count)
+            {
+                memberList[i].gameObject.SetActive(false);
+                continue;
+            }
             memberList[i].Activate(myLobby.Players[i].Data[LobbyManager.PLAYER_NAME].Value,
                                     myLobby.Players[i].Data[LobbyManager.PLAYER_ID].Value);
             memberList[i].gameObject.SetActive(true);
         }
+        isMemListRefreshed = false;
     }
 
     public void OpenPage(Lobby lobby)
@@ -57,6 +70,12 @@ public class MyLobbyUI : MonoBehaviour
         lobbyNameTxt.text = myLobby.Name;
         curPlayerNumTxt.text = myLobby.Players.Count.ToString() + "/" + myLobby.MaxPlayers.ToString();
         gameObject.SetActive(true);
+    }
+
+    private void UpdateLobby(Lobby lobby)
+    {
+        myLobby = lobby;
+        RefreshMembers();
     }
 
 }

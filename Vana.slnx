@@ -137,11 +137,8 @@
   <Project Path="Unity.Multiplayer.Tools.Common.csproj" />
   <Project Path="IAPResolver.csproj" />
   <Project Path="Unity.Netcode.Editor.CodeGen.csproj" />
-  <Project Path="Unity.Multiplayer.Widgets.Editor.csproj" />
   <Project Path="Unity.Services.DeploymentApi.csproj" />
   <Project Path="Unity.2D.Common.Runtime.csproj" />
-  <Project Path="Unity.Multiplayer.Widgets.Core.csproj" />
-  <Project Path="Unity.Multiplayer.Widgets.Session.csproj" />
   <Project Path="UnityEngine.Purchasing.WinRTStub.csproj" />
   <Project Path="UnityEngine.Purchasing.AppleStub.csproj" />
   <Project Path="UnityEngine.SpatialTracking.csproj" />

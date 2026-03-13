@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3824426583977198078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5506111436152939015}
+  - component: {fileID: 1738307734003932448}
+  m_Layer: 0
+  m_Name: Rule Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5506111436152939015
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3824426583977198078}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 285.3947, y: 224.53268, z: -1.5301305}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1738307734003932448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3824426583977198078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8a676ff7ba613642bed1d82d8bd7ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nextTurnEventSO: {fileID: 11400000, guid: 3a378c3dbd3e6be428b1c3b53ef1a164, type: 2}
+  _continueTurnEventSO: {fileID: 11400000, guid: 0dc02cf7b57039649a2cd53b49a5c424, type: 2}
+  _endGameEventSO: {fileID: 11400000, guid: 3abc5c147b868d446914fad4d2597f8e, type: 2}
+  _startGameEventSO: {fileID: 11400000, guid: 30d5ca70e98d4d24b971a8b68628b292, type: 2}
+  _playableInfoSO: {fileID: 11400000, guid: f78e75a492e6ea449865e2e5ef6106b7, type: 2}
+  _activeCardSlotEventSO: {fileID: 11400000, guid: 16c8e6b2e6189e049a09558afd347719, type: 2}
+  _moveCardToTableEventSO: {fileID: 11400000, guid: 4eb425afeec23eb488b03994434c1ed9, type: 2}
+  _refeshTableEventSO: {fileID: 11400000, guid: 9124ea1b3cdafaa4f948dcf4b8262d81, type: 2}
+  _revealCardEventSO: {fileID: 11400000, guid: 9a3a57c76278a1b46abc79f342d2aa9e, type: 2}
+  _passTurnEventSO: {fileID: 11400000, guid: 8167e13cefa0327429f09a36b3b068c4, type: 2}
+  _checkRevealEventSO: {fileID: 11400000, guid: c7fef01532b5f1649bdc9c3c414755e7, type: 2}
+  _chosenCardEventSO: {fileID: 11400000, guid: a8a7f291118602d4e9642b45c05be954, type: 2}
+  _addCard2PlayerEventSO: {fileID: 11400000, guid: 88a72800443761944b0d03036bd0ebcc, type: 2}
+  _relocatePlayerCardEventSO: {fileID: 11400000, guid: 9b9a10e2626df634e91e165b7ad183d5, type: 2}
+  _checkEndGameEventSO: {fileID: 11400000, guid: 64ad77d5e906fd3478124ff7fbc3da3c, type: 2}
+  _earnCurrenctEventSO: {fileID: 11400000, guid: d713080eb8108b44eaab43ae11bbdb95, type: 2}
+  _currencyFlipCardEffectEventSO: {fileID: 11400000, guid: df0b219625bd97b4283eaf90dfc9c945, type: 2}
+  _successRevealCardAudioClipSO: {fileID: 11400000, guid: b38ef96973bf5e846961ed7b0e1c3c0f, type: 2}
+  _failRevealCardAudioClipSO: {fileID: 11400000, guid: 6b8dc114e81db7a48a1fd51c16e4d524, type: 2}
+  _playAudioEventO: {fileID: 11400000, guid: 83de0fbc1607cad499f0d006f236f8f7, type: 2}

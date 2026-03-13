@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -128,8 +127,6 @@ public class LobbyManager : NetworkBehaviour
             heartBeatLobbyCoroutine = StartCoroutine(HandleHeartBeatLobby());
             pollLobbyCoroutine = StartCoroutine(HandlePollLobby());
 
-            OnLobbyCreated.Invoke(currentLobby);
-
         }
         catch (LobbyServiceException e)
         {
@@ -138,7 +135,7 @@ public class LobbyManager : NetworkBehaviour
         finally
         {
             SetLobbyBusy(false);
-            
+            OnLobbyCreated.Invoke(currentLobby);
         }
     }
     #endregion
@@ -241,13 +238,15 @@ public class LobbyManager : NetworkBehaviour
             }
 
             await LobbyService.Instance.RemovePlayerAsync(currentLobby.Id, playerId);
-            // OnKickedFromLobby.Invoke(currentLobby);
+
+            OnLobbyUpdated.Invoke(currentLobby);
         }
         catch(LobbyServiceException e)
         {
             Debug.LogException(e);
         }
     }
+    
     private void HandleKickEvent(Lobby lobby)
     {
         lobby = null;
@@ -311,6 +310,11 @@ public class LobbyManager : NetworkBehaviour
             return player;
         }
 
+    }
+
+    public void StartGame()
+    {
+        NetworkManager.Singleton.SceneManager.LoadScene(Constant.PLAY_SCENE, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     #region HeartBeat&Poll

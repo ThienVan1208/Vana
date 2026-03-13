@@ -13,7 +13,7 @@ public class LobbyMemberUI : MonoBehaviour
     public void Init()
     {
         gameObject.SetActive(false);
-        SetHost(false);
+        CheckHost();
         LobbyManager.Instance.OnLobbyLeft += CheckHost;
         kickButton.onClick.AddListener(() => LobbyManager.Instance.KickPlayer(playerId));
     }
@@ -26,20 +26,35 @@ public class LobbyMemberUI : MonoBehaviour
     {
         memberNameTxt.text = name;
         playerId = id;
-        SetHost(LobbyManager.Instance.IsLobbyHost);
+        CheckHost();
+        
+        
     }
 
     public void SetHost(bool isHost = true)
     {
         hostIcon.SetActive(isHost);
-        kickButton.gameObject.SetActive(!isHost);
+        kickButton.gameObject.SetActive(LobbyManager.Instance.IsLobbyHost && !isHost);
     }
 
     private void CheckHost(Lobby lobby)
     {
-        if(lobby.Players[0].Id == LobbyManager.Instance.PlayerLobbyInfo.id)
+        
+        if(lobby.HostId == playerId)
         {
             SetHost();
         }
+        else
+        {
+            SetHost(false);
+        }
+
+    }
+
+    private void CheckHost()
+    {
+        if(LobbyManager.Instance.CurrentLobby == null) return;
+
+        CheckHost(LobbyManager.Instance.CurrentLobby);
     }
 }

@@ -26,7 +26,7 @@ MonoBehaviour:
       - BestMargin
     - QuestionId: NetcodeArchitecture
       Answers:
-      - NoNetcode
+      - ClientServer
     - QuestionId: PlayerCount
       Answers:
       - 2

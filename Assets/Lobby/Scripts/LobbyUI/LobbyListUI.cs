@@ -18,12 +18,13 @@ public class LobbyListUI : MonoBehaviour
 
     private void OnEnable()
     {
-        RefreshLobbySlots();
+        // RefreshLobbySlots();
     }
     public void Init()
     {
         LobbyManager.Instance.OnLobbyCreated += (Lobby lobby) => gameObject.SetActive(false);
         LobbyManager.Instance.OnJoinedLobby += (Lobby lobby) => gameObject.SetActive(false);
+        LobbyManager.Instance.OnLobbyCreated += (Lobby lobby) => RefreshLobbySlots();
 
         reloadButton.onClick.AddListener(RefreshLobbySlots);
         createLobbyButton.onClick.AddListener(() => createLobbyUI.gameObject.SetActive(true));
