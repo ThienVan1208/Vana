@@ -30,6 +30,7 @@ public class LoginHandler : MonoBehaviour
 
     private DatabaseReference _dbRef;
     private string _userID = "";
+    [SerializeField] private UserDataSO userDataSO;
 
     private void Awake()
     {
@@ -130,7 +131,7 @@ public class LoginHandler : MonoBehaviour
             _userID = "user" + task.Result.ChildrenCount.ToString();
             // Turn saving object to json and then add it to database.
             SaveDataEvent.RaiseAction(dataSaver, _userID);
-
+            Debug.Log(userDataSO.GetUserName());
             Debug.Log("Create new account");
 
             // Load data and enter game.

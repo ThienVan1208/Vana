@@ -88,6 +88,7 @@ public class RuleGameHandler : MonoBehaviour
     private Vector3 _offset = new Vector3(0, 40, 0);
     private List<Card> _chosenCards = new List<Card>();
 
+
     private void OnEnable()
     {
         _revealCardEventSO.EventChannel += RevealCard;
@@ -148,9 +149,9 @@ public class RuleGameHandler : MonoBehaviour
     private void PlayCards(List<Card> chosenCards)
     {
         _chosenCards = new List<Card>(chosenCards);
-        _ = HelpPlayCards();
+        HelpPlayCards();
     }
-    private async UniTask HelpPlayCards()
+    private async void HelpPlayCards()
     {
         try
         {

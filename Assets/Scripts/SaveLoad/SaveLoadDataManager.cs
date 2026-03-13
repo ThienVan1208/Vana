@@ -1,8 +1,8 @@
 using System;
-
 using Cysharp.Threading.Tasks;
 using Firebase.Database;
 using Firebase.Extensions;
+
 
 using UnityEngine;
 public static class SaveDataEvent
@@ -80,6 +80,7 @@ public class SaveLoadDataManager : MonoBehaviour
                 }
                 else
                 {
+                    Debug.LogWarning(task.Result.Child(Constant.UserName).Value?.ToString());
                     _userDataSO.SetData(
                     userName: task.Result.Child(Constant.UserName).Value?.ToString() ?? "",
                     password: task.Result.Child(Constant.Password).Value?.ToString() ?? "",

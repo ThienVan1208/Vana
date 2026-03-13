@@ -21,11 +21,10 @@ public class UserDataSO : ScriptableObject
 
     public void SetData(string ID = "", string userName = "", string password = "", int currency = 0, int level = 1)
     {
-        _userID = ID == "" ? _userID : ID;
+        _userID = ID;
         _userName = userName;
         _password = password;
         currencyInfoSO.SetCurrency(currency);
         levelInfoSO.SetLevel(level);
-        Debug.LogWarning("set data " + userName);
     }
 }

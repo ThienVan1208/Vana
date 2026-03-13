@@ -26,13 +26,13 @@ public class PlaySequentialAudioHandler : AudioSourceHandler
         {
             base.OnDisable();
 
-            DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0f, _fadeOutWhenDisableDuration)
-            .OnComplete(() =>
-            {
-                audioSource.volume = audioVolume; // Reset volume after fade out
-                _playAudioLock = false;
-                audioSource.Stop();
-            });
+            // DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0f, _fadeOutWhenDisableDuration)
+            // .OnComplete(() =>
+            // {
+            //     audioSource.volume = audioVolume; // Reset volume after fade out
+            //     _playAudioLock = false;
+            //     audioSource.Stop();
+            // });
         }
         catch (OperationCanceledException)
         {
